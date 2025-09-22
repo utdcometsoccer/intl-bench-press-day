@@ -7,19 +7,28 @@ interface SuccessMessageProps {
   className?: string;
   /** Whether to show the checkmark emoji prefix. Defaults to true. */
   showIcon?: boolean;
+  /** Whether this success message should be announced immediately (aria-live="assertive"). Defaults to false for less intrusive announcements. */
+  assertive?: boolean;
+  /** Unique ID for the success message element, useful for aria-describedby */
+  id?: string;
 }
 
 /**
- * SuccessMessage component for displaying success messages with consistent styling.
+ * SuccessMessage component for displaying success messages with consistent styling and accessibility.
+ * Uses ARIA live regions to announce successes to screen readers when they appear.
  * 
  * @param message - The success message to display
  * @param className - Optional additional CSS class
  * @param showIcon - Whether to show checkmark icon (default: true)
+ * @param assertive - Whether to use assertive live region (default: false, uses polite)
+ * @param id - Optional ID for aria-describedby associations
  */
 const SuccessMessage: FC<SuccessMessageProps> = ({ 
   message, 
   className = '', 
-  showIcon = true 
+  showIcon = true,
+  assertive = false,
+  id
 }) => {
   // Don't render anything if there's no message
   if (!message?.trim()) {
@@ -27,8 +36,17 @@ const SuccessMessage: FC<SuccessMessageProps> = ({
   }
 
   return (
-    <div className={`success-message ${className}`.trim()}>
-      {showIcon && '✅ '}{message}
+    <div 
+      className={`success-message ${className}`.trim()}
+      role="status"
+      aria-live={assertive ? "assertive" : "polite"}
+      aria-atomic={true}
+      id={id}
+    >
+      {showIcon && (
+        <span aria-hidden="true">✅ </span>
+      )}
+      {message}
     </div>
   );
 };
