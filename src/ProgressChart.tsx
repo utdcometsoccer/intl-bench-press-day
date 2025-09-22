@@ -401,11 +401,10 @@ const ProgressChart: React.FC = () => {
         <div>
           <h3>Exercise Statistics</h3>
           <div className="stats-grid">
-            {exerciseStats.map(stat => (
+            {exerciseStats.map((stat, index) => (
               <div 
                 key={stat.exerciseId} 
-                className="stat-card" 
-                style={{'--stat-color': stat.color} as React.CSSProperties}
+                className={`stat-card stat-card-${index % 8}`}
               >
                 <h4 className="stat-title">{stat.exerciseName}</h4>
                 <div className="stat-details">

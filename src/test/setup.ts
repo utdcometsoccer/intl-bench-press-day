@@ -1,12 +1,18 @@
 import '@testing-library/jest-dom'
 import { vi } from 'vitest'
 
-// Mock IndexedDB
+// Mock IndexedDB with simplified approach to avoid TypeScript issues
 const mockIDBRequest = {
-  onsuccess: null as ((this: IDBRequest, ev: Event) => unknown) | null,
-  onerror: null as ((this: IDBRequest, ev: Event) => unknown) | null,
-  result: null as unknown,
-  error: null as DOMException | null
+  onsuccess: null as any,
+  onerror: null as any,
+  result: null as any,
+  error: null as any,
+  readyState: 'pending',
+  source: null,
+  transaction: null,
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn()
 }
 
 const mockIDBObjectStore = {
@@ -23,8 +29,8 @@ const mockIDBObjectStore = {
 
 const mockIDBTransaction = {
   objectStore: vi.fn(() => mockIDBObjectStore),
-  onsuccess: null as ((this: IDBTransaction, ev: Event) => unknown) | null,
-  onerror: null as ((this: IDBTransaction, ev: Event) => unknown) | null
+  onsuccess: null as any,
+  onerror: null as any
 }
 
 const mockIDBDatabase = {
@@ -37,9 +43,18 @@ const mockIDBDatabase = {
 }
 
 const mockIDBOpenRequest = {
-  ...mockIDBRequest,
-  onupgradeneeded: null as ((this: IDBOpenDBRequest, ev: IDBVersionChangeEvent) => unknown) | null,
-  result: mockIDBDatabase
+  onsuccess: null as any,
+  onerror: null as any,
+  onupgradeneeded: null as any,
+  onblocked: null as any,
+  result: mockIDBDatabase,
+  error: null as any,
+  readyState: 'pending',
+  source: null,
+  transaction: null,
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn()
 }
 
 // Mock IndexedDB globally
@@ -62,7 +77,8 @@ export const simulateIDBSuccess = (result?: any) => {
   setTimeout(() => {
     if (mockIDBRequest.onsuccess) {
       mockIDBRequest.result = result
-      mockIDBRequest.onsuccess({ target: mockIDBRequest })
+      const event = { target: mockIDBRequest, type: 'success' } as unknown as Event
+      mockIDBRequest.onsuccess.call(mockIDBRequest as any, event)
     }
   }, 0)
 }
@@ -71,8 +87,13 @@ export const simulateIDBSuccess = (result?: any) => {
 export const simulateIDBError = (error: string) => {
   setTimeout(() => {
     if (mockIDBRequest.onerror) {
-      mockIDBRequest.error = new Error(error)
-      mockIDBRequest.onerror({ target: mockIDBRequest })
+      // Create a proper DOMException-like object
+      const domException = new Error(error) as any
+      domException.name = 'DataError'
+      domException.code = 0
+      mockIDBRequest.error = domException
+      const event = { target: mockIDBRequest, type: 'error' } as unknown as Event
+      mockIDBRequest.onerror.call(mockIDBRequest as any, event)
     }
   }, 0)
 }
@@ -81,10 +102,12 @@ export const simulateIDBError = (error: string) => {
 export const simulateIDBUpgradeNeeded = () => {
   setTimeout(() => {
     if (mockIDBOpenRequest.onupgradeneeded) {
-      mockIDBOpenRequest.onupgradeneeded({ target: mockIDBOpenRequest })
+      const event = { target: mockIDBOpenRequest, type: 'upgradeneeded' } as unknown as IDBVersionChangeEvent
+      mockIDBOpenRequest.onupgradeneeded.call(mockIDBOpenRequest as any, event)
     }
     if (mockIDBOpenRequest.onsuccess) {
-      mockIDBOpenRequest.onsuccess({ target: mockIDBOpenRequest })
+      const event = { target: mockIDBOpenRequest, type: 'success' } as unknown as Event
+      mockIDBOpenRequest.onsuccess.call(mockIDBOpenRequest as any, event)
     }
   }, 0)
 }
