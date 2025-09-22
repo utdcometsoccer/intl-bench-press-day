@@ -1,12 +1,68 @@
 /* ========================================
+   RESPONSIVE BREAKPOINTS AND VARIABLES
+   ======================================== */
+
+:root {
+  /* Standard Responsive Breakpoints */
+  --breakpoint-xs: 0px;      /* Extra small devices (portrait phones) */
+  --breakpoint-sm: 576px;    /* Small devices (landscape phones) */
+  --breakpoint-md: 768px;    /* Medium devices (tablets) */
+  --breakpoint-lg: 992px;    /* Large devices (large tablets/small laptops) */
+  --breakpoint-xl: 1200px;   /* Extra large devices (desktops) */
+  
+  /* Responsive Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Responsive Font Sizes */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.25rem;   /* 20px */
+  --font-size-2xl: 1.5rem;   /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  
+  /* Container Max Widths */
+  --container-sm: 540px;
+  --container-md: 720px;
+  --container-lg: 960px;
+  --container-xl: 1140px;
+  --container-xxl: 1320px;
+}
+
+/* ========================================
    ROOT STYLES AND GLOBAL RESETS 
    ======================================== */
 
 #root {
-  max-width: 1280px;
+  max-width: var(--container-xxl);
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--spacing-sm);
   text-align: center;
+  width: 100%;
+}
+
+/* Responsive root container adjustments */
+@media (min-width: 576px) {
+  #root {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (min-width: 768px) {
+  #root {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 992px) {
+  #root {
+    padding: var(--spacing-xl);
+  }
 }
 
 /* ========================================
@@ -175,15 +231,37 @@
 /* Grid Layouts */
 .two-column-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 15px;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Responsive two-column grid */
+@media (min-width: 768px) {
+  .two-column-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+  }
 }
 
 .three-column-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 15px;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+}
+
+/* Responsive three-column grid */
+@media (min-width: 576px) {
+  .three-column-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (min-width: 992px) {
+  .three-column-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 }
 
 /* Loading and Utility Classes */
@@ -224,6 +302,33 @@
   justify-content: center;
   margin-bottom: 20px;
   border-bottom: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+}
+
+/* Hide tab navigation on mobile devices */
+@media (max-width: 767px) {
+  .tab-navigation {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: var(--background-color, white);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    flex-direction: column;
+    margin-bottom: 0;
+    padding: 10px 0;
+  }
+  
+  .tab-navigation.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .tab-button {
@@ -235,6 +340,33 @@
   font-size: 16px;
   font-weight: normal;
   color: #6c757d;
+  transition: all 0.2s ease;
+}
+
+/* Mobile tab button styles */
+@media (max-width: 767px) {
+  .tab-button {
+    width: 100%;
+    text-align: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e9ecef;
+    border-radius: 0;
+    margin: 0;
+  }
+  
+  .tab-button:last-child {
+    border-bottom: none;
+  }
+  
+  .tab-button:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .tab-button.active {
+    background-color: #007bff;
+    color: white;
+    border-bottom: 1px solid #e9ecef;
+  }
 }
 
 .tab-button.active {
@@ -3102,3 +3234,382 @@
 .stat-card-5 { border-left: 4px solid #d084d0; }
 .stat-card-6 { border-left: 4px solid #ffb347; }
 .stat-card-7 { border-left: 4px solid #87ceeb; }
+
+/* ========================================
+   RESPONSIVE GRID LAYOUT OVERRIDES
+   ======================================== */
+
+/* Mobile-first approach: stack grids on small screens */
+.workouts-grid,
+.max-config-grid,
+.cycles-grid,
+.stats-grid {
+  grid-template-columns: 1fr !important;
+  gap: var(--spacing-sm) !important;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .workouts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: var(--spacing-md) !important;
+  }
+  
+  .max-config-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: var(--spacing-md) !important;
+  }
+  
+  .cycles-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: var(--spacing-md) !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: var(--spacing-md) !important;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .max-config-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  }
+}
+
+/* Large devices (large tablets/small laptops, 992px and up) */
+@media (min-width: 992px) {
+  .workouts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  }
+  
+  .max-config-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  }
+  
+  .cycles-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE TYPOGRAPHY
+   ======================================== */
+
+/* Base typography - mobile first */
+body {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: var(--font-size-lg);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: var(--font-size-base);
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+/* Typography scaling for larger screens */
+@media (min-width: 576px) {
+  body {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+  }
+  
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  h3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  h4 {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+@media (min-width: 992px) {
+  body {
+    line-height: 1.6;
+  }
+}
+
+/* ========================================
+   RESPONSIVE BUTTON STYLES
+   ======================================== */
+
+/* Mobile-optimized buttons with better touch targets */
+.primary-button {
+  min-height: 44px; /* iOS recommended touch target */
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.secondary-button,
+.danger-button {
+  min-height: 40px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  margin: var(--spacing-xs);
+}
+
+/* Tablet and up - larger buttons */
+@media (min-width: 768px) {
+  .primary-button {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .secondary-button,
+  .danger-button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    margin: var(--spacing-sm);
+  }
+}
+
+/* Desktop - optimized for mouse interaction */
+@media (min-width: 992px) {
+  .secondary-button,
+  .danger-button {
+    min-height: initial; /* Remove touch target requirement */
+  }
+}
+
+/* ========================================
+   RESPONSIVE COMPONENT STYLES
+   ======================================== */
+
+/* Mobile-first responsive forms and inputs */
+.form-input,
+.form-select {
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  min-height: 44px; /* Touch-friendly */
+  border-radius: 6px;
+}
+
+/* Card and container responsive spacing */
+.component-container,
+.workout-card,
+.stat-card,
+.max-config-card {
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Alert and message responsive spacing */
+.success-alert,
+.error-alert,
+.success-message,
+.error-message,
+.info-message {
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* Small devices and up */
+@media (min-width: 576px) {
+  .component-container,
+  .workout-card,
+  .stat-card,
+  .max-config-card {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .success-alert,
+  .error-alert,
+  .success-message,
+  .error-message,
+  .info-message {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Medium devices and up */
+@media (min-width: 768px) {
+  .form-input,
+  .form-select {
+    min-height: 40px; /* Reduce height for larger screens */
+  }
+}
+
+/* Large devices and up */
+@media (min-width: 992px) {
+  .component-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .form-input,
+  .form-select {
+    min-height: 36px; /* Desktop optimized */
+  }
+}
+
+/* ========================================
+   RESPONSIVE UTILITY CLASSES
+   ======================================== */
+
+/* Hide/show elements based on screen size */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+  
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Responsive text alignment */
+.text-center-mobile {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .text-center-mobile {
+    text-align: left;
+  }
+}
+
+/* Responsive flex utilities */
+.flex-column-mobile {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .flex-column-mobile {
+    flex-direction: row;
+  }
+}
+
+/* ========================================
+   HAMBURGER MENU STYLES
+   ======================================== */
+
+/* Hamburger menu button - hidden on desktop */
+.hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.hamburger-line {
+  width: 2rem;
+  height: 0.25rem;
+  background: #007bff;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  transform-origin: 1px;
+}
+
+/* Hamburger animation when open */
+.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hide hamburger menu on larger screens */
+@media (min-width: 992px) {
+  .hamburger-menu {
+    display: none;
+  }
+  
+  .mobile-menu-overlay {
+    display: none;
+  }
+}
