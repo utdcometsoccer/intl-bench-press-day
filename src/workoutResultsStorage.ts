@@ -51,17 +51,29 @@ export interface WorkoutSession {
   workoutResults: WorkoutResult[];
 }
 
-class WorkoutResultsStorage {
-  private dbName = 'WorkoutResultsDB';
-  private dbVersion = 1;
-  private storeName = 'workoutResults';
-  private sessionsStoreName = 'workoutSessions';
+export interface DatabaseConfig {
+  dbName: string;
+  dbVersion: number;
+  storeName: string;
+  sessionsStoreName: string;
+}
+
+export interface DatabaseConnection {
+  getDatabase(): IDBDatabase | null;
+  initialize(config: DatabaseConfig): Promise<void>;
+  close(): void;
+}
+
+class IndexedDBConnection implements DatabaseConnection {
   private db: IDBDatabase | null = null;
 
-  // Initialize the IndexedDB database
-  async initialize(): Promise<void> {
+  getDatabase(): IDBDatabase | null {
+    return this.db;
+  }
+
+  async initialize(config: DatabaseConfig): Promise<void> {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.dbName, this.dbVersion);
+      const request = indexedDB.open(config.dbName, config.dbVersion);
 
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
@@ -73,8 +85,8 @@ class WorkoutResultsStorage {
         const db = (event.target as IDBOpenDBRequest).result;
         
         // Workout results store
-        if (!db.objectStoreNames.contains(this.storeName)) {
-          const store = db.createObjectStore(this.storeName, { keyPath: 'id' });
+        if (!db.objectStoreNames.contains(config.storeName)) {
+          const store = db.createObjectStore(config.storeName, { keyPath: 'id' });
           store.createIndex('cycleId', 'cycleId', { unique: false });
           store.createIndex('exerciseId', 'exerciseId', { unique: false });
           store.createIndex('datePerformed', 'datePerformed', { unique: false });
@@ -83,8 +95,8 @@ class WorkoutResultsStorage {
         }
 
         // Workout sessions store
-        if (!db.objectStoreNames.contains(this.sessionsStoreName)) {
-          const sessionsStore = db.createObjectStore(this.sessionsStoreName, { keyPath: 'id' });
+        if (!db.objectStoreNames.contains(config.sessionsStoreName)) {
+          const sessionsStore = db.createObjectStore(config.sessionsStoreName, { keyPath: 'id' });
           sessionsStore.createIndex('cycleId', 'cycleId', { unique: false });
           sessionsStore.createIndex('dateStarted', 'dateStarted', { unique: false });
           sessionsStore.createIndex('isCompleted', 'isCompleted', { unique: false });
@@ -93,15 +105,59 @@ class WorkoutResultsStorage {
     });
   }
 
-  // Save workout result
-  async saveWorkoutResult(result: WorkoutResult): Promise<string> {
-    if (!this.db) {
+  close(): void {
+    if (this.db) {
+      this.db.close();
+      this.db = null;
+    }
+  }
+}
+
+class WorkoutResultsStorage {
+  protected readonly config: DatabaseConfig;
+  protected readonly dbConnection: DatabaseConnection;
+  protected isInitialized = false;
+
+  constructor(
+    dbConnection: DatabaseConnection = new IndexedDBConnection(),
+    config: DatabaseConfig = {
+      dbName: 'WorkoutResultsDB',
+      dbVersion: 1,
+      storeName: 'workoutResults',
+      sessionsStoreName: 'workoutSessions'
+    }
+  ) {
+    this.dbConnection = dbConnection;
+    this.config = config;
+  }
+
+  protected get db(): IDBDatabase | null {
+    return this.dbConnection.getDatabase();
+  }
+
+  // Initialize the database
+  async initialize(): Promise<void> {
+    if (this.isInitialized) {
+      return;
+    }
+    
+    await this.dbConnection.initialize(this.config);
+    this.isInitialized = true;
+  }
+
+  protected ensureInitialized(): void {
+    if (!this.isInitialized || !this.db) {
       throw new Error('Database not initialized. Call initialize() first.');
     }
+  }
+
+  // Save workout result
+  async saveWorkoutResult(result: WorkoutResult): Promise<string> {
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.storeName], 'readwrite');
-      const store = transaction.objectStore(this.storeName);
+      const transaction = this.db!.transaction([this.config.storeName], 'readwrite');
+      const store = transaction.objectStore(this.config.storeName);
       
       const request = store.put(result);
       
@@ -112,13 +168,11 @@ class WorkoutResultsStorage {
 
   // Get workout results for a specific cycle
   async getWorkoutResultsByCycle(cycleId: string): Promise<WorkoutResult[]> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
+      const transaction = this.db!.transaction([this.config.storeName], 'readonly');
+      const store = transaction.objectStore(this.config.storeName);
       const index = store.index('cycleId');
       
       const request = index.getAll(cycleId);
@@ -139,13 +193,11 @@ class WorkoutResultsStorage {
 
   // Get workout results for a specific exercise
   async getWorkoutResultsByExercise(exerciseId: string): Promise<WorkoutResult[]> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
+      const transaction = this.db!.transaction([this.config.storeName], 'readonly');
+      const store = transaction.objectStore(this.config.storeName);
       const index = store.index('exerciseId');
       
       const request = index.getAll(exerciseId);
@@ -163,13 +215,11 @@ class WorkoutResultsStorage {
 
   // Get all workout results
   async getAllWorkoutResults(): Promise<WorkoutResult[]> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
+      const transaction = this.db!.transaction([this.config.storeName], 'readonly');
+      const store = transaction.objectStore(this.config.storeName);
       
       const request = store.getAll();
       
@@ -186,13 +236,11 @@ class WorkoutResultsStorage {
 
   // Save workout session
   async saveWorkoutSession(session: WorkoutSession): Promise<string> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.sessionsStoreName], 'readwrite');
-      const store = transaction.objectStore(this.sessionsStoreName);
+      const transaction = this.db!.transaction([this.config.sessionsStoreName], 'readwrite');
+      const store = transaction.objectStore(this.config.sessionsStoreName);
       
       const request = store.put(session);
       
@@ -203,13 +251,11 @@ class WorkoutResultsStorage {
 
   // Get workout sessions for a cycle
   async getWorkoutSessionsByCycle(cycleId: string): Promise<WorkoutSession[]> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.sessionsStoreName], 'readonly');
-      const store = transaction.objectStore(this.sessionsStoreName);
+      const transaction = this.db!.transaction([this.config.sessionsStoreName], 'readonly');
+      const store = transaction.objectStore(this.config.sessionsStoreName);
       const index = store.index('cycleId');
       
       const request = index.getAll(cycleId);
@@ -226,13 +272,11 @@ class WorkoutResultsStorage {
 
   // Get active (incomplete) workout session
   async getActiveWorkoutSession(): Promise<WorkoutSession | null> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.sessionsStoreName], 'readonly');
-      const store = transaction.objectStore(this.sessionsStoreName);
+      const transaction = this.db!.transaction([this.config.sessionsStoreName], 'readonly');
+      const store = transaction.objectStore(this.config.sessionsStoreName);
       const index = store.index('isCompleted');
       
       const request = index.getAll(IDBKeyRange.only(false));
@@ -256,13 +300,11 @@ class WorkoutResultsStorage {
 
   // Delete workout result
   async deleteWorkoutResult(id: string): Promise<void> {
-    if (!this.db) {
-      throw new Error('Database not initialized. Call initialize() first.');
-    }
+    this.ensureInitialized();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([this.storeName], 'readwrite');
-      const store = transaction.objectStore(this.storeName);
+      const transaction = this.db!.transaction([this.config.storeName], 'readwrite');
+      const store = transaction.objectStore(this.config.storeName);
       
       const request = store.delete(id);
       
@@ -339,10 +381,23 @@ class WorkoutResultsStorage {
 
   // Close the database connection
   close(): void {
-    if (this.db) {
-      this.db.close();
-      this.db = null;
-    }
+    this.dbConnection.close();
+    this.isInitialized = false;
+  }
+
+  // Testing helper methods
+  getConfig(): DatabaseConfig {
+    return { ...this.config };
+  }
+
+  isStorageInitialized(): boolean {
+    return this.isInitialized;
+  }
+
+  // Reset for testing - clears initialization state
+  reset(): void {
+    this.dbConnection.close();
+    this.isInitialized = false;
   }
 }
 
@@ -368,5 +423,24 @@ export const calculateRPEDescription = (rpe: number): string => {
   return descriptions[rpe as keyof typeof descriptions] || "Unknown";
 };
 
+// Factory function for creating WorkoutResultsStorage instances
+export const createWorkoutResultsStorage = (
+  dbConnection?: DatabaseConnection,
+  config?: Partial<DatabaseConfig>
+): WorkoutResultsStorage => {
+  const defaultConfig: DatabaseConfig = {
+    dbName: 'WorkoutResultsDB',
+    dbVersion: 1,
+    storeName: 'workoutResults',
+    sessionsStoreName: 'workoutSessions'
+  };
+
+  const finalConfig = { ...defaultConfig, ...config };
+  return new WorkoutResultsStorage(dbConnection, finalConfig);
+};
+
 // Create a singleton instance
-export const workoutResultsStorage = new WorkoutResultsStorage();
+export const workoutResultsStorage = createWorkoutResultsStorage();
+
+// Export the class for testing
+export { WorkoutResultsStorage, IndexedDBConnection };
