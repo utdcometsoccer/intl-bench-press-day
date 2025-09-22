@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -7,8 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
-  ReferenceLine
+  Legend
 } from 'recharts';
 import { format, parseISO, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
 import type { ExerciseRecord } from './exerciseRecordsStorage';
@@ -53,19 +52,17 @@ const ProgressChart: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   // Color palette for different exercises
-  const colors = [
+  const colors = useMemo(() => [
     '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1',
     '#d084d0', '#ffb347', '#87ceeb', '#dda0dd', '#98fb98',
     '#f0e68c', '#ff6347', '#40e0d0', '#ee82ee', '#90ee90'
-  ];
+  ], []);
 
   useEffect(() => {
     loadAllRecords();
   }, []);
 
-  useEffect(() => {
-    filterAndProcessData();
-  }, [allRecords, selectedExercises, startDate, endDate, selectedCategory]);
+  // Remove the incorrect useEffect dependency and add it after filterAndProcessData is defined
 
   const loadAllRecords = async () => {
     try {
@@ -95,7 +92,49 @@ const ProgressChart: React.FC = () => {
     }
   };
 
-  const filterAndProcessData = () => {
+  const calculateExerciseStats = useCallback((records: ExerciseRecord[]) => {
+    const exerciseGroups = new Map<string, ExerciseRecord[]>();
+    
+    // Group records by exercise
+    records.forEach(record => {
+      if (!exerciseGroups.has(record.exerciseId)) {
+        exerciseGroups.set(record.exerciseId, []);
+      }
+      exerciseGroups.get(record.exerciseId)!.push(record);
+    });
+
+    const stats: ExerciseStats[] = [];
+    let colorIndex = 0;
+
+    exerciseGroups.forEach((exerciseRecords, exerciseId) => {
+      const sortedRecords = exerciseRecords.sort((a, b) => 
+        new Date(a.dateRecorded).getTime() - new Date(b.dateRecorded).getTime()
+      );
+      
+      const bestOneRepMax = Math.max(...exerciseRecords.map(r => r.oneRepMax));
+      const latestOneRepMax = sortedRecords[sortedRecords.length - 1].oneRepMax;
+      const firstOneRepMax = sortedRecords[0].oneRepMax;
+      const improvement = latestOneRepMax - firstOneRepMax;
+
+      stats.push({
+        exerciseId,
+        exerciseName: exerciseRecords[0].exerciseName,
+        recordCount: exerciseRecords.length,
+        bestOneRepMax,
+        latestOneRepMax,
+        improvement,
+        color: colors[colorIndex % colors.length]
+      });
+
+      colorIndex++;
+    });
+
+    // Sort by best one rep max descending
+    stats.sort((a, b) => b.bestOneRepMax - a.bestOneRepMax);
+    setExerciseStats(stats);
+  }, [colors]);
+
+  const filterAndProcessData = useCallback(() => {
     let filteredRecords = allRecords;
 
     // Filter by selected exercises
@@ -151,49 +190,11 @@ const ProgressChart: React.FC = () => {
 
     // Calculate exercise statistics
     calculateExerciseStats(filteredRecords);
-  };
+  }, [allRecords, selectedExercises, startDate, endDate, selectedCategory, calculateExerciseStats]);
 
-  const calculateExerciseStats = (records: ExerciseRecord[]) => {
-    const exerciseGroups = new Map<string, ExerciseRecord[]>();
-    
-    // Group records by exercise
-    records.forEach(record => {
-      if (!exerciseGroups.has(record.exerciseId)) {
-        exerciseGroups.set(record.exerciseId, []);
-      }
-      exerciseGroups.get(record.exerciseId)!.push(record);
-    });
-
-    const stats: ExerciseStats[] = [];
-    let colorIndex = 0;
-
-    exerciseGroups.forEach((exerciseRecords, exerciseId) => {
-      const sortedRecords = exerciseRecords.sort((a, b) => 
-        new Date(a.dateRecorded).getTime() - new Date(b.dateRecorded).getTime()
-      );
-      
-      const bestOneRepMax = Math.max(...exerciseRecords.map(r => r.oneRepMax));
-      const latestOneRepMax = sortedRecords[sortedRecords.length - 1].oneRepMax;
-      const firstOneRepMax = sortedRecords[0].oneRepMax;
-      const improvement = latestOneRepMax - firstOneRepMax;
-
-      stats.push({
-        exerciseId,
-        exerciseName: exerciseRecords[0].exerciseName,
-        recordCount: exerciseRecords.length,
-        bestOneRepMax,
-        latestOneRepMax,
-        improvement,
-        color: colors[colorIndex % colors.length]
-      });
-
-      colorIndex++;
-    });
-
-    // Sort by best one rep max descending
-    stats.sort((a, b) => b.bestOneRepMax - a.bestOneRepMax);
-    setExerciseStats(stats);
-  };
+  useEffect(() => {
+    filterAndProcessData();
+  }, [filterAndProcessData]);
 
   const handleExerciseToggle = (exerciseId: string) => {
     setSelectedExercises(prev => 
@@ -212,23 +213,30 @@ const ProgressChart: React.FC = () => {
     setSelectedExercises([]);
   };
 
-  const customTooltip = ({ active, payload, label }: any) => {
+  const customTooltip = ({ active, payload }: { 
+    active?: boolean; 
+    payload?: Array<{ 
+      payload: { 
+        exercise: string; 
+        date: string; 
+        oneRepMax: number; 
+        reps: number;
+        weight: number;
+        formulaUsed: string;
+        notes?: string;
+      } 
+    }> 
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div style={{
-          backgroundColor: 'white',
-          padding: '10px',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>{data.exercise}</p>
-          <p style={{ margin: '0 0 5px 0' }}>Date: {data.date}</p>
-          <p style={{ margin: '0 0 5px 0' }}>1RM: {data.oneRepMax} lbs</p>
-          <p style={{ margin: '0 0 5px 0' }}>Set: {data.reps} reps @ {data.weight} lbs</p>
-          <p style={{ margin: '0 0 5px 0' }}>Formula: {data.formulaUsed}</p>
-          {data.notes && <p style={{ margin: '0', fontSize: '12px', fontStyle: 'italic' }}>"{data.notes}"</p>}
+        <div className="chart-tooltip">
+          <p className="tooltip-exercise">{data.exercise}</p>
+          <p className="tooltip-info">Date: {data.date}</p>
+          <p className="tooltip-info">1RM: {data.oneRepMax} lbs</p>
+          <p className="tooltip-info">Set: {data.reps} reps @ {data.weight} lbs</p>
+          <p className="tooltip-info">Formula: {data.formulaUsed}</p>
+          {data.notes && <p className="tooltip-notes">"{data.notes}"</p>}
         </div>
       );
     }
@@ -250,7 +258,7 @@ const ProgressChart: React.FC = () => {
 
   if (allRecords.length === 0) {
     return (
-      <div className="progress-chart" style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="progress-chart loading">
         <h2>Progress Chart</h2>
         <p>No exercise records found. Start tracking your workouts to see your progress!</p>
       </div>
@@ -258,28 +266,17 @@ const ProgressChart: React.FC = () => {
   }
 
   return (
-    <div className="progress-chart" style={{ 
-      padding: '20px', 
-      border: '1px solid #ccc', 
-      borderRadius: '8px', 
-      maxWidth: '1200px',
-      margin: '20px auto'
-    }}>
+    <div className="progress-chart">
       <h2>One Rep Max Progress Chart</h2>
 
       {/* Filters */}
-      <div style={{ 
-        marginBottom: '20px', 
-        padding: '15px', 
-        backgroundColor: '#f8f9fa', 
-        borderRadius: '6px' 
-      }}>
-        <h3 style={{ marginTop: 0 }}>Filters</h3>
+      <div className="chart-filters">
+        <h3 className="filter-title">Filters</h3>
         
         {/* Date Range */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+        <div className="filter-grid">
           <div>
-            <label htmlFor="start-date" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="start-date" className="filter-label">
               Start Date:
             </label>
             <input
@@ -287,17 +284,12 @@ const ProgressChart: React.FC = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-input"
             />
           </div>
           
           <div>
-            <label htmlFor="end-date" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="end-date" className="filter-label">
               End Date:
             </label>
             <input
@@ -305,29 +297,19 @@ const ProgressChart: React.FC = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-input"
             />
           </div>
 
           <div>
-            <label htmlFor="category-filter" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="category-filter" className="filter-label">
               Category Filter:
             </label>
             <select
               id="category-filter"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-select"
             >
               <option value="">All Categories</option>
               {categories.map(category => (
@@ -339,61 +321,33 @@ const ProgressChart: React.FC = () => {
 
         {/* Exercise Selection */}
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ fontWeight: 'bold' }}>Select Exercises to Display:</label>
+          <div className="exercise-selection-header">
+            <label className="exercise-selection-label">Select Exercises to Display:</label>
             <div>
               <button
                 onClick={selectAllExercises}
-                style={{
-                  padding: '5px 10px',
-                  marginRight: '10px',
-                  backgroundColor: '#007bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '12px'
-                }}
+                className="btn-primary small"
               >
                 Select All
               </button>
               <button
                 onClick={clearAllExercises}
-                style={{
-                  padding: '5px 10px',
-                  backgroundColor: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '12px'
-                }}
+                className="btn-secondary small"
               >
                 Clear All
               </button>
             </div>
           </div>
           
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-            gap: '10px',
-            maxHeight: '120px',
-            overflowY: 'auto',
-            padding: '10px',
-            border: '1px solid #dee2e6',
-            borderRadius: '4px',
-            backgroundColor: 'white'
-          }}>
+          <div className="exercise-grid">
             {availableExercises.map(exercise => (
-              <label key={exercise.id} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+              <label key={exercise.id} className="exercise-checkbox">
                 <input
                   type="checkbox"
                   checked={selectedExercises.includes(exercise.id)}
                   onChange={() => handleExerciseToggle(exercise.id)}
-                  style={{ marginRight: '8px' }}
                 />
-                <span style={{ fontSize: '14px' }}>{exercise.name}</span>
+                <span className="exercise-name">{exercise.name}</span>
               </label>
             ))}
           </div>
@@ -402,7 +356,7 @@ const ProgressChart: React.FC = () => {
 
       {/* Chart */}
       {chartData.length > 0 ? (
-        <div style={{ marginBottom: '20px' }}>
+        <div className="chart-container">
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -437,13 +391,7 @@ const ProgressChart: React.FC = () => {
           </ResponsiveContainer>
         </div>
       ) : (
-        <div style={{ 
-          padding: '40px', 
-          textAlign: 'center', 
-          backgroundColor: '#f8f9fa',
-          borderRadius: '6px',
-          marginBottom: '20px'
-        }}>
+        <div className="no-data-message">
           <p>No data available for the selected filters. Try adjusting your date range or exercise selection.</p>
         </div>
       )}
@@ -452,34 +400,25 @@ const ProgressChart: React.FC = () => {
       {exerciseStats.length > 0 && (
         <div>
           <h3>Exercise Statistics</h3>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
-            gap: '15px' 
-          }}>
+          <div className="stats-grid">
             {exerciseStats.map(stat => (
-              <div key={stat.exerciseId} style={{
-                padding: '15px',
-                border: `2px solid ${stat.color}`,
-                borderRadius: '6px',
-                backgroundColor: 'white'
-              }}>
-                <h4 style={{ margin: '0 0 10px 0', color: stat.color }}>{stat.exerciseName}</h4>
-                <div style={{ fontSize: '14px' }}>
-                  <p style={{ margin: '5px 0' }}>
+              <div 
+                key={stat.exerciseId} 
+                className="stat-card" 
+                style={{'--stat-color': stat.color} as React.CSSProperties}
+              >
+                <h4 className="stat-title">{stat.exerciseName}</h4>
+                <div className="stat-details">
+                  <p className="stat-item">
                     <strong>Records:</strong> {stat.recordCount}
                   </p>
-                  <p style={{ margin: '5px 0' }}>
+                  <p className="stat-item">
                     <strong>Best 1RM:</strong> {stat.bestOneRepMax} lbs
                   </p>
-                  <p style={{ margin: '5px 0' }}>
+                  <p className="stat-item">
                     <strong>Latest 1RM:</strong> {stat.latestOneRepMax} lbs
                   </p>
-                  <p style={{ 
-                    margin: '5px 0', 
-                    color: stat.improvement >= 0 ? '#28a745' : '#dc3545',
-                    fontWeight: 'bold'
-                  }}>
+                  <p className={`stat-item progress ${stat.improvement >= 0 ? 'positive' : 'negative'}`}>
                     <strong>Progress:</strong> {stat.improvement >= 0 ? '+' : ''}{stat.improvement.toFixed(1)} lbs
                   </p>
                 </div>
@@ -491,14 +430,7 @@ const ProgressChart: React.FC = () => {
 
       {/* Error Display */}
       {error && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f8d7da',
-          border: '1px solid #f5c6cb',
-          borderRadius: '4px',
-          color: '#721c24',
-          marginTop: '20px'
-        }}>
+        <div className="error-message">
           <strong>Error:</strong> {error}
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { WorkoutSet } from './types';
 import { oneRepMaxStorage, initializeWithPredefinedFormulas } from './oneRepMaxStorage';
 
@@ -18,6 +18,21 @@ const OneRepMaxCalculator: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Load all available functions from storage
+  const loadAvailableFunctions = useCallback(async () => {
+    try {
+      const functions = await oneRepMaxStorage.listFunctions();
+      setAvailableFunctions(functions);
+      
+      // Auto-select the first function if available
+      if (functions.length > 0 && !selectedFunctionId) {
+        setSelectedFunctionId(functions[0].id);
+      }
+    } catch (err) {
+      setError(`Failed to load functions: ${err}`);
+    }
+  }, [selectedFunctionId]);
+
   // Initialize the storage system and load available functions
   useEffect(() => {
     const initializeSystem = async () => {
@@ -33,22 +48,7 @@ const OneRepMaxCalculator: React.FC = () => {
     };
 
     initializeSystem();
-  }, []);
-
-  // Load all available functions from storage
-  const loadAvailableFunctions = async () => {
-    try {
-      const functions = await oneRepMaxStorage.listFunctions();
-      setAvailableFunctions(functions);
-      
-      // Auto-select the first function if available
-      if (functions.length > 0 && !selectedFunctionId) {
-        setSelectedFunctionId(functions[0].id);
-      }
-    } catch (err) {
-      setError(`Failed to load functions: ${err}`);
-    }
-  };
+  }, [loadAvailableFunctions]);
 
   // Execute the selected function with the current workout set
   const calculateOneRepMax = async () => {
@@ -101,30 +101,19 @@ const OneRepMaxCalculator: React.FC = () => {
   }
 
   return (
-    <div className="one-rep-max-calculator" style={{ 
-      padding: '20px', 
-      border: '1px solid #ccc', 
-      borderRadius: '8px', 
-      maxWidth: '500px',
-      margin: '20px auto'
-    }}>
+    <div className="one-rep-max-calculator">
       <h2>One Rep Max Calculator</h2>
       
       {/* Function Selection */}
-      <div style={{ marginBottom: '15px' }}>
-        <label htmlFor="function-select" style={{ display: 'block', marginBottom: '5px' }}>
+      <div className="mb-20">
+        <label htmlFor="function-select" className="form-label">
           Select Formula:
         </label>
         <select
           id="function-select"
           value={selectedFunctionId}
           onChange={(e) => setSelectedFunctionId(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc'
-          }}
+          className="form-select"
         >
           <option value="">-- Select a formula --</option>
           {availableFunctions.map((func) => (
@@ -136,9 +125,9 @@ const OneRepMaxCalculator: React.FC = () => {
       </div>
 
       {/* Workout Set Inputs */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+      <div className="two-column-grid">
         <div>
-          <label htmlFor="repetitions" style={{ display: 'block', marginBottom: '5px' }}>
+          <label htmlFor="repetitions" className="form-label">
             Repetitions:
           </label>
           <input
@@ -147,17 +136,12 @@ const OneRepMaxCalculator: React.FC = () => {
             min="1"
             value={workoutSet.Repetions}
             onChange={(e) => handleWorkoutSetChange('Repetions', e.target.value)}
-            style={{
-              width: '100%',
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ccc'
-            }}
+            className="form-input"
           />
         </div>
         
         <div>
-          <label htmlFor="weight" style={{ display: 'block', marginBottom: '5px' }}>
+          <label htmlFor="weight" className="form-label">
             Weight (lbs):
           </label>
           <input
@@ -167,12 +151,7 @@ const OneRepMaxCalculator: React.FC = () => {
             step="0.01"
             value={workoutSet.Weight}
             onChange={(e) => handleWorkoutSetChange('Weight', e.target.value)}
-            style={{
-              width: '100%',
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ccc'
-            }}
+            className="form-input"
           />
         </div>
       </div>
@@ -181,35 +160,19 @@ const OneRepMaxCalculator: React.FC = () => {
       <button
         onClick={calculateOneRepMax}
         disabled={!selectedFunctionId}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: selectedFunctionId ? '#007bff' : '#ccc',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: selectedFunctionId ? 'pointer' : 'not-allowed',
-          fontSize: '16px',
-          marginBottom: '15px'
-        }}
+        className="primary-button"
       >
         Calculate One Rep Max
       </button>
 
       {/* Results Display */}
       {result !== null && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#d4edda',
-          border: '1px solid #c3e6cb',
-          borderRadius: '4px',
-          marginBottom: '15px'
-        }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#155724' }}>Result:</h3>
-          <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#155724' }}>
+        <div className="info-message">
+          <h3>Result:</h3>
+          <p>
             Estimated 1RM: {result} lbs
           </p>
-          <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#155724' }}>
+          <p className="record-details">
             Based on {workoutSet.Repetions} reps at {workoutSet.Weight} lbs
           </p>
         </div>
@@ -217,29 +180,17 @@ const OneRepMaxCalculator: React.FC = () => {
 
       {/* Error Display */}
       {error && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f8d7da',
-          border: '1px solid #f5c6cb',
-          borderRadius: '4px',
-          color: '#721c24'
-        }}>
+        <div className="error-message">
           <strong>Error:</strong> {error}
         </div>
       )}
 
       {/* Function Info */}
       {selectedFunctionId && (
-        <div style={{
-          marginTop: '15px',
-          padding: '10px',
-          backgroundColor: '#f8f9fa',
-          border: '1px solid #dee2e6',
-          borderRadius: '4px'
-        }}>
-          <h4 style={{ margin: '0 0 5px 0', fontSize: '14px' }}>Selected Formula:</h4>
+        <div className="function-info">
+          <h4>Selected Formula:</h4>
           {availableFunctions.find(f => f.id === selectedFunctionId)?.description && (
-            <p style={{ margin: 0, fontSize: '12px', color: '#6c757d' }}>
+            <p>
               {availableFunctions.find(f => f.id === selectedFunctionId)?.description}
             </p>
           )}

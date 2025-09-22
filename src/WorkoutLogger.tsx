@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { FiveThreeOneCycle, FiveThreeOneWorkout } from './fiveThreeOneStorage';
 import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from './workoutResultsStorage';
 import { fiveThreeOneStorage } from './fiveThreeOneStorage';
@@ -20,7 +20,6 @@ const WorkoutLogger: React.FC = () => {
   const [workoutNotes, setWorkoutNotes] = useState<string>('');
   const [bodyWeight, setBodyWeight] = useState<number | undefined>();
   const [startTime, setStartTime] = useState<Date>(new Date());
-  const [endTime, setEndTime] = useState<Date | null>(null);
 
   // State for past results
   const [pastResults, setPastResults] = useState<WorkoutResult[]>([]);
@@ -67,7 +66,7 @@ const WorkoutLogger: React.FC = () => {
     }
   };
 
-  const loadCurrentWorkout = () => {
+  const loadCurrentWorkout = useCallback(() => {
     if (!activeCycle) return;
 
     const workout = activeCycle.workouts.find(w => w.week === selectedWeek && w.day === selectedDay);
@@ -108,11 +107,10 @@ const WorkoutLogger: React.FC = () => {
       setOverallRpe(undefined);
       setBodyWeight(undefined);
       setStartTime(new Date());
-      setEndTime(null);
     }
-  };
+  }, [activeCycle, selectedWeek, selectedDay]);
 
-  const loadPastResults = async () => {
+  const loadPastResults = useCallback(async () => {
     if (!currentWorkout) return;
 
     try {
@@ -121,21 +119,21 @@ const WorkoutLogger: React.FC = () => {
     } catch (err) {
       console.error('Failed to load past results:', err);
     }
-  };
+  }, [currentWorkout]);
 
-  const updateWarmupResult = (index: number, field: keyof WorkoutSetResult, value: any) => {
+  const updateWarmupResult = (index: number, field: keyof WorkoutSetResult, value: string | number | boolean | undefined) => {
     setWarmupResults(prev => prev.map((result, i) => 
       i === index ? { ...result, [field]: value } : result
     ));
   };
 
-  const updateMainSetResult = (index: number, field: keyof WorkoutSetResult, value: any) => {
+  const updateMainSetResult = (index: number, field: keyof WorkoutSetResult, value: string | number | boolean | undefined) => {
     setMainSetResults(prev => prev.map((result, i) => 
       i === index ? { ...result, [field]: value } : result
     ));
   };
 
-  const updateAssistanceWork = (exerciseIndex: number, setIndex: number, field: string, value: any) => {
+  const updateAssistanceWork = (exerciseIndex: number, setIndex: number, field: string, value: string | number | undefined) => {
     setAssistanceWork(prev => prev.map((exercise, ei) => 
       ei === exerciseIndex 
         ? {
@@ -174,7 +172,6 @@ const WorkoutLogger: React.FC = () => {
       setIsSaving(true);
       setError('');
 
-      setEndTime(new Date());
       const duration = Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60)); // Duration in minutes
 
       const workoutResult: WorkoutResult = {
@@ -217,16 +214,16 @@ const WorkoutLogger: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="workout-logger">
+      <div className="loading-container">
         <h2>Workout Logger</h2>
-        <p>Loading...</p>
+        <p className="loading-text">Loading...</p>
       </div>
     );
   }
 
   if (!activeCycle) {
     return (
-      <div className="workout-logger" style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="no-cycle-message">
         <h2>Workout Logger</h2>
         <p>No active 5-3-1 cycle found. Please create and activate a cycle first in the 5-3-1 Planner.</p>
       </div>
@@ -234,42 +231,26 @@ const WorkoutLogger: React.FC = () => {
   }
 
   return (
-    <div className="workout-logger" style={{ 
-      padding: '20px', 
-      border: '1px solid #ccc', 
-      borderRadius: '8px', 
-      maxWidth: '1000px',
-      margin: '20px auto'
-    }}>
+    <div className="workout-logger extra-large-component-container">
       <h2>Workout Logger</h2>
-      <p style={{ color: '#6c757d', marginBottom: '20px' }}>
+      <p className="active-cycle-info">
         Active Cycle: <strong>{activeCycle.name}</strong>
       </p>
 
       {/* Workout Selection */}
-      <div style={{ 
-        marginBottom: '20px', 
-        padding: '15px', 
-        backgroundColor: '#f8f9fa', 
-        borderRadius: '6px' 
-      }}>
-        <h3 style={{ marginTop: 0 }}>Select Workout</h3>
+      <div className="workout-selection">
+        <h3>Select Workout</h3>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+        <div className="filter-grid">
           <div>
-            <label htmlFor="week-select" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="week-select" className="workout-selection-label">
               Week:
             </label>
             <select
               id="week-select"
               value={selectedWeek}
               onChange={(e) => setSelectedWeek(Number(e.target.value))}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="week-select"
             >
               <option value={1}>Week 1 (5/5/5+)</option>
               <option value={2}>Week 2 (3/3/3+)</option>
@@ -279,19 +260,14 @@ const WorkoutLogger: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="day-select" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="day-select" className="form-label">
               Day:
             </label>
             <select
               id="day-select"
               value={selectedDay}
               onChange={(e) => setSelectedDay(Number(e.target.value))}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-select"
             >
               <option value={1}>Day 1 - Squat</option>
               <option value={2}>Day 2 - Bench Press</option>
@@ -301,7 +277,7 @@ const WorkoutLogger: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="workout-date" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="workout-date" className="form-label">
               Date:
             </label>
             <input
@@ -309,18 +285,13 @@ const WorkoutLogger: React.FC = () => {
               type="date"
               value={workoutDate}
               onChange={(e) => setWorkoutDate(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-input"
             />
           </div>
         </div>
 
         {currentWorkout && (
-          <div style={{ padding: '10px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #dee2e6' }}>
+          <div className="current-workout-info">
             <strong>{currentWorkout.exerciseName}</strong> - Week {selectedWeek}, Day {selectedDay}
           </div>
         )}
@@ -329,24 +300,16 @@ const WorkoutLogger: React.FC = () => {
       {currentWorkout && (
         <>
           {/* Warmup Sets */}
-          <div style={{ marginBottom: '20px' }}>
+          <div className="form-section">
             <h3>Warmup Sets</h3>
-            <div style={{ display: 'grid', gap: '10px' }}>
+            <div className="sets-grid">
               {warmupResults.map((result, index) => (
-                <div key={index} style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '100px 100px 100px 100px 80px 1fr', 
-                  gap: '10px', 
-                  alignItems: 'center',
-                  padding: '10px',
-                  border: '1px solid #dee2e6',
-                  borderRadius: '4px'
-                }}>
-                  <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                <div key={index} className="set-row">
+                  <div className="set-title">
                     Set {index + 1}
                   </div>
                   <div>
-                    <label style={{ fontSize: '12px', display: 'block' }}>Planned: {result.plannedReps} × {result.plannedWeight}</label>
+                    <label className="set-label">Planned: {result.plannedReps} × {result.plannedWeight}</label>
                   </div>
                   <div>
                     <input
@@ -355,7 +318,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.actualReps}
                       onChange={(e) => updateWarmupResult(index, 'actualReps', Number(e.target.value))}
                       placeholder="Reps"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="set-input"
                     />
                   </div>
                   <div>
@@ -366,7 +329,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.actualWeight}
                       onChange={(e) => updateWarmupResult(index, 'actualWeight', Number(e.target.value))}
                       placeholder="Weight"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="set-input"
                     />
                   </div>
                   <div>
@@ -377,7 +340,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.rpe || ''}
                       onChange={(e) => updateWarmupResult(index, 'rpe', Number(e.target.value) || undefined)}
                       placeholder="RPE"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="set-input"
                     />
                   </div>
                   <div>
@@ -386,7 +349,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.notes || ''}
                       onChange={(e) => updateWarmupResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="set-input"
                     />
                   </div>
                 </div>
@@ -395,26 +358,17 @@ const WorkoutLogger: React.FC = () => {
           </div>
 
           {/* Main Sets */}
-          <div style={{ marginBottom: '20px' }}>
+          <div className="form-section">
             <h3>Main Sets</h3>
-            <div style={{ display: 'grid', gap: '10px' }}>
+            <div className="sets-grid">
               {mainSetResults.map((result, index) => (
-                <div key={index} style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '100px 120px 100px 100px 80px 100px 1fr', 
-                  gap: '10px', 
-                  alignItems: 'center',
-                  padding: '10px',
-                  border: result.isAmrap ? '2px solid #dc3545' : '1px solid #dee2e6',
-                  borderRadius: '4px',
-                  backgroundColor: result.isAmrap ? '#fff5f5' : 'white'
-                }}>
-                  <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                <div key={index} className={`set-row ${result.isAmrap ? 'amrap-set' : ''}`}>
+                  <div className="set-title">
                     Set {index + 1}
-                    {result.isAmrap && <div style={{ fontSize: '10px', color: '#dc3545' }}>AMRAP</div>}
+                    {result.isAmrap && <div className="amrap-warning">AMRAP</div>}
                   </div>
                   <div>
-                    <label style={{ fontSize: '12px', display: 'block' }}>
+                    <label className="set-label">
                       Planned: {result.plannedReps}{result.isAmrap ? '+' : ''} × {result.plannedWeight}
                     </label>
                   </div>
@@ -425,12 +379,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.actualReps}
                       onChange={(e) => updateMainSetResult(index, 'actualReps', Number(e.target.value))}
                       placeholder="Reps"
-                      style={{ 
-                        width: '100%', 
-                        padding: '4px', 
-                        fontSize: '12px',
-                        fontWeight: result.isAmrap ? 'bold' : 'normal'
-                      }}
+                      className={`reps-input ${result.isAmrap ? 'amrap-input' : ''}`}
                     />
                   </div>
                   <div>
@@ -441,7 +390,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.actualWeight}
                       onChange={(e) => updateMainSetResult(index, 'actualWeight', Number(e.target.value))}
                       placeholder="Weight"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="weight-input"
                     />
                   </div>
                   <div>
@@ -452,10 +401,10 @@ const WorkoutLogger: React.FC = () => {
                       value={result.rpe || ''}
                       onChange={(e) => updateMainSetResult(index, 'rpe', Number(e.target.value) || undefined)}
                       placeholder="RPE"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="weight-input"
                     />
                   </div>
-                  <div style={{ fontSize: '11px', color: '#6c757d' }}>
+                  <div className="estimated-1rm-display">
                     {result.actualReps > 0 && result.actualWeight > 0 && (
                       <>Est. 1RM: {getEstimated1RM(result.actualWeight, result.actualReps)}</>
                     )}
@@ -466,7 +415,7 @@ const WorkoutLogger: React.FC = () => {
                       value={result.notes || ''}
                       onChange={(e) => updateMainSetResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
-                      style={{ width: '100%', padding: '4px', fontSize: '12px' }}
+                      className="weight-input"
                     />
                   </div>
                 </div>
@@ -475,27 +424,21 @@ const WorkoutLogger: React.FC = () => {
           </div>
 
           {/* Assistance Work */}
-          <div style={{ marginBottom: '20px' }}>
+          <div className="assistance-section">
             <h3>Assistance Work</h3>
             {assistanceWork.map((exercise, exerciseIndex) => (
-              <div key={exerciseIndex} style={{ marginBottom: '15px', padding: '10px', border: '1px solid #dee2e6', borderRadius: '4px' }}>
-                <h4 style={{ margin: '0 0 10px 0' }}>{exercise.exerciseName}</h4>
+              <div key={exerciseIndex} className="assistance-exercise-card">
+                <h4 className="assistance-exercise-title">{exercise.exerciseName}</h4>
                 {exercise.sets.map((set, setIndex) => (
-                  <div key={setIndex} style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: '80px 100px 100px 80px 1fr 80px', 
-                    gap: '10px', 
-                    alignItems: 'center',
-                    marginBottom: '5px'
-                  }}>
-                    <div style={{ fontSize: '12px' }}>Set {setIndex + 1}</div>
+                  <div key={setIndex} className="assistance-set-row">
+                    <div className="assistance-set-label">Set {setIndex + 1}</div>
                     <input
                       type="number"
                       min="0"
                       value={set.reps}
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'reps', Number(e.target.value))}
                       placeholder="Reps"
-                      style={{ padding: '4px', fontSize: '12px' }}
+                      className="assistance-input assistance-reps-input"
                     />
                     <input
                       type="number"
@@ -504,7 +447,7 @@ const WorkoutLogger: React.FC = () => {
                       value={set.weight || ''}
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'weight', Number(e.target.value) || undefined)}
                       placeholder="Weight"
-                      style={{ padding: '4px', fontSize: '12px' }}
+                      className="assistance-input assistance-weight-input"
                     />
                     <input
                       type="number"
@@ -513,26 +456,18 @@ const WorkoutLogger: React.FC = () => {
                       value={set.rpe || ''}
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'rpe', Number(e.target.value) || undefined)}
                       placeholder="RPE"
-                      style={{ padding: '4px', fontSize: '12px' }}
+                      className="assistance-input assistance-reps-input"
                     />
                     <input
                       type="text"
                       value={set.notes || ''}
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'notes', e.target.value)}
                       placeholder="Notes"
-                      style={{ padding: '4px', fontSize: '12px' }}
+                      className="assistance-input"
                     />
                     <button
                       onClick={() => removeAssistanceSet(exerciseIndex, setIndex)}
-                      style={{
-                        padding: '2px 6px',
-                        backgroundColor: '#dc3545',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '2px',
-                        cursor: 'pointer',
-                        fontSize: '10px'
-                      }}
+                      className="assistance-action-button assistance-remove-button"
                     >
                       Remove
                     </button>
@@ -540,16 +475,7 @@ const WorkoutLogger: React.FC = () => {
                 ))}
                 <button
                   onClick={() => addAssistanceSet(exerciseIndex)}
-                  style={{
-                    padding: '4px 8px',
-                    backgroundColor: '#28a745',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                    marginTop: '5px'
-                  }}
+                  className="assistance-add-set-button"
                 >
                   Add Set
                 </button>
@@ -558,12 +484,12 @@ const WorkoutLogger: React.FC = () => {
           </div>
 
           {/* Workout Summary */}
-          <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-            <h3 style={{ marginTop: 0 }}>Workout Summary</h3>
+          <div className="workout-summary-container">
+            <h3 className="workout-summary-title">Workout Summary</h3>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+            <div className="summary-grid">
               <div>
-                <label htmlFor="overall-rpe" style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>
+                <label htmlFor="overall-rpe" className="summary-field-label">
                   Overall RPE (1-10):
                 </label>
                 <input
@@ -573,22 +499,17 @@ const WorkoutLogger: React.FC = () => {
                   max="10"
                   value={overallRpe || ''}
                   onChange={(e) => setOverallRpe(Number(e.target.value) || undefined)}
-                  style={{
-                    width: '100%',
-                    padding: '8px',
-                    borderRadius: '4px',
-                    border: '1px solid #ccc'
-                  }}
+                  className="rpe-input"
                 />
                 {overallRpe && (
-                  <div style={{ fontSize: '12px', color: '#6c757d', marginTop: '2px' }}>
+                  <div className="rpe-description">
                     {calculateRPEDescription(overallRpe)}
                   </div>
                 )}
               </div>
 
               <div>
-                <label htmlFor="body-weight" style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>
+                <label htmlFor="body-weight" className="summary-field-label">
                   Body Weight (lbs):
                 </label>
                 <input
@@ -599,25 +520,20 @@ const WorkoutLogger: React.FC = () => {
                   value={bodyWeight || ''}
                   onChange={(e) => setBodyWeight(Number(e.target.value) || undefined)}
                   placeholder="Optional"
-                  style={{
-                    width: '100%',
-                    padding: '8px',
-                    borderRadius: '4px',
-                    border: '1px solid #ccc'
-                  }}
+                  className="body-weight-input"
                 />
               </div>
 
               <div>
-                <div style={{ fontSize: '14px', marginBottom: '5px' }}>Workout Duration:</div>
-                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#007bff' }}>
+                <div className="duration-label">Workout Duration:</div>
+                <div className="duration-display">
                   {Math.round((new Date().getTime() - startTime.getTime()) / (1000 * 60))} minutes
                 </div>
               </div>
             </div>
 
             <div>
-              <label htmlFor="workout-notes" style={{ display: 'block', marginBottom: '5px', fontSize: '14px' }}>
+              <label htmlFor="workout-notes" className="summary-field-label">
                 Workout Notes:
               </label>
               <textarea
@@ -626,13 +542,7 @@ const WorkoutLogger: React.FC = () => {
                 onChange={(e) => setWorkoutNotes(e.target.value)}
                 placeholder="How did the workout feel? Any observations?"
                 rows={3}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  resize: 'vertical'
-                }}
+                className="notes-textarea"
               />
             </div>
           </div>
@@ -641,34 +551,16 @@ const WorkoutLogger: React.FC = () => {
           <button
             onClick={saveWorkoutResult}
             disabled={isSaving}
-            style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: isSaving ? '#ccc' : '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isSaving ? 'not-allowed' : 'pointer',
-              fontSize: '16px',
-              marginBottom: '20px'
-            }}
+            className="save-workout-button"
           >
             {isSaving ? 'Saving Workout...' : 'Save Workout Results'}
           </button>
 
           {/* Past Results Toggle */}
-          <div style={{ marginBottom: '20px' }}>
+          <div className="past-results-section">
             <button
               onClick={() => setShowPastResults(!showPastResults)}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
+              className="toggle-past-results-button"
             >
               {showPastResults ? 'Hide' : 'Show'} Past Results for {currentWorkout.exerciseName}
             </button>
@@ -676,27 +568,22 @@ const WorkoutLogger: React.FC = () => {
 
           {/* Past Results */}
           {showPastResults && pastResults.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
+            <div className="past-results-container">
               <h3>Past Results - {currentWorkout.exerciseName}</h3>
-              <div style={{ display: 'grid', gap: '10px' }}>
+              <div className="past-results-grid">
                 {pastResults.map((result) => (
-                  <div key={result.id} style={{
-                    padding: '15px',
-                    border: '1px solid #dee2e6',
-                    borderRadius: '6px',
-                    backgroundColor: '#f8f9fa'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                  <div key={result.id} className="past-result-card">
+                    <div className="past-result-header">
                       <strong>{result.cycleName} - Week {result.week}</strong>
-                      <span style={{ fontSize: '14px', color: '#6c757d' }}>
+                      <span className="past-result-date">
                         {new Date(result.datePerformed).toLocaleDateString()}
                       </span>
                     </div>
                     
-                    <div style={{ fontSize: '14px' }}>
+                    <div className="past-result-sets">
                       <strong>Main Sets:</strong>
                       {result.mainSetResults.map((set, index) => (
-                        <span key={index} style={{ marginLeft: '10px' }}>
+                        <span key={index} className="past-result-set">
                           {set.actualReps}×{set.actualWeight}{set.isAmrap ? '+' : ''}
                           {index < result.mainSetResults.length - 1 ? ',' : ''}
                         </span>
@@ -704,7 +591,7 @@ const WorkoutLogger: React.FC = () => {
                     </div>
                     
                     {result.workoutNotes && (
-                      <div style={{ fontSize: '12px', color: '#6c757d', marginTop: '5px', fontStyle: 'italic' }}>
+                      <div className="past-result-notes">
                         "{result.workoutNotes}"
                       </div>
                     )}
@@ -718,27 +605,14 @@ const WorkoutLogger: React.FC = () => {
 
       {/* Success Message */}
       {success && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#d1ecf1',
-          border: '1px solid #bee5eb',
-          borderRadius: '4px',
-          marginBottom: '15px',
-          color: '#0c5460'
-        }}>
+        <div className="success-alert">
           ✅ {success}
         </div>
       )}
 
       {/* Error Display */}
       {error && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f8d7da',
-          border: '1px solid #f5c6cb',
-          borderRadius: '4px',
-          color: '#721c24'
-        }}>
+        <div className="error-alert">
           <strong>Error:</strong> {error}
         </div>
       )}

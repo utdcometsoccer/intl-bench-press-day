@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { WorkoutSet } from './types';
 import type { Exercise } from './exercises';
 import type { ExerciseRecord } from './exerciseRecordsStorage';
@@ -37,6 +37,20 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
+  // Load available one-rep max functions
+  const loadAvailableFunctions = useCallback(async () => {
+    try {
+      const functions = await oneRepMaxStorage.listFunctions();
+      setAvailableFunctions(functions);
+      
+      if (functions.length > 0 && !selectedFunctionId) {
+        setSelectedFunctionId(functions[0].id);
+      }
+    } catch (err) {
+      setError(`Failed to load functions: ${err}`);
+    }
+  }, [selectedFunctionId]);
+
   // Initialize the systems
   useEffect(() => {
     const initializeSystems = async () => {
@@ -53,34 +67,10 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
     };
 
     initializeSystems();
-  }, []);
-
-  // Load exercise records when exercise changes
-  useEffect(() => {
-    if (selectedExerciseId) {
-      loadExerciseRecords();
-    } else {
-      setExerciseRecords([]);
-      setPersonalRecord(null);
-    }
-  }, [selectedExerciseId]);
-
-  // Load available one-rep max functions
-  const loadAvailableFunctions = async () => {
-    try {
-      const functions = await oneRepMaxStorage.listFunctions();
-      setAvailableFunctions(functions);
-      
-      if (functions.length > 0 && !selectedFunctionId) {
-        setSelectedFunctionId(functions[0].id);
-      }
-    } catch (err) {
-      setError(`Failed to load functions: ${err}`);
-    }
-  };
+  }, [loadAvailableFunctions]);
 
   // Load records for the selected exercise
-  const loadExerciseRecords = async () => {
+  const loadExerciseRecords = useCallback(async () => {
     if (!selectedExerciseId) return;
 
     try {
@@ -92,7 +82,17 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
     } catch (err) {
       setError(`Failed to load exercise records: ${err}`);
     }
-  };
+  }, [selectedExerciseId]);
+
+  // Load exercise records when exercise changes
+  useEffect(() => {
+    if (selectedExerciseId) {
+      loadExerciseRecords();
+    } else {
+      setExerciseRecords([]);
+      setPersonalRecord(null);
+    }
+  }, [selectedExerciseId, loadExerciseRecords]);
 
   // Handle exercise selection
   const handleExerciseChange = (exerciseId: string) => {
@@ -198,22 +198,16 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
   }
 
   return (
-    <div className="exercise-tracker" style={{ 
-      padding: '20px', 
-      border: '1px solid #ccc', 
-      borderRadius: '8px', 
-      maxWidth: '800px',
-      margin: '20px auto'
-    }}>
+    <div className="exercise-tracker component-container">
       <h2>Exercise One Rep Max Tracker</h2>
 
       {/* Exercise Selection */}
-      <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-        <h3 style={{ marginTop: 0 }}>Select Exercise</h3>
+      <div className="form-section">
+        <h3>Select Exercise</h3>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+        <div className="two-column-grid">
           <div>
-            <label htmlFor="category-select" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="category-select" className="form-label">
               Category:
             </label>
             <select
@@ -224,12 +218,7 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
                 setSelectedExerciseId('');
                 setSelectedExercise(null);
               }}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-select"
             >
               <option value="">-- Select Category --</option>
               {categories.map(category => (
@@ -239,7 +228,7 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="exercise-select" style={{ display: 'block', marginBottom: '5px' }}>
+            <label htmlFor="exercise-select" className="form-label">
               Exercise:
             </label>
             <select
@@ -247,13 +236,7 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
               value={selectedExerciseId}
               onChange={(e) => handleExerciseChange(e.target.value)}
               disabled={!selectedCategory}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                backgroundColor: selectedCategory ? 'white' : '#f5f5f5'
-              }}
+              className={`form-select ${!selectedCategory ? 'disabled-select' : ''}`}
             >
               <option value="">-- Select Exercise --</option>
               {exercisesInCategory.map(exercise => (
@@ -264,12 +247,12 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
         </div>
 
         {selectedExercise && (
-          <div style={{ padding: '10px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #dee2e6' }}>
-            <h4 style={{ margin: '0 0 5px 0' }}>{selectedExercise.name}</h4>
-            <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#6c757d' }}>
+          <div className="exercise-info">
+            <h4>{selectedExercise.name}</h4>
+            <p className="description">
               {selectedExercise.description}
             </p>
-            <p style={{ margin: 0, fontSize: '12px', color: '#6c757d' }}>
+            <p className="muscle-groups">
               <strong>Muscle Groups:</strong> {selectedExercise.muscleGroups.join(', ')}
             </p>
           </div>
@@ -278,18 +261,12 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
 
       {/* Personal Record Display */}
       {personalRecord && (
-        <div style={{ 
-          marginBottom: '20px', 
-          padding: '15px', 
-          backgroundColor: '#d1ecf1', 
-          border: '1px solid #bee5eb',
-          borderRadius: '6px' 
-        }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#0c5460' }}>Personal Record</h3>
-          <p style={{ margin: '0', fontSize: '18px', fontWeight: 'bold', color: '#0c5460' }}>
+        <div className="personal-record">
+          <h3>Personal Record</h3>
+          <p className="record-value">
             {personalRecord.oneRepMax} lbs
           </p>
-          <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#0c5460' }}>
+          <p className="record-details">
             Set on {new Date(personalRecord.dateRecorded).toLocaleDateString()} 
             ({personalRecord.workoutSet.Repetions} reps at {personalRecord.workoutSet.Weight} lbs)
           </p>
@@ -298,24 +275,19 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
 
       {/* Calculator Section */}
       {selectedExercise && (
-        <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-          <h3 style={{ marginTop: 0 }}>Calculate One Rep Max</h3>
+        <div className="form-section">
+          <h3>Calculate One Rep Max</h3>
 
           {/* Formula Selection */}
-          <div style={{ marginBottom: '15px' }}>
-            <label htmlFor="function-select" style={{ display: 'block', marginBottom: '5px' }}>
+          <div className="mb-20">
+            <label htmlFor="function-select" className="form-label">
               Formula:
             </label>
             <select
               id="function-select"
               value={selectedFunctionId}
               onChange={(e) => setSelectedFunctionId(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc'
-              }}
+              className="form-select"
             >
               <option value="">-- Select a formula --</option>
               {availableFunctions.map((func) => (
@@ -327,9 +299,9 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
           </div>
 
           {/* Workout Set Inputs */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+          <div className="two-column-grid">
             <div>
-              <label htmlFor="repetitions" style={{ display: 'block', marginBottom: '5px' }}>
+              <label htmlFor="repetitions" className="form-label">
                 Repetitions:
               </label>
               <input
@@ -338,17 +310,12 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
                 min="1"
                 value={workoutSet.Repetions}
                 onChange={(e) => handleWorkoutSetChange('Repetions', e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc'
-                }}
+                className="form-input"
               />
             </div>
             
             <div>
-              <label htmlFor="weight" style={{ display: 'block', marginBottom: '5px' }}>
+              <label htmlFor="weight" className="form-label">
                 Weight (lbs):
               </label>
               <input
@@ -358,12 +325,7 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
                 step="0.01"
                 value={workoutSet.Weight}
                 onChange={(e) => handleWorkoutSetChange('Weight', e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc'
-                }}
+                className="form-input"
               />
             </div>
           </div>
@@ -371,37 +333,21 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
           <button
             onClick={calculateOneRepMax}
             disabled={!selectedFunctionId}
-            style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: selectedFunctionId ? '#007bff' : '#ccc',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: selectedFunctionId ? 'pointer' : 'not-allowed',
-              fontSize: '16px',
-              marginBottom: '15px'
-            }}
+            className="primary-button"
           >
             Calculate One Rep Max
           </button>
 
           {/* Results and Save Section */}
           {result !== null && (
-            <div style={{
-              padding: '15px',
-              backgroundColor: '#d4edda',
-              border: '1px solid #c3e6cb',
-              borderRadius: '4px',
-              marginBottom: '15px'
-            }}>
-              <h4 style={{ margin: '0 0 10px 0', color: '#155724' }}>Calculated 1RM: {result} lbs</h4>
-              <p style={{ margin: '0 0 15px 0', fontSize: '14px', color: '#155724' }}>
+            <div className="calculation-result">
+              <h4>Calculated 1RM: {result} lbs</h4>
+              <p className="result-details">
                 Based on {workoutSet.Repetions} reps at {workoutSet.Weight} lbs
               </p>
 
-              <div style={{ marginBottom: '15px' }}>
-                <label htmlFor="notes" style={{ display: 'block', marginBottom: '5px', color: '#155724' }}>
+              <div className="mb-20">
+                <label htmlFor="notes" className="notes-label">
                   Notes (optional):
                 </label>
                 <input
@@ -410,28 +356,14 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
                   placeholder="e.g., felt easy, used belt, etc."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '8px',
-                    borderRadius: '4px',
-                    border: '1px solid #c3e6cb'
-                  }}
+                  className="notes-input"
                 />
               </div>
 
               <button
                 onClick={saveRecord}
                 disabled={isSaving}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  backgroundColor: isSaving ? '#6c757d' : '#28a745',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: isSaving ? 'not-allowed' : 'pointer',
-                  fontSize: '14px'
-                }}
+                className="save-button"
               >
                 {isSaving ? 'Saving...' : 'Save Record'}
               </button>
@@ -442,25 +374,21 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
 
       {/* Recent Records */}
       {exerciseRecords.length > 0 && (
-        <div style={{ marginBottom: '20px' }}>
+        <div className="mb-20">
           <h3>Recent Records for {selectedExercise?.name}</h3>
-          <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #dee2e6', borderRadius: '4px' }}>
-            {exerciseRecords.slice(0, 5).map((record, index) => (
-              <div key={record.id} style={{
-                padding: '10px',
-                borderBottom: index < 4 ? '1px solid #dee2e6' : 'none',
-                backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="records-container">
+            {exerciseRecords.slice(0, 5).map((record) => (
+              <div key={record.id} className="record-item">
+                <div className="record-header">
                   <div>
                     <strong>{record.oneRepMax} lbs</strong> - {record.workoutSet.Repetions} reps at {record.workoutSet.Weight} lbs
                   </div>
-                  <div style={{ fontSize: '12px', color: '#6c757d' }}>
+                  <div className="record-date">
                     {new Date(record.dateRecorded).toLocaleDateString()}
                   </div>
                 </div>
                 {record.notes && (
-                  <div style={{ fontSize: '12px', color: '#6c757d', marginTop: '5px' }}>
+                  <div className="record-notes">
                     {record.notes}
                   </div>
                 )}
@@ -472,27 +400,14 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
 
       {/* Success Message */}
       {showSuccess && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#d1ecf1',
-          border: '1px solid #bee5eb',
-          borderRadius: '4px',
-          marginBottom: '15px',
-          color: '#0c5460'
-        }}>
+        <div className="success-message">
           ✅ Record saved successfully!
         </div>
       )}
 
       {/* Error Display */}
       {error && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f8d7da',
-          border: '1px solid #f5c6cb',
-          borderRadius: '4px',
-          color: '#721c24'
-        }}>
+        <div className="error-message">
           <strong>Error:</strong> {error}
         </div>
       )}
