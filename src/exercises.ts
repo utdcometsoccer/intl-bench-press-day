@@ -1,11 +1,7 @@
 // Common barbell exercises with their categories
-export interface Exercise {
-  id: string;
-  name: string;
-  category: string;
-  description?: string;
-  muscleGroups: string[];
-}
+import type { Exercise } from './types';
+
+export { type Exercise } from './types';
 
 export const BARBELL_EXERCISES: Exercise[] = [
   // Chest

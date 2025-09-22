@@ -1,40 +1,18 @@
 // 5-3-1 Workout Plan Data Structures and Storage
+import type { 
+  FiveThreeOneMax, 
+  FiveThreeOneSet, 
+  FiveThreeOneWorkout, 
+  FiveThreeOneCycle 
+} from '../types';
 
-export interface FiveThreeOneMax {
-  exerciseId: string;
-  exerciseName: string;
-  oneRepMax: number;
-  trainingMax: number; // 90% of 1RM
-}
-
-export interface FiveThreeOneSet {
-  reps: number;
-  percentage: number;
-  weight: number;
-  isAmrap?: boolean; // As Many Reps As Possible
-}
-
-export interface FiveThreeOneWorkout {
-  id: string;
-  week: number; // 1, 2, 3, or 4 (deload)
-  day: number; // 1, 2, 3, or 4
-  exerciseId: string;
-  exerciseName: string;
-  mainSets: FiveThreeOneSet[];
-  warmupSets: FiveThreeOneSet[];
-  assistanceExercises?: string[];
-}
-
-export interface FiveThreeOneCycle {
-  id: string;
-  name: string;
-  startDate: Date;
-  createdDate: Date;
-  maxes: FiveThreeOneMax[];
-  workouts: FiveThreeOneWorkout[];
-  notes?: string;
-  isActive: boolean;
-}
+// Re-export types for backward compatibility
+export { 
+  type FiveThreeOneMax, 
+  type FiveThreeOneSet, 
+  type FiveThreeOneWorkout, 
+  type FiveThreeOneCycle 
+} from '../types';
 
 // 5-3-1 Program Templates
 export const FIVE_THREE_ONE_PERCENTAGES = {

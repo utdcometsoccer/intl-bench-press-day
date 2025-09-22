@@ -5,8 +5,8 @@ import {
   calculateWeight, 
   generateWorkouts,
   FIVE_THREE_ONE_PERCENTAGES
-} from '../fiveThreeOneStorage'
-import type { FiveThreeOneCycle, FiveThreeOneMax } from '../fiveThreeOneStorage'
+} from '../services/fiveThreeOneStorage'
+import type { FiveThreeOneCycle, FiveThreeOneMax } from '../services/fiveThreeOneStorage'
 import { simulateIDBSuccess, simulateIDBUpgradeNeeded } from './setup'
 
 describe('FiveThreeOneStorage', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { oneRepMaxStorage, predefinedFormulas } from '../oneRepMaxStorage'
+import { oneRepMaxStorage, predefinedFormulas } from '../services/oneRepMaxStorage'
 import type { WorkoutSet } from '../types'
 import { simulateIDBSuccess, simulateIDBUpgradeNeeded } from './setup'
 

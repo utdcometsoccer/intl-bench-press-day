@@ -1,68 +1,20 @@
 // Workout Results Recording System
+import type { 
+  WorkoutResult,
+  WorkoutSession,
+  DatabaseConfig, 
+  DatabaseConnection 
+} from '../types';
 
-export interface WorkoutSetResult {
-  plannedReps: number;
-  plannedWeight: number;
-  actualReps: number;
-  actualWeight: number;
-  percentage: number;
-  isAmrap: boolean;
-  rpe?: number; // Rate of Perceived Exertion (1-10)
-  notes?: string;
-}
-
-export interface WorkoutResult {
-  id: string;
-  cycleId: string;
-  cycleName: string;
-  workoutId: string; // Reference to the planned workout
-  exerciseId: string;
-  exerciseName: string;
-  week: number;
-  day: number;
-  datePerformed: Date;
-  warmupResults: WorkoutSetResult[];
-  mainSetResults: WorkoutSetResult[];
-  assistanceWork?: AssistanceExerciseResult[];
-  overallRpe?: number; // Overall workout RPE
-  workoutNotes?: string;
-  duration?: number; // Workout duration in minutes
-  bodyWeight?: number; // Optional body weight tracking
-}
-
-export interface AssistanceExerciseResult {
-  exerciseName: string;
-  sets: {
-    reps: number;
-    weight?: number;
-    rpe?: number;
-    notes?: string;
-  }[];
-}
-
-export interface WorkoutSession {
-  id: string;
-  cycleId: string;
-  week: number;
-  day: number;
-  dateStarted: Date;
-  dateCompleted?: Date;
-  isCompleted: boolean;
-  workoutResults: WorkoutResult[];
-}
-
-export interface DatabaseConfig {
-  dbName: string;
-  dbVersion: number;
-  storeName: string;
-  sessionsStoreName: string;
-}
-
-export interface DatabaseConnection {
-  getDatabase(): IDBDatabase | null;
-  initialize(config: DatabaseConfig): Promise<void>;
-  close(): void;
-}
+// Re-export types for backward compatibility
+export { 
+  type WorkoutSetResult, 
+  type WorkoutResult, 
+  type AssistanceExerciseResult, 
+  type WorkoutSession, 
+  type DatabaseConfig, 
+  type DatabaseConnection 
+} from '../types';
 
 class IndexedDBConnection implements DatabaseConnection {
   private db: IDBDatabase | null = null;

@@ -1,14 +1,4 @@
-import type { OneRepetitionMaximum, WorkoutSet } from './types';
-
-// Interface for storing function metadata in IndexedDB
-interface StoredOneRepMaxFunction {
-  id: string;
-  name: string;
-  description?: string;
-  functionBody: string; // Serialized function body
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { OneRepetitionMaximum, WorkoutSet, StoredOneRepMaxFunction } from '../types';
 
 class OneRepMaxStorageSystem {
   private dbName = 'OneRepMaxDB';

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { exerciseRecordsStorage } from '../exerciseRecordsStorage'
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage'
 import type { Exercise } from '../exercises'
 import type { WorkoutSet } from '../types'
 import { simulateIDBSuccess, simulateIDBUpgradeNeeded } from './setup'

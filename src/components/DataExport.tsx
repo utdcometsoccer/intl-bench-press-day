@@ -1,28 +1,14 @@
 import React, { useState } from 'react';
-import { oneRepMaxStorage } from './oneRepMaxStorage';
-import { exerciseRecordsStorage } from './exerciseRecordsStorage';
-import { fiveThreeOneStorage } from './fiveThreeOneStorage';
-import { workoutResultsStorage } from './workoutResultsStorage';
-import type { ExerciseRecord } from './exerciseRecordsStorage';
-import type { FiveThreeOneCycle } from './fiveThreeOneStorage';
-import type { WorkoutResult, WorkoutSetResult } from './workoutResultsStorage';
-
-interface OneRepMaxFunctionMetadata {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface ExportData {
-  oneRepMaxFormulas: OneRepMaxFunctionMetadata[];
-  exerciseRecords: ExerciseRecord[];
-  fiveThreeOnePrograms: FiveThreeOneCycle[];
-  workoutResults: WorkoutResult[];
-  exportDate: string;
-  appVersion: string;
-}
+import { oneRepMaxStorage } from '../services/oneRepMaxStorage';
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
+import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
+import { workoutResultsStorage } from '../services/workoutResultsStorage';
+import type { 
+  ExerciseRecord, 
+  WorkoutResult,
+  WorkoutSetResult,
+  ExportData 
+} from '../types';
 
 const DataExport: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);

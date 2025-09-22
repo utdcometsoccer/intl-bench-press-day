@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import type { FiveThreeOneCycle, FiveThreeOneWorkout } from './fiveThreeOneStorage';
-import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from './workoutResultsStorage';
-import { fiveThreeOneStorage } from './fiveThreeOneStorage';
-import { workoutResultsStorage, calculateEstimated1RM, calculateRPEDescription } from './workoutResultsStorage';
+import { type FC, useState, useEffect, useCallback } from 'react';
+import type { FiveThreeOneCycle, FiveThreeOneWorkout } from '../services/fiveThreeOneStorage';
+import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from '../services/workoutResultsStorage';
+import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
+import { workoutResultsStorage, calculateEstimated1RM, calculateRPEDescription } from '../services/workoutResultsStorage';
 
-const WorkoutLogger: React.FC = () => {
+const WorkoutLogger: FC = () => {
   // State for current workout
   const [activeCycle, setActiveCycle] = useState<FiveThreeOneCycle | null>(null);
   const [selectedWeek, setSelectedWeek] = useState<number>(1);

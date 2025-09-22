@@ -10,31 +10,9 @@ import {
   Legend
 } from 'recharts';
 import { format, parseISO, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
-import type { ExerciseRecord } from './exerciseRecordsStorage';
-import { exerciseRecordsStorage } from './exerciseRecordsStorage';
-import { BARBELL_EXERCISES, getExerciseCategories } from './exercises';
-
-interface ChartDataPoint {
-  date: string;
-  dateValue: Date;
-  oneRepMax: number;
-  exercise: string;
-  exerciseId: string;
-  weight: number;
-  reps: number;
-  notes?: string;
-  formulaUsed: string;
-}
-
-interface ExerciseStats {
-  exerciseId: string;
-  exerciseName: string;
-  recordCount: number;
-  bestOneRepMax: number;
-  latestOneRepMax: number;
-  improvement: number;
-  color: string;
-}
+import type { ExerciseRecord, ChartDataPoint, ExerciseStats } from '../types';
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
+import { BARBELL_EXERCISES, getExerciseCategories } from '../exercises';
 
 const ProgressChart: React.FC = () => {
   const [allRecords, setAllRecords] = useState<ExerciseRecord[]>([]);

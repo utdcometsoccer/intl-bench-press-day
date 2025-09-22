@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
-import ExerciseOneRepMaxTracker from './ExerciseOneRepMaxTracker'
-import ProgressChart from './ProgressChart'
-import FiveThreeOnePlanner from './FiveThreeOnePlanner'
-import WorkoutLogger from './WorkoutLogger'
-import DataExport from './DataExport'
+import ExerciseOneRepMaxTracker from './components/ExerciseOneRepMaxTracker'
+import ProgressChart from './components/ProgressChart'
+import FiveThreeOnePlanner from './components/FiveThreeOnePlanner'
+import WorkoutLogger from './components/WorkoutLogger'
+import DataExport from './components/DataExport'
 
 function App() {
   const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'export'>('tracker')

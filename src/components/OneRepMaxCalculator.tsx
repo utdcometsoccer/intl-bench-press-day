@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import type { WorkoutSet } from './types';
-import { oneRepMaxStorage, initializeWithPredefinedFormulas } from './oneRepMaxStorage';
-
-interface StoredFunctionInfo {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { WorkoutSet, StoredFunctionInfo } from '../types';
+import { oneRepMaxStorage, initializeWithPredefinedFormulas } from '../services/oneRepMaxStorage';
 
 const OneRepMaxCalculator: React.FC = () => {
   const [availableFunctions, setAvailableFunctions] = useState<StoredFunctionInfo[]>([]);

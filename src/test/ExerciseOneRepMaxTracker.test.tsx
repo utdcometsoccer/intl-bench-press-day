@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import ExerciseOneRepMaxTracker from '../ExerciseOneRepMaxTracker'
+import ExerciseOneRepMaxTracker from '../components/ExerciseOneRepMaxTracker'
 
 // Mock the storage modules
-vi.mock('../oneRepMaxStorage', () => ({
+vi.mock('../services/oneRepMaxStorage', () => ({
   oneRepMaxStorage: {
     listFunctions: vi.fn(),
     getFunctionById: vi.fn(),
@@ -11,7 +11,7 @@ vi.mock('../oneRepMaxStorage', () => ({
   initializeWithPredefinedFormulas: vi.fn(),
 }))
 
-vi.mock('../exerciseRecordsStorage', () => ({
+vi.mock('../services/exerciseRecordsStorage', () => ({
   exerciseRecordsStorage: {
     initialize: vi.fn(),
     getRecordsByExercise: vi.fn(),
@@ -20,8 +20,8 @@ vi.mock('../exerciseRecordsStorage', () => ({
 }))
 
 // Import the mocked modules
-import { oneRepMaxStorage } from '../oneRepMaxStorage'
-import { exerciseRecordsStorage } from '../exerciseRecordsStorage'
+import { oneRepMaxStorage } from '../services/oneRepMaxStorage'
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage'
 
 const mockedOneRepMaxStorage = vi.mocked(oneRepMaxStorage)
 const mockedExerciseRecordsStorage = vi.mocked(exerciseRecordsStorage)
