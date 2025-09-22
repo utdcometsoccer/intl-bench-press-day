@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom'
+import { vi } from 'vitest'
 
 // Mock IndexedDB
 const mockIDBRequest = {
-  onsuccess: null as any,
-  onerror: null as any,
-  result: null as any,
-  error: null as any
+  onsuccess: null as ((this: IDBRequest, ev: Event) => unknown) | null,
+  onerror: null as ((this: IDBRequest, ev: Event) => unknown) | null,
+  result: null as unknown,
+  error: null as DOMException | null
 }
 
 const mockIDBObjectStore = {
@@ -22,8 +23,8 @@ const mockIDBObjectStore = {
 
 const mockIDBTransaction = {
   objectStore: vi.fn(() => mockIDBObjectStore),
-  onsuccess: null as any,
-  onerror: null as any
+  onsuccess: null as ((this: IDBTransaction, ev: Event) => unknown) | null,
+  onerror: null as ((this: IDBTransaction, ev: Event) => unknown) | null
 }
 
 const mockIDBDatabase = {
@@ -37,21 +38,21 @@ const mockIDBDatabase = {
 
 const mockIDBOpenRequest = {
   ...mockIDBRequest,
-  onupgradeneeded: null as any,
+  onupgradeneeded: null as ((this: IDBOpenDBRequest, ev: IDBVersionChangeEvent) => unknown) | null,
   result: mockIDBDatabase
 }
 
 // Mock IndexedDB globally
-Object.defineProperty(global, 'indexedDB', {
+Object.defineProperty(globalThis, 'indexedDB', {
   value: {
     open: vi.fn(() => mockIDBOpenRequest)
   },
   writable: true
 })
 
-Object.defineProperty(global, 'IDBKeyRange', {
+Object.defineProperty(globalThis, 'IDBKeyRange', {
   value: {
-    only: vi.fn((value: any) => ({ only: value }))
+    only: vi.fn((value: unknown) => ({ only: value }))
   },
   writable: true
 })

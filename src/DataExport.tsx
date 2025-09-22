@@ -3,12 +3,23 @@ import { oneRepMaxStorage } from './oneRepMaxStorage';
 import { exerciseRecordsStorage } from './exerciseRecordsStorage';
 import { fiveThreeOneStorage } from './fiveThreeOneStorage';
 import { workoutResultsStorage } from './workoutResultsStorage';
+import type { ExerciseRecord } from './exerciseRecordsStorage';
+import type { FiveThreeOneCycle } from './fiveThreeOneStorage';
+import type { WorkoutResult, WorkoutSetResult } from './workoutResultsStorage';
+
+interface OneRepMaxFunctionMetadata {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 interface ExportData {
-  oneRepMaxFormulas: any[];
-  exerciseRecords: any[];
-  fiveThreeOnePrograms: any[];
-  workoutResults: any[];
+  oneRepMaxFormulas: OneRepMaxFunctionMetadata[];
+  exerciseRecords: ExerciseRecord[];
+  fiveThreeOnePrograms: FiveThreeOneCycle[];
+  workoutResults: WorkoutResult[];
   exportDate: string;
   appVersion: string;
 }
@@ -76,8 +87,8 @@ const DataExport: React.FC = () => {
     }
   };
 
-  const convertToCSV = (data: any[], headers: string[]): string => {
-    const escapeCSV = (value: any): string => {
+  const convertToCSV = (data: Record<string, unknown>[], headers: string[]): string => {
+    const escapeCSV = (value: unknown): string => {
       if (value === null || value === undefined) return '';
       const stringValue = String(value);
       if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
@@ -94,7 +105,7 @@ const DataExport: React.FC = () => {
     return [csvHeader, ...csvRows].join('\n');
   };
 
-  const flattenExerciseRecords = (records: any[]) => {
+  const flattenExerciseRecords = (records: ExerciseRecord[]) => {
     return records.map(record => ({
       id: record.id,
       exerciseId: record.exerciseId,
@@ -109,8 +120,8 @@ const DataExport: React.FC = () => {
     }));
   };
 
-  const flattenWorkoutResults = (results: any[]) => {
-    const flattened: any[] = [];
+  const flattenWorkoutResults = (results: WorkoutResult[]) => {
+    const flattened: Record<string, unknown>[] = [];
     
     results.forEach(workout => {
       // Main workout info
@@ -131,7 +142,7 @@ const DataExport: React.FC = () => {
 
       // Add main sets
       if (workout.mainSetResults && workout.mainSetResults.length > 0) {
-        workout.mainSetResults.forEach((set: any, index: number) => {
+        workout.mainSetResults.forEach((set: WorkoutSetResult, index: number) => {
           flattened.push({
             ...baseWorkout,
             setType: 'main',
@@ -150,7 +161,7 @@ const DataExport: React.FC = () => {
 
       // Add warmup sets
       if (workout.warmupResults && workout.warmupResults.length > 0) {
-        workout.warmupResults.forEach((set: any, index: number) => {
+        workout.warmupResults.forEach((set: WorkoutSetResult, index: number) => {
           flattened.push({
             ...baseWorkout,
             setType: 'warmup',
@@ -230,13 +241,13 @@ const DataExport: React.FC = () => {
             id: program.id,
             name: program.name,
             startDate: program.startDate ? new Date(program.startDate).toISOString() : '',
-            currentCycle: program.currentCycle || '',
-            currentWeek: program.currentWeek || '',
-            trainingMaxes: JSON.stringify(program.trainingMaxes || {}),
+            createdDate: program.createdDate ? new Date(program.createdDate).toISOString() : '',
+            maxes: JSON.stringify(program.maxes || []),
+            workouts: JSON.stringify(program.workouts || []),
             isActive: program.isActive || false,
             notes: program.notes || ''
           })),
-          ['id', 'name', 'startDate', 'currentCycle', 'currentWeek', 'trainingMaxes', 'isActive', 'notes']
+          ['id', 'name', 'startDate', 'createdDate', 'maxes', 'workouts', 'isActive', 'notes']
         );
         csvFiles.push({ name: 'five-three-one-programs', content: programsCSV });
       }
@@ -279,34 +290,18 @@ const DataExport: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      padding: '20px', 
-      border: '1px solid #ddd', 
-      borderRadius: '8px', 
-      maxWidth: '600px', 
-      margin: '20px auto',
-      backgroundColor: '#f9f9f9'
-    }}>
-      <h2 style={{ marginTop: 0 }}>Data Export</h2>
-      <p style={{ color: '#666', marginBottom: '20px' }}>
+    <div className="data-export-container">
+      <h2 className="data-export-title">Data Export</h2>
+      <p className="data-export-description">
         Export all your fitness data for backup, analysis, or migration purposes. 
         This includes exercise records, one-rep-max formulas, 5/3/1 programs, and workout results.
       </p>
 
-      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
+      <div className="export-buttons-container">
         <button
           onClick={downloadJSON}
           disabled={isExporting}
-          style={{
-            padding: '12px 24px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: isExporting ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            opacity: isExporting ? 0.6 : 1
-          }}
+          className="export-button-json"
         >
           {isExporting ? 'Exporting...' : 'Download JSON'}
         </button>
@@ -314,36 +309,21 @@ const DataExport: React.FC = () => {
         <button
           onClick={downloadCSV}
           disabled={isExporting}
-          style={{
-            padding: '12px 24px',
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: isExporting ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            opacity: isExporting ? 0.6 : 1
-          }}
+          className="export-button-csv"
         >
           {isExporting ? 'Exporting...' : 'Download CSV'}
         </button>
       </div>
 
       {exportStatus && (
-        <div style={{
-          padding: '12px',
-          borderRadius: '4px',
-          backgroundColor: exportStatus.includes('failed') ? '#f8d7da' : '#d4edda',
-          color: exportStatus.includes('failed') ? '#721c24' : '#155724',
-          border: `1px solid ${exportStatus.includes('failed') ? '#f5c6cb' : '#c3e6cb'}`
-        }}>
+        <div className={exportStatus.includes('failed') ? 'export-status-error' : 'export-status-success'}>
           {exportStatus}
         </div>
       )}
 
-      <div style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+      <div className="export-details">
         <h4>Export Details:</h4>
-        <ul style={{ margin: 0, paddingLeft: '20px' }}>
+        <ul className="export-details-list">
           <li><strong>JSON:</strong> Single file with all data in structured format</li>
           <li><strong>CSV:</strong> Multiple files - one for each data type (exercise records, formulas, etc.)</li>
           <li>All exports include timestamps and can be used for data backup</li>

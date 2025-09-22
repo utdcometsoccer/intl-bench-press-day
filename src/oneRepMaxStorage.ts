@@ -153,7 +153,11 @@ class OneRepMaxStorageSystem {
       
       request.onsuccess = () => {
         const results = request.result as StoredOneRepMaxFunction[];
-        const metadata = results.map(({ functionBody, ...meta }) => meta);
+        const metadata = results.map((result) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { functionBody, ...meta } = result;
+          return meta;
+        });
         resolve(metadata);
       };
       

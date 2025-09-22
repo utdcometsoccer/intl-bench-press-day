@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { FiveThreeOneCycle, FiveThreeOneMax } from './fiveThreeOneStorage';
 import type { ExerciseRecord } from './exerciseRecordsStorage';
 import {
@@ -30,11 +30,38 @@ const FiveThreeOnePlanner: React.FC = () => {
   const [success, setSuccess] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'create' | 'manage' | 'view'>('create');
 
-  useEffect(() => {
-    initializeData();
+  const loadCycles = useCallback(async () => {
+    try {
+      const allCycles = await fiveThreeOneStorage.getAllCycles();
+      setCycles(allCycles);
+      
+      const active = await fiveThreeOneStorage.getActiveCycle();
+      setActiveCycle(active);
+    } catch (err) {
+      setError(`Failed to load cycles: ${err}`);
+    }
   }, []);
 
-  const initializeData = async () => {
+  const loadPersonalRecords = useCallback(async () => {
+    try {
+      const records = await exerciseRecordsStorage.getPersonalRecords();
+      setPersonalRecords(records);
+      
+      // Initialize custom maxes with personal records if available
+      const initialMaxes: Record<string, number> = {};
+      FIVE_THREE_ONE_MAIN_EXERCISES.forEach(exercise => {
+        const record = records.get(exercise.id);
+        if (record) {
+          initialMaxes[exercise.id] = record.oneRepMax;
+        }
+      });
+      setCustomMaxes(initialMaxes);
+    } catch (err) {
+      setError(`Failed to load personal records: ${err}`);
+    }
+  }, []);
+
+  const initializeData = useCallback(async () => {
     try {
       setIsLoading(true);
       await fiveThreeOneStorage.initialize();
@@ -52,38 +79,11 @@ const FiveThreeOnePlanner: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [loadCycles, loadPersonalRecords]);
 
-  const loadCycles = async () => {
-    try {
-      const allCycles = await fiveThreeOneStorage.getAllCycles();
-      setCycles(allCycles);
-      
-      const active = await fiveThreeOneStorage.getActiveCycle();
-      setActiveCycle(active);
-    } catch (err) {
-      setError(`Failed to load cycles: ${err}`);
-    }
-  };
-
-  const loadPersonalRecords = async () => {
-    try {
-      const records = await exerciseRecordsStorage.getPersonalRecords();
-      setPersonalRecords(records);
-      
-      // Initialize custom maxes with personal records if available
-      const initialMaxes: Record<string, number> = {};
-      FIVE_THREE_ONE_MAIN_EXERCISES.forEach(exercise => {
-        const record = records.get(exercise.id);
-        if (record) {
-          initialMaxes[exercise.id] = record.oneRepMax;
-        }
-      });
-      setCustomMaxes(initialMaxes);
-    } catch (err) {
-      setError(`Failed to load personal records: ${err}`);
-    }
-  };
+  useEffect(() => {
+    initializeData();
+  }, [initializeData]);
 
   const handleCustomMaxChange = (exerciseId: string, value: string) => {
     const numericValue = parseFloat(value) || 0;
@@ -201,50 +201,35 @@ const FiveThreeOnePlanner: React.FC = () => {
     const weekName = week === 4 ? `Week ${week} (Deload)` : `Week ${week}`;
 
     return (
-      <div key={week} style={{ marginBottom: '20px' }}>
-        <h4 style={{ 
-          color: '#007bff', 
-          borderBottom: '2px solid #007bff', 
-          paddingBottom: '5px',
-          marginBottom: '15px'
-        }}>
+      <div key={week} className="workout-week">
+        <h4 className="week-title">
           {weekName}
         </h4>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>
+        <div className="workouts-grid">
           {weekWorkouts.sort((a, b) => a.day - b.day).map(workout => (
-            <div key={workout.id} style={{
-              border: '1px solid #dee2e6',
-              borderRadius: '6px',
-              padding: '15px',
-              backgroundColor: 'white'
-            }}>
-              <h5 style={{ margin: '0 0 10px 0', color: '#495057' }}>
+            <div key={workout.id} className="workout-card">
+              <h5 className="workout-title">
                 Day {workout.day}: {workout.exerciseName}
               </h5>
               
               {/* Warmup Sets */}
-              <div style={{ marginBottom: '15px' }}>
-                <strong style={{ fontSize: '14px', color: '#6c757d' }}>Warmup:</strong>
+              <div className="workout-section">
+                <strong className="workout-section-title">Warmup:</strong>
                 {workout.warmupSets.map((set, index) => (
-                  <div key={index} style={{ fontSize: '14px', marginLeft: '10px' }}>
+                  <div key={index} className="workout-set-detail">
                     {set.reps} × {set.weight} lbs ({set.percentage}%)
                   </div>
                 ))}
               </div>
 
               {/* Main Sets */}
-              <div style={{ marginBottom: '15px' }}>
-                <strong style={{ fontSize: '14px', color: '#28a745' }}>Main Sets:</strong>
+              <div className="workout-section">
+                <strong className="workout-section-title main-sets">Main Sets:</strong>
                 {workout.mainSets.map((set, index) => (
-                  <div key={index} style={{ 
-                    fontSize: '14px', 
-                    marginLeft: '10px',
-                    fontWeight: set.isAmrap ? 'bold' : 'normal',
-                    color: set.isAmrap ? '#dc3545' : 'inherit'
-                  }}>
+                  <div key={index} className={`workout-set-detail ${set.isAmrap ? 'amrap' : ''}`}>
                     {set.reps}{set.isAmrap ? '+' : ''} × {set.weight} lbs ({set.percentage}%)
-                    {set.isAmrap && <span style={{ fontSize: '12px' }}> (AMRAP)</span>}
+                    {set.isAmrap && <span className="amrap-indicator"> (AMRAP)</span>}
                   </div>
                 ))}
               </div>
@@ -252,8 +237,8 @@ const FiveThreeOnePlanner: React.FC = () => {
               {/* Assistance Exercises */}
               {workout.assistanceExercises && workout.assistanceExercises.length > 0 && (
                 <div>
-                  <strong style={{ fontSize: '14px', color: '#6c757d' }}>Suggested Assistance:</strong>
-                  <div style={{ fontSize: '12px', marginLeft: '10px', color: '#6c757d' }}>
+                  <strong className="workout-section-title">Suggested Assistance:</strong>
+                  <div className="assistance-exercises">
                     {workout.assistanceExercises.slice(0, 3).join(', ')}
                   </div>
                 </div>
@@ -275,39 +260,20 @@ const FiveThreeOnePlanner: React.FC = () => {
   }
 
   return (
-    <div className="five-three-one-planner" style={{ 
-      padding: '20px', 
-      border: '1px solid #ccc', 
-      borderRadius: '8px', 
-      maxWidth: '1200px',
-      margin: '20px auto'
-    }}>
+    <div className="five-three-one-planner">
       <h2>5-3-1 Workout Planner</h2>
 
       {/* Tab Navigation */}
-      <div style={{ 
-        display: 'flex', 
-        marginBottom: '20px',
-        borderBottom: '1px solid #dee2e6'
-      }}>
+      <div className="planner-tab-navigation">
         {[
-          { key: 'create', label: 'Create Cycle' },
-          { key: 'manage', label: 'Manage Cycles' },
-          { key: 'view', label: 'View Workouts' }
+          { key: 'create' as const, label: 'Create Cycle' },
+          { key: 'manage' as const, label: 'Manage Cycles' },
+          { key: 'view' as const, label: 'View Workouts' }
         ].map(tab => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as any)}
-            style={{
-              padding: '10px 20px',
-              border: 'none',
-              borderBottom: activeTab === tab.key ? '3px solid #007bff' : '3px solid transparent',
-              backgroundColor: 'transparent',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: activeTab === tab.key ? 'bold' : 'normal',
-              color: activeTab === tab.key ? '#007bff' : '#6c757d'
-            }}
+            onClick={() => setActiveTab(tab.key)}
+            className={`planner-tab-button ${activeTab === tab.key ? 'active' : ''}`}
           >
             {tab.label}
           </button>
@@ -319,9 +285,9 @@ const FiveThreeOnePlanner: React.FC = () => {
         <div>
           <h3>Create New 5-3-1 Cycle</h3>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+          <div className="form-grid two-column">
             <div>
-              <label htmlFor="cycle-name" style={{ display: 'block', marginBottom: '5px' }}>
+              <label htmlFor="cycle-name" className="form-label">
                 Cycle Name:
               </label>
               <input
@@ -330,17 +296,12 @@ const FiveThreeOnePlanner: React.FC = () => {
                 value={cycleName}
                 onChange={(e) => setCycleName(e.target.value)}
                 placeholder="e.g., Cycle 2025-01"
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc'
-                }}
+                className="form-input"
               />
             </div>
 
             <div>
-              <label htmlFor="start-date" style={{ display: 'block', marginBottom: '5px' }}>
+              <label htmlFor="start-date" className="form-label">
                 Start Date:
               </label>
               <input
@@ -348,18 +309,13 @@ const FiveThreeOnePlanner: React.FC = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc'
-                }}
+                className="form-input"
               />
             </div>
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label htmlFor="notes" style={{ display: 'block', marginBottom: '5px' }}>
+          <div className="form-section">
+            <label htmlFor="notes" className="form-label">
               Notes (optional):
             </label>
             <textarea
@@ -368,42 +324,36 @@ const FiveThreeOnePlanner: React.FC = () => {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Any notes about this cycle..."
               rows={3}
-              style={{
-                width: '100%',
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                resize: 'vertical'
-              }}
+              className="form-textarea"
             />
           </div>
 
           {/* One Rep Max Configuration */}
-          <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-            <h4 style={{ marginTop: 0 }}>One Rep Max Configuration</h4>
+          <div className="one-rep-max-config">
+            <h4 className="config-title">One Rep Max Configuration</h4>
             
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            <div className="radio-group">
+              <label className="radio-label">
                 <input
                   type="radio"
                   checked={usePersonalRecords}
                   onChange={() => setUsePersonalRecords(true)}
-                  style={{ marginRight: '8px' }}
+                  className="radio-input"
                 />
                 Use Personal Records (from Exercise Tracker)
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginTop: '5px' }}>
+              <label className="radio-label">
                 <input
                   type="radio"
                   checked={!usePersonalRecords}
                   onChange={() => setUsePersonalRecords(false)}
-                  style={{ marginRight: '8px' }}
+                  className="radio-input"
                 />
                 Enter Custom Maxes
               </label>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '15px' }}>
+            <div className="max-config-grid">
               {FIVE_THREE_ONE_MAIN_EXERCISES.map(exercise => {
                 const personalRecord = personalRecords.get(exercise.id);
                 const currentValue = usePersonalRecords 
@@ -412,21 +362,16 @@ const FiveThreeOnePlanner: React.FC = () => {
                 const trainingMax = currentValue ? calculateTrainingMax(currentValue) : 0;
 
                 return (
-                  <div key={exercise.id} style={{
-                    padding: '10px',
-                    border: '1px solid #dee2e6',
-                    borderRadius: '4px',
-                    backgroundColor: 'white'
-                  }}>
-                    <h5 style={{ margin: '0 0 10px 0' }}>{exercise.name}</h5>
+                  <div key={exercise.id} className="max-config-card">
+                    <h5 className="max-config-title">{exercise.name}</h5>
                     
                     {usePersonalRecords ? (
                       <div>
-                        <p style={{ margin: '0 0 5px 0', fontSize: '14px' }}>
+                        <p className="pr-info">
                           <strong>PR:</strong> {personalRecord ? `${personalRecord.oneRepMax} lbs` : 'No record found'}
                         </p>
                         {personalRecord && (
-                          <p style={{ margin: '0', fontSize: '12px', color: '#6c757d' }}>
+                          <p className="training-max-info">
                             Training Max: {trainingMax} lbs (90%)
                           </p>
                         )}
@@ -440,16 +385,10 @@ const FiveThreeOnePlanner: React.FC = () => {
                           value={customMaxes[exercise.id] || ''}
                           onChange={(e) => handleCustomMaxChange(exercise.id, e.target.value)}
                           placeholder="Enter 1RM"
-                          style={{
-                            width: '100%',
-                            padding: '6px',
-                            borderRadius: '4px',
-                            border: '1px solid #ccc',
-                            marginBottom: '5px'
-                          }}
+                          className="custom-max-input"
                         />
                         {currentValue > 0 && (
-                          <p style={{ margin: '0', fontSize: '12px', color: '#6c757d' }}>
+                          <p className="training-max-info">
                             Training Max: {trainingMax} lbs (90%)
                           </p>
                         )}
@@ -464,16 +403,7 @@ const FiveThreeOnePlanner: React.FC = () => {
           <button
             onClick={createCycle}
             disabled={isCreating || !cycleName.trim()}
-            style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: isCreating || !cycleName.trim() ? '#ccc' : '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isCreating || !cycleName.trim() ? 'not-allowed' : 'pointer',
-              fontSize: '16px'
-            }}
+            className="create-cycle-button"
           >
             {isCreating ? 'Creating Cycle...' : 'Create 5-3-1 Cycle'}
           </button>
@@ -488,45 +418,32 @@ const FiveThreeOnePlanner: React.FC = () => {
           {cycles.length === 0 ? (
             <p>No cycles created yet. Create your first cycle in the "Create Cycle" tab.</p>
           ) : (
-            <div style={{ display: 'grid', gap: '15px' }}>
+            <div className="cycles-grid">
               {cycles.map(cycle => (
-                <div key={cycle.id} style={{
-                  padding: '15px',
-                  border: cycle.isActive ? '2px solid #28a745' : '1px solid #dee2e6',
-                  borderRadius: '6px',
-                  backgroundColor: cycle.isActive ? '#f8fff9' : 'white'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={cycle.id} className={`cycle-card ${cycle.isActive ? 'active' : ''}`}>
+                  <div className="cycle-header">
                     <div>
-                      <h4 style={{ margin: '0 0 5px 0' }}>
+                      <h4 className="cycle-title">
                         {cycle.name}
-                        {cycle.isActive && <span style={{ color: '#28a745', fontSize: '14px' }}> (Active)</span>}
+                        {cycle.isActive && <span className="active-indicator"> (Active)</span>}
                       </h4>
-                      <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#6c757d' }}>
+                      <p className="cycle-date">
                         Start Date: {new Date(cycle.startDate).toLocaleDateString()}
                       </p>
-                      <p style={{ margin: '0', fontSize: '14px', color: '#6c757d' }}>
+                      <p className="cycle-created-date">
                         Created: {new Date(cycle.createdDate).toLocaleDateString()}
                       </p>
                       {cycle.notes && (
-                        <p style={{ margin: '5px 0 0 0', fontSize: '12px', fontStyle: 'italic' }}>
+                        <p className="cycle-notes">
                           "{cycle.notes}"
                         </p>
                       )}
                     </div>
                     
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <div className="cycle-actions">
                       <button
                         onClick={() => setSelectedCycle(cycle)}
-                        style={{
-                          padding: '6px 12px',
-                          backgroundColor: '#007bff',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          fontSize: '12px'
-                        }}
+                        className="cycle-action-button view"
                       >
                         View
                       </button>
@@ -534,15 +451,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                       {!cycle.isActive && (
                         <button
                           onClick={() => setActiveCycleHandler(cycle.id)}
-                          style={{
-                            padding: '6px 12px',
-                            backgroundColor: '#28a745',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            fontSize: '12px'
-                          }}
+                          className="cycle-action-button activate"
                         >
                           Set Active
                         </button>
@@ -550,15 +459,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                       
                       <button
                         onClick={() => deleteCycle(cycle.id)}
-                        style={{
-                          padding: '6px 12px',
-                          backgroundColor: '#dc3545',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          fontSize: '12px'
-                        }}
+                        className="cycle-action-button delete"
                       >
                         Delete
                       </button>
@@ -579,7 +480,7 @@ const FiveThreeOnePlanner: React.FC = () => {
           {!selectedCycle && activeCycle && (
             <>
               <p>Showing workouts for active cycle: <strong>{activeCycle.name}</strong></p>
-              <div style={{ marginBottom: '20px' }}>
+              <div className="view-workouts-section">
                 {[1, 2, 3, 4].map(week => renderWorkoutWeek(activeCycle, week))}
               </div>
             </>
@@ -587,25 +488,17 @@ const FiveThreeOnePlanner: React.FC = () => {
 
           {selectedCycle && (
             <>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div className="view-cycle-selector">
                 <p>Showing workouts for: <strong>{selectedCycle.name}</strong></p>
                 <button
                   onClick={() => setSelectedCycle(null)}
-                  style={{
-                    padding: '6px 12px',
-                    backgroundColor: '#6c757d',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '12px'
-                  }}
+                  className="cycle-action-button view"
                 >
                   Back to Active Cycle
                 </button>
               </div>
               
-              <div style={{ marginBottom: '20px' }}>
+              <div className="view-workouts-section">
                 {[1, 2, 3, 4].map(week => renderWorkoutWeek(selectedCycle, week))}
               </div>
             </>
@@ -619,28 +512,14 @@ const FiveThreeOnePlanner: React.FC = () => {
 
       {/* Success Message */}
       {success && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#d1ecf1',
-          border: '1px solid #bee5eb',
-          borderRadius: '4px',
-          marginTop: '20px',
-          color: '#0c5460'
-        }}>
+        <div className="success-message">
           ✅ {success}
         </div>
       )}
 
       {/* Error Display */}
       {error && (
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f8d7da',
-          border: '1px solid #f5c6cb',
-          borderRadius: '4px',
-          marginTop: '20px',
-          color: '#721c24'
-        }}>
+        <div className="error-message">
           <strong>Error:</strong> {error}
         </div>
       )}

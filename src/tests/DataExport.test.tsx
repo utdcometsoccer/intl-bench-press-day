@@ -108,7 +108,7 @@ const mockLink = {
 const originalCreateElement = document.createElement;
 document.createElement = vi.fn((tagName) => {
   if (tagName === 'a') {
-    return mockLink as any;
+    return mockLink as unknown as HTMLAnchorElement;
   }
   return originalCreateElement.call(document, tagName);
 });
