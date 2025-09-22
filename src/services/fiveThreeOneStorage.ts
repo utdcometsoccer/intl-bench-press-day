@@ -163,12 +163,14 @@ class FiveThreeOneStorage {
     return new Promise((resolve, reject) => {
       const transaction = this.db!.transaction([this.storeName], 'readonly');
       const store = transaction.objectStore(this.storeName);
-      const index = store.index('isActive');
       
-      const request = index.getAll(IDBKeyRange.only(true));
+      // Alternative: Get all and filter manually (more explicit)
+      const request = store.getAll();
       
       request.onsuccess = () => {
-        const activeCycles = request.result as FiveThreeOneCycle[];
+        const allCycles = request.result as FiveThreeOneCycle[];
+        const activeCycles = allCycles.filter(cycle => cycle.isActive === true);
+        
         // Should only be one active cycle, return the most recent
         if (activeCycles.length > 0) {
           const mostRecent = activeCycles.reduce((latest, current) => 

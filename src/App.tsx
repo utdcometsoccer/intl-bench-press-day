@@ -3,7 +3,7 @@ import logo from './assets/IBPD-FINAL.png'
 import './App.css'
 import ExerciseOneRepMaxTracker from './components/ExerciseOneRepMaxTracker'
 import ProgressChart from './components/ProgressChart'
-import FiveThreeOnePlanner from './components/FiveThreeOnePlanner'
+import FiveThreeOnePlanner from './components/FiveThreeOnePlanner/index'
 import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
 
