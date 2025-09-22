@@ -24,11 +24,12 @@ function App() {
       <h1>International Bench Press Day</h1>
       
       {/* Mobile Hamburger Menu Button */}
-      <button 
+      <button        
         className="hamburger-menu"
+        type='button'
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle navigation menu"
-        aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
+        aria-expanded={isMobileMenuOpen}
       >
         <span className="hamburger-line"></span>
         <span className="hamburger-line"></span>
