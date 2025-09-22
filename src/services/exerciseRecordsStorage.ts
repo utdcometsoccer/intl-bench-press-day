@@ -1,18 +1,7 @@
-import type { WorkoutSet } from './types';
-import type { Exercise } from './exercises';
+import type { WorkoutSet, Exercise, ExerciseRecord } from '../types';
 
-// Interface for storing exercise one-rep max records
-export interface ExerciseRecord {
-  id: string;
-  exerciseId: string;
-  exerciseName: string;
-  workoutSet: WorkoutSet; // The actual set performed
-  oneRepMax: number; // Calculated 1RM
-  formulaUsed: string; // Name of the formula used
-  formulaId: string; // ID of the formula used
-  dateRecorded: Date;
-  notes?: string;
-}
+// Re-export the ExerciseRecord type for backward compatibility
+export { type ExerciseRecord } from '../types';
 
 class ExerciseRecordsStorage {
   private dbName = 'ExerciseRecordsDB';

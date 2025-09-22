@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import DataExport from '../DataExport';
+import DataExport from '../components/DataExport';
 
 // Custom render function to ensure proper container setup
 const customRender = (ui: React.ReactElement) => {
@@ -10,7 +10,7 @@ const customRender = (ui: React.ReactElement) => {
 };
 
 // Mock the storage modules
-vi.mock('../oneRepMaxStorage', () => ({
+vi.mock('../services/oneRepMaxStorage', () => ({
   oneRepMaxStorage: {
     initialize: vi.fn().mockResolvedValue(undefined),
     listFunctions: vi.fn().mockResolvedValue([
@@ -25,7 +25,7 @@ vi.mock('../oneRepMaxStorage', () => ({
   }
 }));
 
-vi.mock('../exerciseRecordsStorage', () => ({
+vi.mock('../services/exerciseRecordsStorage', () => ({
   exerciseRecordsStorage: {
     initialize: vi.fn().mockResolvedValue(undefined),
     getAllRecords: vi.fn().mockResolvedValue([
@@ -44,7 +44,7 @@ vi.mock('../exerciseRecordsStorage', () => ({
   }
 }));
 
-vi.mock('../fiveThreeOneStorage', () => ({
+vi.mock('../services/fiveThreeOneStorage', () => ({
   fiveThreeOneStorage: {
     initialize: vi.fn().mockResolvedValue(undefined),
     getAllCycles: vi.fn().mockResolvedValue([
@@ -62,7 +62,7 @@ vi.mock('../fiveThreeOneStorage', () => ({
   }
 }));
 
-vi.mock('../workoutResultsStorage', () => ({
+vi.mock('../services/workoutResultsStorage', () => ({
   workoutResultsStorage: {
     initialize: vi.fn().mockResolvedValue(undefined),
     getAllWorkoutResults: vi.fn().mockResolvedValue([

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import ProgressChart from '../ProgressChart'
+import ProgressChart from '../components/ProgressChart'
 
 // Mock recharts
 vi.mock('recharts', () => ({
@@ -15,7 +15,7 @@ vi.mock('recharts', () => ({
 }))
 
 // Mock storage
-vi.mock('../exerciseRecordsStorage', () => ({
+vi.mock('../services/exerciseRecordsStorage', () => ({
   exerciseRecordsStorage: {
     initialize: vi.fn().mockResolvedValue(undefined),
     getAllRecords: vi.fn().mockResolvedValue([]),
@@ -39,11 +39,14 @@ describe('ProgressChart', () => {
   it('should display basic controls', async () => {
     render(<ProgressChart />)
     
+    // Wait for component to finish loading
     await waitFor(() => {
       expect(screen.getByText('Progress Chart')).toBeInTheDocument()
     })
     
-    // Check for the no data message when no data is available
-    expect(screen.getByText('No exercise records found. Start tracking your workouts to see your progress!')).toBeInTheDocument()
+    // Wait for the loading to complete and no data message to appear
+    await waitFor(() => {
+      expect(screen.getByText('No exercise records found. Start tracking your workouts to see your progress!')).toBeInTheDocument()
+    }, { timeout: 3000 })
   })
 })

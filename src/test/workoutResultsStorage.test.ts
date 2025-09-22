@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createWorkoutResultsStorage, WorkoutResultsStorage } from '../workoutResultsStorage'
-import type { DatabaseConnection, DatabaseConfig } from '../workoutResultsStorage'
+import { createWorkoutResultsStorage, WorkoutResultsStorage } from '../services/workoutResultsStorage'
+import type { DatabaseConnection, DatabaseConfig } from '../services/workoutResultsStorage'
 
 // Mock Database Connection
 class MockDatabaseConnection implements DatabaseConnection {

@@ -1,18 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import type { WorkoutSet } from './types';
-import type { Exercise } from './exercises';
-import type { ExerciseRecord } from './exerciseRecordsStorage';
-import { BARBELL_EXERCISES, getExerciseCategories, findExerciseById } from './exercises';
-import { oneRepMaxStorage, initializeWithPredefinedFormulas } from './oneRepMaxStorage';
-import { exerciseRecordsStorage } from './exerciseRecordsStorage';
-
-interface StoredFunctionInfo {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { WorkoutSet, Exercise, ExerciseRecord, StoredFunctionInfo } from '../types';
+import { BARBELL_EXERCISES, getExerciseCategories, findExerciseById } from '../exercises';
+import { oneRepMaxStorage, initializeWithPredefinedFormulas } from '../services/oneRepMaxStorage';
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 
 const ExerciseOneRepMaxTracker: React.FC = () => {
   // Exercise selection state

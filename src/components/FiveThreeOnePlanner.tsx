@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import type { FiveThreeOneCycle, FiveThreeOneMax } from './fiveThreeOneStorage';
-import type { ExerciseRecord } from './exerciseRecordsStorage';
+import { type FC, useCallback, useEffect, useState } from 'react';
+import type { ExerciseRecord } from '../services/exerciseRecordsStorage';
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
+import type { FiveThreeOneCycle, FiveThreeOneMax } from '../services/fiveThreeOneStorage';
 import {
-  fiveThreeOneStorage,
   FIVE_THREE_ONE_MAIN_EXERCISES,
   calculateTrainingMax,
+  fiveThreeOneStorage,
   generateWorkouts
-} from './fiveThreeOneStorage';
-import { exerciseRecordsStorage } from './exerciseRecordsStorage';
+} from '../services/fiveThreeOneStorage';
 
-const FiveThreeOnePlanner: React.FC = () => {
+const FiveThreeOnePlanner: FC = () => {
   // State for creating new cycles
   const [cycleName, setCycleName] = useState<string>('');
   const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -34,7 +34,7 @@ const FiveThreeOnePlanner: React.FC = () => {
     try {
       const allCycles = await fiveThreeOneStorage.getAllCycles();
       setCycles(allCycles);
-      
+
       const active = await fiveThreeOneStorage.getActiveCycle();
       setActiveCycle(active);
     } catch (err) {
@@ -46,7 +46,7 @@ const FiveThreeOnePlanner: React.FC = () => {
     try {
       const records = await exerciseRecordsStorage.getPersonalRecords();
       setPersonalRecords(records);
-      
+
       // Initialize custom maxes with personal records if available
       const initialMaxes: Record<string, number> = {};
       FIVE_THREE_ONE_MAIN_EXERCISES.forEach(exercise => {
@@ -66,12 +66,12 @@ const FiveThreeOnePlanner: React.FC = () => {
       setIsLoading(true);
       await fiveThreeOneStorage.initialize();
       await exerciseRecordsStorage.initialize();
-      
+
       await Promise.all([
         loadCycles(),
         loadPersonalRecords()
       ]);
-      
+
       // Set default cycle name
       setCycleName(`Cycle ${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`);
     } catch (err) {
@@ -103,7 +103,7 @@ const FiveThreeOnePlanner: React.FC = () => {
     const maxes: FiveThreeOneMax[] = [];
     for (const exercise of FIVE_THREE_ONE_MAIN_EXERCISES) {
       let oneRepMax = 0;
-      
+
       if (usePersonalRecords) {
         const record = personalRecords.get(exercise.id);
         if (record) {
@@ -205,14 +205,14 @@ const FiveThreeOnePlanner: React.FC = () => {
         <h4 className="week-title">
           {weekName}
         </h4>
-        
+
         <div className="workouts-grid">
           {weekWorkouts.sort((a, b) => a.day - b.day).map(workout => (
             <div key={workout.id} className="workout-card">
               <h5 className="workout-title">
                 Day {workout.day}: {workout.exerciseName}
               </h5>
-              
+
               {/* Warmup Sets */}
               <div className="workout-section">
                 <strong className="workout-section-title">Warmup:</strong>
@@ -284,7 +284,7 @@ const FiveThreeOnePlanner: React.FC = () => {
       {activeTab === 'create' && (
         <div>
           <h3>Create New 5-3-1 Cycle</h3>
-          
+
           <div className="form-grid two-column">
             <div>
               <label htmlFor="cycle-name" className="form-label">
@@ -331,7 +331,7 @@ const FiveThreeOnePlanner: React.FC = () => {
           {/* One Rep Max Configuration */}
           <div className="one-rep-max-config">
             <h4 className="config-title">One Rep Max Configuration</h4>
-            
+
             <div className="radio-group">
               <label className="radio-label">
                 <input
@@ -356,7 +356,7 @@ const FiveThreeOnePlanner: React.FC = () => {
             <div className="max-config-grid">
               {FIVE_THREE_ONE_MAIN_EXERCISES.map(exercise => {
                 const personalRecord = personalRecords.get(exercise.id);
-                const currentValue = usePersonalRecords 
+                const currentValue = usePersonalRecords
                   ? (personalRecord?.oneRepMax || 0)
                   : (customMaxes[exercise.id] || 0);
                 const trainingMax = currentValue ? calculateTrainingMax(currentValue) : 0;
@@ -364,7 +364,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                 return (
                   <div key={exercise.id} className="max-config-card">
                     <h5 className="max-config-title">{exercise.name}</h5>
-                    
+
                     {usePersonalRecords ? (
                       <div>
                         <p className="pr-info">
@@ -414,7 +414,7 @@ const FiveThreeOnePlanner: React.FC = () => {
       {activeTab === 'manage' && (
         <div>
           <h3>Manage Cycles</h3>
-          
+
           {cycles.length === 0 ? (
             <p>No cycles created yet. Create your first cycle in the "Create Cycle" tab.</p>
           ) : (
@@ -439,7 +439,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                         </p>
                       )}
                     </div>
-                    
+
                     <div className="cycle-actions">
                       <button
                         onClick={() => setSelectedCycle(cycle)}
@@ -447,7 +447,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                       >
                         View
                       </button>
-                      
+
                       {!cycle.isActive && (
                         <button
                           onClick={() => setActiveCycleHandler(cycle.id)}
@@ -456,7 +456,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                           Set Active
                         </button>
                       )}
-                      
+
                       <button
                         onClick={() => deleteCycle(cycle.id)}
                         className="cycle-action-button delete"
@@ -476,7 +476,7 @@ const FiveThreeOnePlanner: React.FC = () => {
       {activeTab === 'view' && (
         <div>
           <h3>View Workouts</h3>
-          
+
           {!selectedCycle && activeCycle && (
             <>
               <p>Showing workouts for active cycle: <strong>{activeCycle.name}</strong></p>
@@ -497,7 +497,7 @@ const FiveThreeOnePlanner: React.FC = () => {
                   Back to Active Cycle
                 </button>
               </div>
-              
+
               <div className="view-workouts-section">
                 {[1, 2, 3, 4].map(week => renderWorkoutWeek(selectedCycle, week))}
               </div>
