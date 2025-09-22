@@ -3091,3 +3091,14 @@
   margin: 0;
   padding-left: 20px;
 }
+
+
+/* Stat card color variants to match chart colors */
+.stat-card-0 { border-left: 4px solid #8884d8; }
+.stat-card-1 { border-left: 4px solid #82ca9d; }
+.stat-card-2 { border-left: 4px solid #ffc658; }
+.stat-card-3 { border-left: 4px solid #ff7c7c; }
+.stat-card-4 { border-left: 4px solid #8dd1e1; }
+.stat-card-5 { border-left: 4px solid #d084d0; }
+.stat-card-6 { border-left: 4px solid #ffb347; }
+.stat-card-7 { border-left: 4px solid #87ceeb; }
