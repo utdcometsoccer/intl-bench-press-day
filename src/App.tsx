@@ -6,6 +6,7 @@ import ProgressChart from './components/ProgressChart'
 import FiveThreeOnePlanner from './components/FiveThreeOnePlanner/index'
 import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
+import PWAInstallPrompt from './PWAInstallPrompt'
 
 function App() {
   const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'export'>('tracker')
@@ -109,6 +110,9 @@ function App() {
         {activeTab === 'logger' && <WorkoutLogger />}
         {activeTab === 'export' && <DataExport />}
       </main>
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </>
   )
 }
