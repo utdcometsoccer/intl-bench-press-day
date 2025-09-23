@@ -70,7 +70,7 @@ describe('CreateCycleForm', () => {
   it('renders cycle name input with correct value', () => {
     render(<CreateCycleForm {...defaultProps} cycleName="Test Cycle" />);
     
-    const input = screen.getByLabelText('Cycle Name:');
+    const input = screen.getByLabelText(/Cycle Name:/);
     expect(input).toHaveValue('Test Cycle');
     expect(input).toHaveAttribute('placeholder', 'e.g., Cycle 2025-01');
   });
@@ -78,7 +78,7 @@ describe('CreateCycleForm', () => {
   it('renders start date input with correct value', () => {
     render(<CreateCycleForm {...defaultProps} startDate="2025-01-15" />);
     
-    const input = screen.getByLabelText('Start Date:');
+    const input = screen.getByLabelText(/Start Date:/);
     expect(input).toHaveValue('2025-01-15');
     expect(input).toHaveAttribute('type', 'date');
   });
@@ -95,7 +95,7 @@ describe('CreateCycleForm', () => {
   it('calls onCycleNameChange when cycle name changes', () => {
     render(<CreateCycleForm {...defaultProps} />);
     
-    const input = screen.getByLabelText('Cycle Name:');
+    const input = screen.getByLabelText(/Cycle Name:/);
     fireEvent.change(input, { target: { value: 'New Cycle' } });
     
     expect(mockOnCycleNameChange).toHaveBeenCalledWith('New Cycle');
@@ -104,7 +104,7 @@ describe('CreateCycleForm', () => {
   it('calls onStartDateChange when start date changes', () => {
     render(<CreateCycleForm {...defaultProps} />);
     
-    const input = screen.getByLabelText('Start Date:');
+    const input = screen.getByLabelText(/Start Date:/);
     fireEvent.change(input, { target: { value: '2025-02-01' } });
     
     expect(mockOnStartDateChange).toHaveBeenCalledWith('2025-02-01');
@@ -193,7 +193,7 @@ describe('CreateCycleForm', () => {
   });
 
   it('renders create cycle button with correct text and state', () => {
-    render(<CreateCycleForm {...defaultProps} cycleName="Valid Cycle Name" />);
+    render(<CreateCycleForm {...defaultProps} cycleName="Valid Cycle Name" startDate="2025-01-15" />);
     
     const button = screen.getByText('Create 5-3-1 Cycle');
     expect(button).toBeInTheDocument();
@@ -228,14 +228,14 @@ describe('CreateCycleForm', () => {
   });
 
   it('enables button when cycle name is provided', () => {
-    render(<CreateCycleForm {...defaultProps} cycleName="Valid Cycle Name" />);
+    render(<CreateCycleForm {...defaultProps} cycleName="Valid Cycle Name" startDate="2025-01-15" />);
     
     const button = screen.getByText('Create 5-3-1 Cycle');
     expect(button).toBeEnabled();
   });
 
   it('calls onCreateCycle when create button is clicked', () => {
-    render(<CreateCycleForm {...defaultProps} cycleName="Test Cycle" />);
+    render(<CreateCycleForm {...defaultProps} cycleName="Test Cycle" startDate="2025-01-15" />);
     
     const button = screen.getByText('Create 5-3-1 Cycle');
     fireEvent.click(button);

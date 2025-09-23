@@ -93,19 +93,19 @@ describe('TabNavigation', () => {
   it('applies correct button classes to all tabs', () => {
     render(<TabNavigation {...defaultProps} />);
     
-    const buttons = screen.getAllByRole('button');
-    buttons.forEach(button => {
-      expect(button).toHaveClass('planner-tab-button');
+    const tabs = screen.getAllByRole('tab');
+    tabs.forEach(tab => {
+      expect(tab).toHaveClass('planner-tab-button');
     });
   });
 
   it('maintains tab order', () => {
     render(<TabNavigation {...defaultProps} />);
     
-    const buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveTextContent('Create Cycle');
-    expect(buttons[1]).toHaveTextContent('Manage Cycles');
-    expect(buttons[2]).toHaveTextContent('View Workouts');
+    const tabs = screen.getAllByRole('tab');
+    expect(tabs[0]).toHaveTextContent('Create Cycle');
+    expect(tabs[1]).toHaveTextContent('Manage Cycles');
+    expect(tabs[2]).toHaveTextContent('View Workouts');
   });
 
   it('handles single tab', () => {
@@ -114,7 +114,7 @@ describe('TabNavigation', () => {
     render(<TabNavigation {...defaultProps} tabs={singleTab} />);
     
     expect(screen.getByText('Only Tab')).toBeInTheDocument();
-    expect(screen.getAllByRole('button')).toHaveLength(1);
+    expect(screen.getAllByRole('tab')).toHaveLength(1);
   });
 
   it('does not call onTabChange when clicking already active tab', () => {
