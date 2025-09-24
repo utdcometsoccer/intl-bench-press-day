@@ -1,8 +1,10 @@
 import { type FC, useState, useEffect, useCallback } from 'react';
 import type { FiveThreeOneCycle, FiveThreeOneWorkout } from '../services/fiveThreeOneStorage';
 import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from '../services/workoutResultsStorage';
+import type { PlateCalculation } from '../types/plateCalculator';
 import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage, calculateEstimated1RM, calculateRPEDescription } from '../services/workoutResultsStorage';
+import PlateCalculator from './PlateCalculator';
 
 const WorkoutLogger: FC = () => {
   // State for current workout
@@ -30,6 +32,11 @@ const WorkoutLogger: FC = () => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
+
+  // Plate calculator state
+  const [showPlateCalculator, setShowPlateCalculator] = useState<boolean>(false);
+  const [plateCalculatorWeight, setPlateCalculatorWeight] = useState<number>(135);
+  const [currentCalculation, setCurrentCalculation] = useState<PlateCalculation | null>(null);
 
   useEffect(() => {
     initializeWorkoutLogger();
@@ -120,6 +127,16 @@ const WorkoutLogger: FC = () => {
       console.error('Failed to load past results:', err);
     }
   }, [currentWorkout]);
+
+  // Plate calculator helpers
+  const openPlateCalculator = (weight: number) => {
+    setPlateCalculatorWeight(weight || 135);
+    setShowPlateCalculator(true);
+  };
+
+  const handlePlateCalculatorChange = (calculation: PlateCalculation | null) => {
+    setCurrentCalculation(calculation);
+  };
 
   const updateWarmupResult = (index: number, field: keyof WorkoutSetResult, value: string | number | boolean | undefined) => {
     setWarmupResults(prev => prev.map((result, i) => 
@@ -321,7 +338,7 @@ const WorkoutLogger: FC = () => {
                       className="set-input"
                     />
                   </div>
-                  <div>
+                  <div className="weight-input-container">
                     <input
                       type="number"
                       min="0"
@@ -331,6 +348,15 @@ const WorkoutLogger: FC = () => {
                       placeholder="Weight"
                       className="set-input"
                     />
+                    <button
+                      type="button"
+                      onClick={() => openPlateCalculator(result.actualWeight)}
+                      className="plate-calculator-button"
+                      title="Open plate calculator"
+                      aria-label="Open plate calculator"
+                    >
+                      🏋️
+                    </button>
                   </div>
                   <div>
                     <input
@@ -382,7 +408,7 @@ const WorkoutLogger: FC = () => {
                       className={`reps-input ${result.isAmrap ? 'amrap-input' : ''}`}
                     />
                   </div>
-                  <div>
+                  <div className="weight-input-container">
                     <input
                       type="number"
                       min="0"
@@ -392,6 +418,15 @@ const WorkoutLogger: FC = () => {
                       placeholder="Weight"
                       className="weight-input"
                     />
+                    <button
+                      type="button"
+                      onClick={() => openPlateCalculator(result.actualWeight)}
+                      className="plate-calculator-button"
+                      title="Open plate calculator"
+                      aria-label="Open plate calculator"
+                    >
+                      🏋️
+                    </button>
                   </div>
                   <div>
                     <input
@@ -614,6 +649,37 @@ const WorkoutLogger: FC = () => {
       {error && (
         <div className="error-alert">
           <strong>Error:</strong> {error}
+        </div>
+      )}
+
+      {/* Plate Calculator Modal */}
+      {showPlateCalculator && (
+        <div className="plate-calculator-modal" onClick={() => setShowPlateCalculator(false)}>
+          <div className="plate-calculator-content" onClick={e => e.stopPropagation()}>
+            <div className="plate-calculator-header">
+              <h3>Plate Calculator</h3>
+              <button
+                onClick={() => setShowPlateCalculator(false)}
+                className="close-button"
+                aria-label="Close plate calculator"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="plate-calculator-body">
+              <PlateCalculator
+                targetWeight={plateCalculatorWeight}
+                onCalculationChange={handlePlateCalculatorChange}
+                showInline={true}
+              />
+              {currentCalculation && (
+                <div className="calculation-summary">
+                  <p><strong>Load this weight:</strong> {currentCalculation.totalWeight} lbs</p>
+                  <p><strong>Difference from target:</strong> {(currentCalculation.totalWeight - plateCalculatorWeight).toFixed(1)} lbs</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -6,13 +6,14 @@ import ProgressChart from './components/ProgressChart'
 import FiveThreeOnePlanner from './components/FiveThreeOnePlanner/index'
 import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
+import PlateCalculator from './components/PlateCalculator'
 import PWAInstallPrompt from './PWAInstallPrompt'
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'export'>('tracker')
+  const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const handleTabClick = (tab: 'tracker' | 'progress' | 'planner' | 'logger' | 'export') => {
+  const handleTabClick = (tab: 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export') => {
     setActiveTab(tab)
     setIsMobileMenuOpen(false) // Close mobile menu when tab is selected
   }
@@ -85,6 +86,13 @@ function App() {
           Workout Logger
         </button>
         <button
+          onClick={() => handleTabClick('plates')}
+          className={`tab-button ${activeTab === 'plates' ? 'active' : ''}`}
+          aria-current={activeTab === 'plates' ? 'page' : undefined}
+        >
+          Plate Calculator
+        </button>
+        <button
           onClick={() => handleTabClick('export')}
           className={`tab-button ${activeTab === 'export' ? 'active' : ''}`}
           aria-current={activeTab === 'export' ? 'page' : undefined}
@@ -108,6 +116,7 @@ function App() {
         {activeTab === 'progress' && <ProgressChart />}
         {activeTab === 'planner' && <FiveThreeOnePlanner />}
         {activeTab === 'logger' && <WorkoutLogger />}
+        {activeTab === 'plates' && <PlateCalculator />}
         {activeTab === 'export' && <DataExport />}
       </main>
 
