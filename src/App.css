@@ -34,6 +34,87 @@
   --container-xxl: 1320px;
 }
 
+/* Light theme colors */
+:root[data-theme="light"],
+:root {
+  /* Alert and Message Colors */
+  --success-bg: #d1ecf1;
+  --success-border: #bee5eb;
+  --success-text: #0c5460;
+  --error-bg: #f8d7da;
+  --error-border: #f5c6cb;
+  --error-text: #721c24;
+  --info-bg: #d4edda;
+  --info-border: #c3e6cb;
+  --info-text: #155724;
+  
+  /* Button Colors */
+  --primary-button-bg: #007bff;
+  --primary-button-text: white;
+  --primary-button-disabled-bg: #ccc;
+  --secondary-button-bg: #6c757d;
+  --secondary-button-text: white;
+  --danger-button-bg: #dc3545;
+  --danger-button-text: white;
+  
+  /* Container and Border Colors */
+  --container-bg: #f9f9f9;
+  --container-border: #ccc;
+  --form-section-bg: #f8f9fa;
+  --border-color: #dee2e6;
+  
+  /* Text Colors */
+  --text-primary: #213547;
+  --text-secondary: #6c757d;
+  --text-muted: #666;
+  
+  /* Tab Navigation */
+  --tab-border-color: #dee2e6;
+  --tab-text-color: #6c757d;
+  --tab-active-color: #007bff;
+  --tab-hover-bg: #f8f9fa;
+}
+
+/* Dark theme colors */
+:root[data-theme="dark"] {
+  /* Alert and Message Colors - adjusted for dark mode */
+  --success-bg: #155724;
+  --success-border: #1c7430;
+  --success-text: #d4edda;
+  --error-bg: #721c24;
+  --error-border: #8b2632;
+  --error-text: #f8d7da;
+  --info-bg: #0c5460;
+  --info-border: #117a8b;
+  --info-text: #d1ecf1;
+  
+  /* Button Colors */
+  --primary-button-bg: #0d6efd;
+  --primary-button-text: white;
+  --primary-button-disabled-bg: #555;
+  --secondary-button-bg: #6c757d;
+  --secondary-button-text: white;
+  --danger-button-bg: #dc3545;
+  --danger-button-text: white;
+  
+  /* Container and Border Colors */
+  --container-bg: #1a1a1a;
+  --container-border: #444;
+  --form-section-bg: #2a2a2a;
+  --border-color: #444;
+  
+  /* Text Colors */
+  --text-primary: rgba(255, 255, 255, 0.87);
+  --text-secondary: #adb5bd;
+  --text-muted: #999;
+  
+  /* Tab Navigation */
+  --tab-border-color: #444;
+  --tab-text-color: #adb5bd;
+  --tab-active-color: #0d6efd;
+  --tab-hover-bg: #2a2a2a;
+}
+
 /* ========================================
    ROOT STYLES AND GLOBAL RESETS 
    ======================================== */
@@ -72,64 +153,64 @@
 /* Alerts and Messages */
 .success-alert {
   padding: 15px;
-  background-color: #d1ecf1;
-  border: 1px solid #bee5eb;
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
   border-radius: 4px;
   margin-bottom: 15px;
-  color: #0c5460;
+  color: var(--success-text);
 }
 
 .error-alert {
   padding: 15px;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
   border-radius: 4px;
-  color: #721c24;
+  color: var(--error-text);
 }
 
 .success-message {
   padding: 15px;
-  background-color: #d1ecf1;
-  border: 1px solid #bee5eb;
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
   border-radius: 4px;
   margin-bottom: 15px;
-  color: #0c5460;
+  color: var(--success-text);
 }
 
 .error-message {
   padding: 15px;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
   border-radius: 4px;
-  color: #721c24;
+  color: var(--error-text);
 }
 
 .info-message {
   padding: 15px;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
+  background-color: var(--info-bg);
+  border: 1px solid var(--info-border);
   border-radius: 4px;
   margin-bottom: 15px;
 }
 
 .info-message h3 {
   margin: 0 0 10px 0;
-  color: #155724;
+  color: var(--info-text);
 }
 
 .info-message p {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
-  color: #155724;
+  color: var(--info-text);
 }
 
 /* Buttons */
 .primary-button {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-button-bg);
+  color: var(--primary-button-text);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -138,14 +219,14 @@
 }
 
 .primary-button:disabled {
-  background-color: #ccc;
+  background-color: var(--primary-button-disabled-bg);
   cursor: not-allowed;
 }
 
 .secondary-button {
   padding: 8px 16px;
-  background-color: #6c757d;
-  color: white;
+  background-color: var(--secondary-button-bg);
+  color: var(--secondary-button-text);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -155,8 +236,8 @@
 
 .danger-button {
   padding: 8px 16px;
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--danger-button-bg);
+  color: var(--danger-button-text);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -167,7 +248,7 @@
 /* Container Styles */
 .component-container {
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--container-border);
   border-radius: 8px;
   max-width: 800px;
   margin: 20px auto;
@@ -175,7 +256,7 @@
 
 .large-component-container {
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--container-border);
   border-radius: 8px;
   max-width: 1200px;
   margin: 20px auto;
@@ -183,7 +264,7 @@
 
 .extra-large-component-container {
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--container-border);
   border-radius: 8px;
   max-width: 1000px;
   margin: 20px auto;
@@ -199,28 +280,34 @@
   width: 100%;
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--container-border);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .form-select {
   width: 100%;
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--container-border);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .form-textarea {
   width: 100%;
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--container-border);
+  background-color: var(--background-color);
+  color: var(--text-color);
   resize: vertical;
 }
 
 .form-section {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg);
   border-radius: 6px;
 }
 
@@ -266,7 +353,7 @@
 
 /* Loading and Utility Classes */
 .loading-text {
-  color: #6c757d;
+  color: var(--text-secondary);
   margin-bottom: 20px;
 }
 
@@ -291,17 +378,59 @@
    APP COMPONENT STYLES 
    ======================================== */
 
+header {
+  position: relative;
+}
+
 .app-logo {
   max-width: 200px;
   display: block;
   margin: 20px auto;
 }
 
+.theme-toggle-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--button-bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.theme-toggle-button:hover {
+  transform: scale(1.1);
+  border-color: var(--tab-active-color);
+}
+
+.theme-toggle-button:focus {
+  outline: 2px solid var(--tab-active-color);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .theme-toggle-button {
+    top: 10px;
+    right: 60px; /* Position to the left of hamburger menu */
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+}
+
 .tab-navigation {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--tab-border-color);
   transition: all 0.3s ease;
 }
 
@@ -312,7 +441,7 @@
     top: 60px;
     left: 0;
     right: 0;
-    background-color: var(--background-color, white);
+    background-color: var(--background-color);
     border-radius: 0 0 8px 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 999;
@@ -340,7 +469,7 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: normal;
-  color: #6c757d;
+  color: var(--tab-text-color);
   transition: all 0.2s ease;
 }
 
@@ -350,7 +479,7 @@
     width: 100%;
     text-align: center;
     padding: 15px 20px;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--border-color);
     border-radius: 0;
     margin: 0;
   }
@@ -360,20 +489,20 @@
   }
   
   .tab-button:hover {
-    background-color: #f8f9fa;
+    background-color: var(--tab-hover-bg);
   }
   
   .tab-button.active {
-    background-color: #007bff;
+    background-color: var(--tab-active-color);
     color: white;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--border-color);
   }
 }
 
 .tab-button.active {
-  border-bottom: 3px solid #007bff;
+  border-bottom: 3px solid var(--tab-active-color);
   font-weight: bold;
-  color: #007bff;
+  color: var(--tab-active-color);
 }
 
 .logo {
@@ -420,11 +549,11 @@
 
 .data-export-container {
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--container-border);
   border-radius: 8px;
   max-width: 600px;
   margin: 20px auto;
-  background-color: #f9f9f9;
+  background-color: var(--container-bg);
 }
 
 .data-export-title {
@@ -432,7 +561,7 @@
 }
 
 .data-export-description {
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 20px;
 }
 
@@ -444,7 +573,7 @@
 
 .export-button-json {
   padding: 12px 24px;
-  background-color: #007bff;
+  background-color: var(--primary-button-bg);
   color: white;
   border: none;
   border-radius: 6px;
@@ -475,23 +604,23 @@
 .export-status-success {
   padding: 12px;
   border-radius: 4px;
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: var(--info-bg);
+  color: var(--info-text);
+  border: 1px solid var(--info-border);
 }
 
 .export-status-error {
   padding: 12px;
   border-radius: 4px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
 }
 
 .export-details {
   margin-top: 20px;
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .export-details-list {
