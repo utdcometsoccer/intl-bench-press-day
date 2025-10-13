@@ -77,7 +77,7 @@
 }
 
 .error {
-  background: #f8d7da;
+  background: var(--error-bg, #f8d7da);
   color: #721c24;
   padding: 12px 16px;
   border: 1px solid #f5c6cb;
@@ -86,7 +86,7 @@
 }
 
 .locationInfo {
-  background: #d1ecf1;
+  background: var(--info-bg, #d1ecf1);
   color: #0c5460;
   padding: 10px 16px;
   border: 1px solid #bee5eb;
