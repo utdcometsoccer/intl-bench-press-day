@@ -8,10 +8,12 @@ import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
 import PlateCalculator from './components/PlateCalculator'
 import PWAInstallPrompt from './PWAInstallPrompt'
+import { useTheme } from './hooks/useTheme'
 
 function App() {
   const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
 
   const handleTabClick = (tab: 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export') => {
     setActiveTab(tab)
@@ -34,6 +36,16 @@ function App() {
           <img src={logo} alt="International Bench Press Day Logo" className="app-logo" />
         </div>
         <h1>International Bench Press Day</h1>
+        
+        {/* Theme Toggle Button */}
+        <button 
+          onClick={toggleTheme}
+          className="theme-toggle-button"
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
       </header>
       
       {/* Mobile Hamburger Menu Button */}
