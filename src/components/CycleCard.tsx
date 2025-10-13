@@ -39,6 +39,7 @@ const CycleCard: FC<CycleCardProps> = ({
           <button
             onClick={() => onView(cycle)}
             className="cycle-action-button view"
+            aria-label={`View workouts for ${cycle.name}`}
           >
             View
           </button>
@@ -47,6 +48,7 @@ const CycleCard: FC<CycleCardProps> = ({
             <button
               onClick={() => onSetActive(cycle.id)}
               className="cycle-action-button activate"
+              aria-label={`Set ${cycle.name} as active cycle`}
             >
               Set Active
             </button>
@@ -55,6 +57,7 @@ const CycleCard: FC<CycleCardProps> = ({
           <button
             onClick={() => onDelete(cycle.id)}
             className="cycle-action-button delete"
+            aria-label={`Delete ${cycle.name}`}
           >
             Delete
           </button>
