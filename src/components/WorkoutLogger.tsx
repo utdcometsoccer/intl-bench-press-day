@@ -373,11 +373,12 @@ const WorkoutLogger: FC = () => {
                     />
                   </div>
                   <div>
-                    <input
-                      type="text"
+                    <textarea
                       value={result.notes || ''}
                       onChange={(e) => updateWarmupResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
+                      className="set-input set-notes-textarea"
+                      rows={1}
                       className="set-input"
                       aria-label={`Warmup set ${index + 1} notes`}
                     />
@@ -452,12 +453,12 @@ const WorkoutLogger: FC = () => {
                     )}
                   </div>
                   <div>
-                    <input
-                      type="text"
+                    <textarea
                       value={result.notes || ''}
                       onChange={(e) => updateMainSetResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
-                      className="weight-input"
+                      className="weight-input set-notes-textarea"
+                      rows={1}
                       aria-label={`Main set ${index + 1} notes`}
                     />
                   </div>
@@ -504,11 +505,12 @@ const WorkoutLogger: FC = () => {
                       className="assistance-input assistance-reps-input"
                       aria-label={`${exercise.exerciseName} set ${setIndex + 1} RPE`}
                     />
-                    <input
-                      type="text"
+                    <textarea
                       value={set.notes || ''}
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'notes', e.target.value)}
                       placeholder="Notes"
+                      className="assistance-input assistance-notes-textarea"
+                      rows={1}
                       className="assistance-input"
                       aria-label={`${exercise.exerciseName} set ${setIndex + 1} notes`}
                     />

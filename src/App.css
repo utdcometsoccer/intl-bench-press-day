@@ -4072,3 +4072,88 @@ a:focus {
     width: auto;
   }
 }
+
+/* ========================================
+   WORKOUT LOGGER MOBILE RESPONSIVE STYLES
+   ======================================== */
+
+/* Textarea styles for per-set notes */
+.set-notes-textarea,
+.assistance-notes-textarea {
+  resize: vertical;
+  min-height: 32px;
+  font-family: inherit;
+}
+
+/* Mobile-specific styles for workout logger */
+@media (max-width: 767px) {
+  /* Make set rows stack vertically on mobile */
+  .set-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 12px !important;
+  }
+
+  /* Ensure all inputs take full width and don't overflow */
+  .set-input,
+  .weight-input,
+  .reps-input,
+  .set-notes-textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Keep weight input container aligned properly */
+  .weight-input-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .weight-input-container input {
+    flex: 1;
+    min-width: 0; /* Allow input to shrink below its minimum content width */
+  }
+
+  /* Ensure plate calculator button stays aligned */
+  .plate-calculator-button {
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* Stack assistance work inputs vertically on mobile */
+  .assistance-set-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .assistance-input,
+  .assistance-reps-input,
+  .assistance-weight-input,
+  .assistance-notes-textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .assistance-action-button {
+    width: 100%;
+  }
+
+  /* Stack summary grid on mobile */
+  .summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Ensure labels and inputs are properly aligned */
+  .set-label,
+  .summary-field-label {
+    display: block;
+    margin-bottom: 4px;
+  }
+}
