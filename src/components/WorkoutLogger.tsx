@@ -336,6 +336,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateWarmupResult(index, 'actualReps', Number(e.target.value))}
                       placeholder="Reps"
                       className="set-input"
+                      aria-label={`Warmup set ${index + 1} actual reps`}
                     />
                   </div>
                   <div className="weight-input-container">
@@ -347,6 +348,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateWarmupResult(index, 'actualWeight', Number(e.target.value))}
                       placeholder="Weight"
                       className="set-input"
+                      aria-label={`Warmup set ${index + 1} actual weight`}
                     />
                     <button
                       type="button"
@@ -367,6 +369,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateWarmupResult(index, 'rpe', Number(e.target.value) || undefined)}
                       placeholder="RPE"
                       className="set-input"
+                      aria-label={`Warmup set ${index + 1} RPE`}
                     />
                   </div>
                   <div>
@@ -376,6 +379,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateWarmupResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
                       className="set-input"
+                      aria-label={`Warmup set ${index + 1} notes`}
                     />
                   </div>
                 </div>
@@ -406,6 +410,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateMainSetResult(index, 'actualReps', Number(e.target.value))}
                       placeholder="Reps"
                       className={`reps-input ${result.isAmrap ? 'amrap-input' : ''}`}
+                      aria-label={`Main set ${index + 1} actual reps${result.isAmrap ? ' (AMRAP)' : ''}`}
                     />
                   </div>
                   <div className="weight-input-container">
@@ -417,6 +422,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateMainSetResult(index, 'actualWeight', Number(e.target.value))}
                       placeholder="Weight"
                       className="weight-input"
+                      aria-label={`Main set ${index + 1} actual weight`}
                     />
                     <button
                       type="button"
@@ -437,6 +443,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateMainSetResult(index, 'rpe', Number(e.target.value) || undefined)}
                       placeholder="RPE"
                       className="weight-input"
+                      aria-label={`Main set ${index + 1} RPE`}
                     />
                   </div>
                   <div className="estimated-1rm-display">
@@ -451,6 +458,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateMainSetResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
                       className="weight-input"
+                      aria-label={`Main set ${index + 1} notes`}
                     />
                   </div>
                 </div>
@@ -474,6 +482,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'reps', Number(e.target.value))}
                       placeholder="Reps"
                       className="assistance-input assistance-reps-input"
+                      aria-label={`${exercise.exerciseName} set ${setIndex + 1} reps`}
                     />
                     <input
                       type="number"
@@ -483,6 +492,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'weight', Number(e.target.value) || undefined)}
                       placeholder="Weight"
                       className="assistance-input assistance-weight-input"
+                      aria-label={`${exercise.exerciseName} set ${setIndex + 1} weight`}
                     />
                     <input
                       type="number"
@@ -492,6 +502,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'rpe', Number(e.target.value) || undefined)}
                       placeholder="RPE"
                       className="assistance-input assistance-reps-input"
+                      aria-label={`${exercise.exerciseName} set ${setIndex + 1} RPE`}
                     />
                     <input
                       type="text"
@@ -499,10 +510,12 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'notes', e.target.value)}
                       placeholder="Notes"
                       className="assistance-input"
+                      aria-label={`${exercise.exerciseName} set ${setIndex + 1} notes`}
                     />
                     <button
                       onClick={() => removeAssistanceSet(exerciseIndex, setIndex)}
                       className="assistance-action-button assistance-remove-button"
+                      aria-label={`Remove set ${setIndex + 1} from ${exercise.exerciseName}`}
                     >
                       Remove
                     </button>
@@ -511,6 +524,7 @@ const WorkoutLogger: FC = () => {
                 <button
                   onClick={() => addAssistanceSet(exerciseIndex)}
                   className="assistance-add-set-button"
+                  aria-label={`Add set to ${exercise.exerciseName}`}
                 >
                   Add Set
                 </button>
