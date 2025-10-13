@@ -378,8 +378,7 @@ const WorkoutLogger: FC = () => {
                       onChange={(e) => updateWarmupResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
                       className="set-input set-notes-textarea"
-                      rows={1}
-                      className="set-input"
+                      rows={1}                      
                       aria-label={`Warmup set ${index + 1} notes`}
                     />
                   </div>
@@ -511,7 +510,6 @@ const WorkoutLogger: FC = () => {
                       placeholder="Notes"
                       className="assistance-input assistance-notes-textarea"
                       rows={1}
-                      className="assistance-input"
                       aria-label={`${exercise.exerciseName} set ${setIndex + 1} notes`}
                     />
                     <button
