@@ -370,12 +370,12 @@ const WorkoutLogger: FC = () => {
                     />
                   </div>
                   <div>
-                    <input
-                      type="text"
+                    <textarea
                       value={result.notes || ''}
                       onChange={(e) => updateWarmupResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
-                      className="set-input"
+                      className="set-input set-notes-textarea"
+                      rows={1}
                     />
                   </div>
                 </div>
@@ -445,12 +445,12 @@ const WorkoutLogger: FC = () => {
                     )}
                   </div>
                   <div>
-                    <input
-                      type="text"
+                    <textarea
                       value={result.notes || ''}
                       onChange={(e) => updateMainSetResult(index, 'notes', e.target.value)}
                       placeholder="Notes"
-                      className="weight-input"
+                      className="weight-input set-notes-textarea"
+                      rows={1}
                     />
                   </div>
                 </div>
@@ -493,12 +493,12 @@ const WorkoutLogger: FC = () => {
                       placeholder="RPE"
                       className="assistance-input assistance-reps-input"
                     />
-                    <input
-                      type="text"
+                    <textarea
                       value={set.notes || ''}
                       onChange={(e) => updateAssistanceWork(exerciseIndex, setIndex, 'notes', e.target.value)}
                       placeholder="Notes"
-                      className="assistance-input"
+                      className="assistance-input assistance-notes-textarea"
+                      rows={1}
                     />
                     <button
                       onClick={() => removeAssistanceSet(exerciseIndex, setIndex)}
