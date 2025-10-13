@@ -70,7 +70,7 @@
   
   /* Tab Navigation */
   --tab-border-color: #dee2e6;
-  --tab-text-color: #6c757d;
+  --tab-text-color: var(--text-secondary, #6c757d);
   --tab-active-color: #007bff;
   --tab-hover-bg: #f8f9fa;
 }
@@ -634,7 +634,7 @@ header {
 
 .exercise-info {
   padding: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   border: 1px solid #dee2e6;
 }
@@ -646,13 +646,13 @@ header {
 .exercise-info .description {
   margin: 0 0 5px 0;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .exercise-info .muscle-groups {
   margin: 0;
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .calculation-result {
@@ -699,7 +699,7 @@ header {
 }
 
 .save-button:disabled {
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   cursor: not-allowed;
 }
 
@@ -720,11 +720,11 @@ header {
 }
 
 .record-item:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .record-item:nth-child(odd) {
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .record-header {
@@ -735,12 +735,12 @@ header {
 
 .record-date {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .record-notes {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-top: 5px;
 }
 
@@ -788,7 +788,7 @@ header {
 }
 
 .records-table th {
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   font-weight: bold;
 }
 
@@ -810,7 +810,7 @@ header {
   cursor: pointer;
   font-size: 16px;
   font-weight: normal;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .planner-tab-button.active {
@@ -844,12 +844,12 @@ header {
   padding: 15px;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .workout-title {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .workout-section {
@@ -858,7 +858,7 @@ header {
 
 .workout-section-title {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .workout-section-title.main-sets {
@@ -893,19 +893,19 @@ header {
 .assistance-section {
   font-size: 12px;
   margin-left: 10px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .assistance-exercises {
   font-size: 12px;
   margin-left: 10px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .one-rep-max-config {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -923,7 +923,7 @@ header {
   padding: 10px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .max-config-title {
@@ -938,7 +938,7 @@ header {
 .training-max-info {
   margin: 0;
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .custom-max-input {
@@ -980,7 +980,7 @@ header {
 
 .max-input-info {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-bottom: 5px;
 }
 
@@ -1013,14 +1013,14 @@ header {
 
 .cycle-item.active {
   border-color: #007bff;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .cycle-card {
   padding: 15px;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .cycle-card.active {
@@ -1037,30 +1037,30 @@ header {
 
 .cycle-title {
   margin: 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .cycle-info {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin: 5px 0;
 }
 
 .cycle-maxes {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .cycle-date {
   margin: 0 0 5px 0;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .cycle-created-date {
   margin: 0;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .cycle-notes {
@@ -1120,7 +1120,7 @@ header {
 
 .cycle-selector h4 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .view-workouts-section {
@@ -1180,7 +1180,7 @@ header {
 .function-info {
   margin-top: 15px;
   padding: 10px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border: 1px solid #dee2e6;
   border-radius: 4px;
 }
@@ -1193,7 +1193,7 @@ header {
 .function-info p {
   margin: 0;
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 /* ========================================
@@ -1215,7 +1215,7 @@ header {
 .chart-filters {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -1261,7 +1261,7 @@ header {
 }
 
 .clear-all-button {
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   color: white;
 }
 
@@ -1274,7 +1274,7 @@ header {
   border: 1px solid #dee2e6;
   padding: 10px;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .exercise-checkbox-item {
@@ -1296,7 +1296,7 @@ header {
 .chart-container {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 6px;
   border: 1px solid #dee2e6;
 }
@@ -1309,14 +1309,14 @@ header {
 
 .stat-card {
   padding: 15px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border: 1px solid #dee2e6;
   border-radius: 6px;
 }
 
 .stat-card h4 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .stat-value {
@@ -1340,7 +1340,7 @@ header {
 
 .stat-records-count {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .chart-tooltip {
@@ -1373,7 +1373,7 @@ header {
 .workout-selection {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -1404,12 +1404,12 @@ header {
 .week-day-button {
   padding: 8px 12px;
   border: 2px solid #dee2e6;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
   font-size: 14px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .week-day-button.selected {
@@ -1423,19 +1423,19 @@ header {
   padding: 10px;
   background-color: #e9ecef;
   border-radius: 4px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .workout-details {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
 .workout-details h3 {
   margin-top: 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .date-bodyweight-grid {
@@ -1450,7 +1450,7 @@ header {
 }
 
 .sets-section h4 {
-  color: #495057;
+  color: var(--text-secondary, #495057);
   margin-bottom: 10px;
 }
 
@@ -1467,7 +1467,7 @@ header {
   padding: 10px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .warmup-set-row {
@@ -1478,7 +1478,7 @@ header {
   padding: 8px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .set-row.amrap-set {
@@ -1530,13 +1530,13 @@ header {
 
 .estimated-1rm {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   font-weight: bold;
 }
 
 .estimated-1rm-display {
   font-size: 11px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .assistance-section {
@@ -1544,21 +1544,21 @@ header {
 }
 
 .assistance-section h4 {
-  color: #495057;
+  color: var(--text-secondary, #495057);
   margin-bottom: 10px;
 }
 
 .assistance-exercise {
   margin-bottom: 15px;
   padding: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   border: 1px solid #dee2e6;
 }
 
 .assistance-exercise h5 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .assistance-exercise-card {
@@ -1653,7 +1653,7 @@ header {
 .workout-summary-container {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -1684,7 +1684,7 @@ header {
 
 .rpe-description {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-top: 2px;
 }
 
@@ -1730,14 +1730,14 @@ header {
 }
 
 .save-workout-button:disabled {
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   cursor: not-allowed;
 }
 
 .past-results-section {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -1775,14 +1775,14 @@ header {
   border: 1px solid #dee2e6;
   border-radius: 4px;
   margin-bottom: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .past-result-card {
   padding: 12px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--background-color, #fff);
 }
 
 .past-result-header {
@@ -1794,7 +1794,7 @@ header {
 
 .past-result-date {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .past-result-sets {
@@ -1807,7 +1807,7 @@ header {
 
 .past-result-notes {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-top: 5px;
   font-style: italic;
 }
@@ -1847,7 +1847,7 @@ header {
 
 .secondary-button {
   padding: 8px 16px;
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   color: white;
   border: none;
   border-radius: 4px;
@@ -1947,7 +1947,7 @@ header {
 }
 
 .records-table th {
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   font-weight: bold;
 }
 
@@ -1965,14 +1965,14 @@ header {
 }
 
 .loading-text {
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-bottom: 20px;
 }
 
 /* Exercise Tracker Specific Styles */
 .exercise-info {
   padding: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   border: 1px solid #dee2e6;
 }
@@ -1984,13 +1984,13 @@ header {
 .exercise-info .description {
   margin: 0 0 5px 0;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .exercise-info .muscle-groups {
   margin: 0;
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .calculation-result {
@@ -2037,7 +2037,7 @@ header {
 }
 
 .save-button:disabled {
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   cursor: not-allowed;
 }
 
@@ -2058,11 +2058,11 @@ header {
 }
 
 .record-item:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .record-item:nth-child(odd) {
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .record-header {
@@ -2073,12 +2073,12 @@ header {
 
 .record-date {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .record-notes {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-top: 5px;
 }
 
@@ -2101,7 +2101,7 @@ header {
   cursor: pointer;
   font-size: 16px;
   font-weight: normal;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .planner-tab-button.active {
@@ -2125,12 +2125,12 @@ header {
   padding: 15px;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .workout-title {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .workout-section {
@@ -2139,7 +2139,7 @@ header {
 
 .workout-section-title {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .workout-section-title.main-sets {
@@ -2164,7 +2164,7 @@ header {
 .one-rep-max-config {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -2194,7 +2194,7 @@ header {
 .assistance-section {
   font-size: 12px;
   margin-left: 10px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .max-input-group {
@@ -2209,7 +2209,7 @@ header {
 
 .max-input-info {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-bottom: 5px;
 }
 
@@ -2243,7 +2243,7 @@ header {
 
 .cycle-item.active {
   border-color: #007bff;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .cycle-header {
@@ -2255,18 +2255,18 @@ header {
 
 .cycle-title {
   margin: 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .cycle-info {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin: 5px 0;
 }
 
 .cycle-maxes {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .active-badge {
@@ -2286,7 +2286,7 @@ header {
 
 .cycle-selector h4 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 /* OneRepMaxCalculator Specific Styles */
@@ -2301,7 +2301,7 @@ header {
 .function-info {
   margin-top: 15px;
   padding: 10px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border: 1px solid #dee2e6;
   border-radius: 4px;
 }
@@ -2314,14 +2314,14 @@ header {
 .function-info p {
   margin: 0;
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 /* WorkoutLogger Specific Styles */
 .workout-selection {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -2339,12 +2339,12 @@ header {
 .week-day-button {
   padding: 8px 12px;
   border: 2px solid #dee2e6;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
   font-size: 14px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .week-day-button.selected {
@@ -2358,7 +2358,7 @@ header {
   padding: 10px;
   background-color: #e9ecef;
   border-radius: 4px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .sets-grid {
@@ -2374,7 +2374,7 @@ header {
   padding: 10px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .set-title {
@@ -2398,13 +2398,13 @@ header {
 .workout-details {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
 .workout-details h3 {
   margin-top: 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .date-bodyweight-grid {
@@ -2419,7 +2419,7 @@ header {
 }
 
 .sets-section h4 {
-  color: #495057;
+  color: var(--text-secondary, #495057);
   margin-bottom: 10px;
 }
 
@@ -2430,7 +2430,7 @@ header {
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   border: 1px solid #dee2e6;
 }
@@ -2444,7 +2444,7 @@ header {
 
 .estimated-1rm {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   font-weight: bold;
 }
 
@@ -2453,21 +2453,21 @@ header {
 }
 
 .assistance-section h4 {
-  color: #495057;
+  color: var(--text-secondary, #495057);
   margin-bottom: 10px;
 }
 
 .assistance-exercise {
   margin-bottom: 15px;
   padding: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 4px;
   border: 1px solid #dee2e6;
 }
 
 .assistance-exercise h5 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .assistance-set-row {
@@ -2505,7 +2505,7 @@ header {
 .past-results-section {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -2524,7 +2524,7 @@ header {
   border: 1px solid #dee2e6;
   border-radius: 4px;
   margin-bottom: 10px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .past-result-header {
@@ -2536,12 +2536,12 @@ header {
 
 .past-result-date {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .past-result-sets {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .loading-container {
@@ -2570,7 +2570,7 @@ header {
 .chart-filters {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -2616,7 +2616,7 @@ header {
 }
 
 .clear-all-button {
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   color: white;
 }
 
@@ -2629,7 +2629,7 @@ header {
   border: 1px solid #dee2e6;
   padding: 10px;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .exercise-checkbox-item {
@@ -2651,7 +2651,7 @@ header {
 .chart-container {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border-radius: 6px;
   border: 1px solid #dee2e6;
 }
@@ -2664,14 +2664,14 @@ header {
 
 .stat-card {
   padding: 15px;
-  background-color: white;
+  background-color: var(--background-color, white);
   border: 1px solid #dee2e6;
   border-radius: 6px;
 }
 
 .stat-card h4 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .stat-value {
@@ -2695,7 +2695,7 @@ header {
 
 .stat-records-count {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .chart-tooltip {
@@ -2779,12 +2779,12 @@ header {
   border: 1px solid #dee2e6;
   border-radius: 6px;
   padding: 15px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .workout-title {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .workout-section {
@@ -2793,7 +2793,7 @@ header {
 
 .workout-section-title {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .workout-section-title.main-sets {
@@ -2817,7 +2817,7 @@ header {
 .assistance-exercises {
   font-size: 12px;
   margin-left: 10px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .max-config-grid {
@@ -2830,7 +2830,7 @@ header {
   padding: 10px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .max-config-title {
@@ -2845,7 +2845,7 @@ header {
 .training-max-info {
   margin: 0;
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .custom-max-input {
@@ -2865,7 +2865,7 @@ header {
   padding: 15px;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--background-color, white);
 }
 
 .cycle-card.active {
@@ -2891,13 +2891,13 @@ header {
 .cycle-date {
   margin: 0 0 5px 0;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .cycle-created-date {
   margin: 0;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .cycle-notes {
@@ -2993,7 +2993,7 @@ header {
   padding: 8px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
 }
 
 .set-title {
@@ -3037,7 +3037,7 @@ header {
 
 .estimated-1rm-display {
   font-size: 11px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .assistance-section {
@@ -3063,7 +3063,7 @@ header {
   padding: 8px;
   border: 1px solid #e9ecef;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: var(--background-color, #fff);
 }
 
 .assistance-set-label {
@@ -3115,7 +3115,7 @@ header {
 .workout-summary-container {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--form-section-bg, #f8f9fa);
   border-radius: 6px;
 }
 
@@ -3146,7 +3146,7 @@ header {
 
 .rpe-description {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-top: 2px;
 }
 
@@ -3192,7 +3192,7 @@ header {
 }
 
 .save-workout-button:disabled {
-  background-color: #6c757d;
+  background-color: var(--text-secondary, #6c757d);
   cursor: not-allowed;
 }
 
@@ -3223,7 +3223,7 @@ header {
   padding: 12px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--background-color, #fff);
 }
 
 .past-result-header {
@@ -3235,7 +3235,7 @@ header {
 
 .past-result-date {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .past-result-sets {
@@ -3248,7 +3248,7 @@ header {
 
 .past-result-notes {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-top: 5px;
   font-style: italic;
 }
@@ -3696,7 +3696,7 @@ h4 {
 
 .radio-fieldset legend {
   font-weight: bold;
-  color: #495057;
+  color: var(--text-secondary, #495057);
   padding: 0 10px;
 }
 
@@ -3724,7 +3724,7 @@ h4 {
   cursor: pointer;
   font-size: 16px;
   font-weight: normal;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   transition: all 0.2s ease;
   position: relative;
 }
@@ -3746,7 +3746,7 @@ h4 {
   padding: 20px;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--background-color, white);
   margin-bottom: 20px;
 }
 
@@ -3852,7 +3852,7 @@ a:focus {
 .form-label {
   font-weight: bold;
   margin-bottom: 5px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 /* ========================================
@@ -4013,7 +4013,7 @@ a:focus {
 
 .plate-calculator-header h3 {
   margin: 0;
-  color: #333;
+  color: var(--text-primary, #333);
   font-size: 1.3rem;
 }
 
@@ -4022,13 +4022,13 @@ a:focus {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   padding: 5px;
   line-height: 1;
 }
 
 .close-button:hover {
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .plate-calculator-body {
@@ -4048,7 +4048,7 @@ a:focus {
 .calculation-summary p {
   margin: 5px 0;
   font-size: 14px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 /* Mobile responsive adjustments */

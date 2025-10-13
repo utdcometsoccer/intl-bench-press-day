@@ -1,6 +1,6 @@
 .plateCalculator {
   padding: 20px;
-  background: white;
+  background: var(--background-color, white);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -15,7 +15,7 @@
 .loading {
   text-align: center;
   padding: 20px;
-  color: #666;
+  color: var(--text-muted, #666);
 }
 
 .header {
@@ -29,7 +29,7 @@
 
 .header h2 {
   margin: 0;
-  color: #333;
+  color: var(--text-primary, #333);
   font-size: 1.5rem;
 }
 
@@ -41,7 +41,7 @@
 .locationButton {
   padding: 8px 16px;
   border: 2px solid #007bff;
-  background: white;
+  background: var(--background-color, white);
   color: #007bff;
   border-radius: 6px;
   cursor: pointer;
@@ -51,7 +51,7 @@
 }
 
 .locationButton:hover {
-  background: #f8f9fa;
+  background: var(--form-section-bg, #f8f9fa);
 }
 
 .locationButton.active {
@@ -62,7 +62,7 @@
 .manageButton {
   padding: 8px 16px;
   border: 2px solid #28a745;
-  background: white;
+  background: var(--background-color, white);
   color: #28a745;
   border-radius: 6px;
   cursor: pointer;
@@ -114,7 +114,7 @@
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary, #333);
 }
 
 .weightInput input,
@@ -145,8 +145,8 @@
 }
 
 .calculationResult {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
+  background: var(--form-section-bg, #f8f9fa);
+  border: 1px solid var(--border-color, #e9ecef);
   border-radius: 8px;
   padding: 20px;
   margin-top: 15px;
@@ -161,7 +161,7 @@
 
 .targetWeight {
   font-size: 1.2rem;
-  color: #495057;
+  color: var(--text-secondary, #495057);
   margin-bottom: 5px;
 }
 
@@ -173,7 +173,7 @@
 
 .weightDifference {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   font-weight: normal;
   margin-left: 8px;
 }
@@ -196,7 +196,7 @@
 .barLabel,
 .platesLabel {
   font-weight: 600;
-  color: #495057;
+  color: var(--text-secondary, #495057);
   min-width: 80px;
 }
 
@@ -211,11 +211,11 @@
 
 .platesDisplay {
   font-family: 'Courier New', monospace;
-  background: #e9ecef;
+  background: var(--form-section-bg, #e9ecef);
   padding: 6px 12px;
   border-radius: 6px;
   font-weight: 600;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .plateVisualization {
@@ -225,9 +225,9 @@
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: white;
+  background: var(--background-color, white);
   border-radius: 6px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color, #dee2e6);
 }
 
 .plateGroup {
@@ -285,7 +285,7 @@
 .plateWeight {
   font-size: 12px;
   font-weight: 600;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .remainingWeight {
@@ -321,7 +321,7 @@
 }
 
 .modalContent {
-  background: white;
+  background: var(--background-color, white);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   max-width: 600px;
@@ -337,13 +337,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #e9ecef;
-  background: #f8f9fa;
+  border-bottom: 1px solid var(--border-color, #e9ecef);
+  background: var(--form-section-bg, #f8f9fa);
 }
 
 .modalHeader h3 {
   margin: 0;
-  color: #333;
+  color: var(--text-primary, #333);
   font-size: 1.3rem;
 }
 
@@ -352,13 +352,13 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   padding: 5px;
   line-height: 1;
 }
 
 .closeButton:hover {
-  color: #495057;
+  color: var(--text-primary, #495057);
 }
 
 .modalBody {
@@ -369,7 +369,7 @@
 
 .modalBody p {
   margin: 0 0 15px 0;
-  color: #495057;
+  color: var(--text-secondary, #495057);
   line-height: 1.6;
 }
 
@@ -380,7 +380,7 @@
 
 .modalBody li {
   margin-bottom: 8px;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 /* Responsive design */
