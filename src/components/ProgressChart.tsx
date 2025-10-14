@@ -13,6 +13,7 @@ import { format, parseISO, isAfter, isBefore, startOfDay, endOfDay } from 'date-
 import type { ExerciseRecord, ChartDataPoint, ExerciseStats } from '../types';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 import { BARBELL_EXERCISES, getExerciseCategories } from '../exercises';
+import ChartTooltip from './ChartTooltip';
 import chartColorsData from '../data/chartColors.json';
 
 const ProgressChart: React.FC = () => {
@@ -188,36 +189,6 @@ const ProgressChart: React.FC = () => {
     setSelectedExercises([]);
   };
 
-  const customTooltip = ({ active, payload }: { 
-    active?: boolean; 
-    payload?: Array<{ 
-      payload: { 
-        exercise: string; 
-        date: string; 
-        oneRepMax: number; 
-        reps: number;
-        weight: number;
-        formulaUsed: string;
-        notes?: string;
-      } 
-    }> 
-  }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="chart-tooltip">
-          <p className="tooltip-exercise">{data.exercise}</p>
-          <p className="tooltip-info">Date: {data.date}</p>
-          <p className="tooltip-info">1RM: {data.oneRepMax} lbs</p>
-          <p className="tooltip-info">Set: {data.reps} reps @ {data.weight} lbs</p>
-          <p className="tooltip-info">Formula: {data.formulaUsed}</p>
-          {data.notes && <p className="tooltip-notes">"{data.notes}"</p>}
-        </div>
-      );
-    }
-    return null;
-  };
-
   const categories = getExerciseCategories();
   const availableExercises = [...new Set(allRecords.map(r => ({ id: r.exerciseId, name: r.exerciseName })))]
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -346,7 +317,7 @@ const ProgressChart: React.FC = () => {
                 label={{ value: 'One Rep Max (lbs)', angle: -90, position: 'insideLeft' }}
                 tick={{ fontSize: 12 }}
               />
-              <Tooltip content={customTooltip} />
+              <Tooltip content={<ChartTooltip />} />
               <Legend />
               
               {exerciseStats.map(stat => (
