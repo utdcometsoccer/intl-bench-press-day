@@ -1344,26 +1344,30 @@ header {
 }
 
 .chart-tooltip {
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ccc;
+  background-color: var(--container-bg, rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: var(--text-primary, #213547);
 }
 
 .tooltip-exercise {
   margin: 0 0 5px 0;
   font-weight: bold;
+  color: var(--text-primary, #213547);
 }
 
 .tooltip-info {
   margin: 0 0 5px 0;
+  color: var(--text-primary, #213547);
 }
 
 .tooltip-notes {
   margin: 0;
   font-size: 12px;
   font-style: italic;
+  color: var(--text-secondary, #6c757d);
 }
 
 /* ========================================
@@ -2699,26 +2703,30 @@ header {
 }
 
 .chart-tooltip {
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ccc;
+  background-color: var(--container-bg, rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: var(--text-primary, #213547);
 }
 
 .tooltip-exercise {
   margin: 0 0 5px 0;
   font-weight: bold;
+  color: var(--text-primary, #213547);
 }
 
 .tooltip-info {
   margin: 0 0 5px 0;
+  color: var(--text-primary, #213547);
 }
 
 .tooltip-notes {
   margin: 0;
   font-size: 12px;
   font-style: italic;
+  color: var(--text-secondary, #6c757d);
 }
 
 .logo {
