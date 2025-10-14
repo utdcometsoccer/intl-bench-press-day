@@ -14,6 +14,7 @@ import type { ExerciseRecord, ChartDataPoint, ExerciseStats } from '../types';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 import { BARBELL_EXERCISES, getExerciseCategories } from '../exercises';
 import ChartTooltip from './ChartTooltip';
+import chartColorsData from '../data/chartColors.json';
 
 const ProgressChart: React.FC = () => {
   const [allRecords, setAllRecords] = useState<ExerciseRecord[]>([]);
@@ -31,11 +32,7 @@ const ProgressChart: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   // Color palette for different exercises
-  const colors = useMemo(() => [
-    '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1',
-    '#d084d0', '#ffb347', '#87ceeb', '#dda0dd', '#98fb98',
-    '#f0e68c', '#ff6347', '#40e0d0', '#ee82ee', '#90ee90'
-  ], []);
+  const colors = useMemo(() => chartColorsData.progressChartColors, []);
 
   useEffect(() => {
     loadAllRecords();
