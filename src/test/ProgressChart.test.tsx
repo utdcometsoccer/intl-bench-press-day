@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import ProgressChart from '../components/ProgressChart'
+import chartColorsData from '../data/chartColors.json'
 
 // Mock recharts
 vi.mock('recharts', () => ({
@@ -48,5 +49,17 @@ describe('ProgressChart', () => {
     await waitFor(() => {
       expect(screen.getByText('No exercise records found. Start tracking your workouts to see your progress!')).toBeInTheDocument()
     }, { timeout: 3000 })
+  })
+
+  it('should load color palette from JSON file', () => {
+    // Verify that the colors are defined in the JSON file
+    expect(chartColorsData.progressChartColors).toBeDefined()
+    expect(Array.isArray(chartColorsData.progressChartColors)).toBe(true)
+    expect(chartColorsData.progressChartColors.length).toBeGreaterThan(0)
+    
+    // Verify the expected colors are present
+    expect(chartColorsData.progressChartColors).toContain('#8884d8')
+    expect(chartColorsData.progressChartColors).toContain('#82ca9d')
+    expect(chartColorsData.progressChartColors).toContain('#ffc658')
   })
 })
