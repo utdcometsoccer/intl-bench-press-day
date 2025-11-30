@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
 import ExerciseOneRepMaxTracker from './components/ExerciseOneRepMaxTracker'
@@ -11,12 +11,68 @@ import PWAInstallPrompt from './PWAInstallPrompt'
 import VoiceNavigationButton from './components/VoiceNavigationButton'
 import { useTheme } from './hooks/useTheme'
 
-type TabType = 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export';
+type TabType = 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'
+
+// Tab configuration for navigation items
+const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[] = [
+  { id: 'tracker', label: 'Tracker', icon: '💪', shortcut: '1' },
+  { id: 'progress', label: 'Progress', icon: '📊', shortcut: '2' },
+  { id: 'planner', label: 'Planner', icon: '📋', shortcut: '3' },
+  { id: 'logger', label: 'Logger', icon: '📝', shortcut: '4' },
+  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '5' },
+  { id: 'export', label: 'Export', icon: '💾', shortcut: '6' },
+]
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { theme, toggleTheme } = useTheme()
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
+  const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
+
+  // Keyboard shortcuts handler
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    // Ignore if user is typing in an input field
+    if (
+      event.target instanceof HTMLInputElement ||
+      event.target instanceof HTMLTextAreaElement ||
+      event.target instanceof HTMLSelectElement
+    ) {
+      return
+    }
+
+    // Number keys 1-6 for tab navigation
+    const tabIndex = parseInt(event.key) - 1
+    if (tabIndex >= 0 && tabIndex < tabConfig.length && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      setActiveTab(tabConfig[tabIndex].id)
+      return
+    }
+
+    // ? key shows keyboard shortcuts
+    if (event.key === '?' && event.shiftKey) {
+      setShowKeyboardShortcuts(prev => !prev)
+      return
+    }
+
+    // Escape closes modals
+    if (event.key === 'Escape') {
+      setShowKeyboardShortcuts(false)
+      setIsMobileMenuOpen(false)
+      return
+    }
+
+    // T for theme toggle
+    if (event.key.toLowerCase() === 't' && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      toggleTheme()
+    }
+  }, [toggleTheme])
+
+  // Set up keyboard shortcuts
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
+  
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
@@ -57,6 +113,18 @@ function App() {
           title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'high contrast' : 'light'} mode (Current: ${theme})`}
         >
           {theme === 'light' ? '🌙' : theme === 'dark' ? '◐' : '☀️'}
+        </button>
+        
+        {/* Color-Blind Mode Toggle Button */}
+        <button 
+          onClick={toggleColorBlindMode}
+          className="color-blind-toggle-button"
+          aria-label={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
+          title={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
+          aria-pressed={colorBlindMode}
+        >
+          <span aria-hidden="true">{colorBlindMode ? '👁️' : '👁️‍🗨️'}</span>
+          <span className="sr-only">{colorBlindMode ? 'Color-blind mode on' : 'Color-blind mode off'}</span>
         </button>
       </header>
       
@@ -143,6 +211,72 @@ function App() {
         {activeTab === 'plates' && <PlateCalculator />}
         {activeTab === 'export' && <DataExport />}
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav 
+        className="mobile-bottom-nav" 
+        role="navigation" 
+        aria-label="Mobile navigation"
+      >
+        {tabConfig.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => handleTabClick(tab.id)}
+            className={`mobile-bottom-nav-item ${activeTab === tab.id ? 'active' : ''}`}
+            aria-current={activeTab === tab.id ? 'page' : undefined}
+            aria-label={`Navigate to ${tab.label}`}
+          >
+            <span className="mobile-bottom-nav-icon" aria-hidden="true">{tab.icon}</span>
+            <span className="mobile-bottom-nav-label">{tab.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/* Keyboard Shortcuts Modal */}
+      {showKeyboardShortcuts && (
+        <>
+          <div 
+            className="keyboard-shortcuts-overlay visible"
+            onClick={() => setShowKeyboardShortcuts(false)}
+            aria-hidden="true"
+          />
+          <div 
+            className="keyboard-shortcuts-modal visible"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="keyboard-shortcuts-title"
+          >
+            <h3 id="keyboard-shortcuts-title">Keyboard Shortcuts</h3>
+            <ul className="keyboard-shortcuts-list">
+              {tabConfig.map((tab) => (
+                <li key={tab.id}>
+                  <span>{tab.label}</span>
+                  <span className="shortcut-key">{tab.shortcut}</span>
+                </li>
+              ))}
+              <li>
+                <span>Toggle Theme</span>
+                <span className="shortcut-key">T</span>
+              </li>
+              <li>
+                <span>Show/Hide Shortcuts</span>
+                <span className="shortcut-key">?</span>
+              </li>
+              <li>
+                <span>Close Modals</span>
+                <span className="shortcut-key">Esc</span>
+              </li>
+            </ul>
+            <button 
+              onClick={() => setShowKeyboardShortcuts(false)}
+              className="primary-button"
+              style={{ marginTop: '16px', marginBottom: 0 }}
+            >
+              Close
+            </button>
+          </div>
+        </>
+      )}
 
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />

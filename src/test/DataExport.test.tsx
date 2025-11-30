@@ -9,7 +9,7 @@ const customRender = (ui: React.ReactElement) => {
   return render(ui, { container });
 };
 
-// Mock the storage modules
+// Mock the storage modules and services used by DataExport
 vi.mock('../services/oneRepMaxStorage', () => ({
   oneRepMaxStorage: {
     initialize: vi.fn().mockResolvedValue(undefined),
@@ -52,9 +52,9 @@ vi.mock('../services/fiveThreeOneStorage', () => ({
         id: 'cycle1',
         name: 'Winter 2024',
         startDate: '2024-01-01T00:00:00.000Z',
-        currentCycle: 1,
-        currentWeek: 2,
-        trainingMaxes: { 'bench-press': 275 },
+        createdDate: '2024-01-01T00:00:00.000Z',
+        maxes: [],
+        workouts: [],
         isActive: true,
         notes: 'First cycle'
       }
@@ -107,6 +107,15 @@ vi.mock('../services/googleFitService', () => ({
       errors: []
     })
   }
+}));
+
+// Mock Apple Health export helper
+vi.mock('../services/appleHealthExport', () => ({
+  exportWorkoutsToHealthKitFormat: vi.fn((workouts: unknown[]) => workouts.map(w => ({
+    type: 'HKWorkout',
+    source: 'intl-bench-press-day',
+    payload: w
+  })))
 }));
 
 // Mock URL.createObjectURL and URL.revokeObjectURL
@@ -170,12 +179,15 @@ describe('DataExport', () => {
     const jsonButton = container.querySelector('.export-button-json');
     const csvButton = container.querySelector('.export-button-csv');
     const googleFitButton = container.querySelector('.export-button-google-fit');
+    const healthkitButton = container.querySelector('.export-button-healthkit');
     expect(jsonButton).toBeTruthy();
     expect(csvButton).toBeTruthy();
     expect(googleFitButton).toBeTruthy();
+    expect(healthkitButton).toBeTruthy();
     expect(jsonButton?.textContent).toBe('Download JSON');
     expect(csvButton?.textContent).toBe('Download CSV');
     expect(googleFitButton?.textContent).toBe('Sync to Google Fit');
+    expect(healthkitButton?.textContent).toBe('Download HealthKit');
   });
 
   it('shows export details information', () => {
@@ -190,6 +202,7 @@ describe('DataExport', () => {
     expect(content).toMatch(/json/i);
     expect(content).toMatch(/csv/i);
     expect(content).toMatch(/google fit/i);
+    expect(content).toMatch(/healthkit/i);
     expect(content).toMatch(/your data never leaves your device/i);
   });
 
@@ -235,15 +248,18 @@ describe('DataExport', () => {
     
     const jsonButton = container.querySelector('.export-button-json') as HTMLButtonElement;
     const csvButton = container.querySelector('.export-button-csv') as HTMLButtonElement;
+    const healthkitButton = container.querySelector('.export-button-healthkit') as HTMLButtonElement;
     expect(jsonButton).toBeTruthy();
     expect(csvButton).toBeTruthy();
+    expect(healthkitButton).toBeTruthy();
 
     fireEvent.click(jsonButton);
 
-    // Both buttons should be disabled during export
+    // All buttons should be disabled during export
     await waitFor(() => {
       expect(jsonButton).toBeDisabled();
       expect(csvButton).toBeDisabled();
+      expect(healthkitButton).toBeDisabled();
     });
   });
 
@@ -294,7 +310,26 @@ describe('DataExport', () => {
     // Wait for the sync to complete and show status
     await waitFor(() => {
       const statusText = container.textContent || '';
-      expect(statusText).toMatch(/configuration|OAuth|credentials/i);
+      expect(statusText).toMatch(/requires configuration|Google Fit connection/i);
     }, { timeout: 3000 });
+  });
+
+  it('handles HealthKit export successfully', async () => {
+    const { container } = customRender(<DataExport />);
+
+    const healthkitButton = container.querySelector('.export-button-healthkit') as HTMLButtonElement;
+    expect(healthkitButton).toBeTruthy();
+
+    fireEvent.click(healthkitButton);
+
+    // Test that the export function is called and download happens
+    await waitFor(() => {
+      expect(mockLink.click).toHaveBeenCalled();
+    }, { timeout: 3000 });
+
+    // Verify download link was created and clicked
+    expect(document.createElement).toHaveBeenCalledWith('a');
+    expect(window.URL.createObjectURL).toHaveBeenCalled();
+    expect(window.URL.revokeObjectURL).toHaveBeenCalled();
   });
 });

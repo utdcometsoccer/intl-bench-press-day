@@ -4,11 +4,12 @@ import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage } from '../services/workoutResultsStorage';
 import { googleFitService } from '../services/googleFitService';
-import type { 
-  ExerciseRecord, 
+import { exportWorkoutsToHealthKitFormat } from '../services/appleHealthExport';
+import type {
+  ExerciseRecord,
   WorkoutResult,
   WorkoutSetResult,
-  ExportData 
+  ExportData
 } from '../types';
 
 const DataExport: React.FC = () => {
@@ -18,7 +19,7 @@ const DataExport: React.FC = () => {
 
   const collectAllData = async (): Promise<ExportData> => {
     setExportStatus('Collecting data from storage...');
-    
+
     try {
       // Initialize all storage systems
       await oneRepMaxStorage.initialize?.();
@@ -54,18 +55,18 @@ const DataExport: React.FC = () => {
 
     try {
       const data = await collectAllData();
-      
+
       const jsonString = JSON.stringify(data, null, 2);
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      
+
       const link = document.createElement('a');
       link.href = url;
       link.download = `fitness-data-export-${new Date().toISOString().split('T')[0]}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       URL.revokeObjectURL(url);
       setExportStatus('JSON export completed successfully!');
     } catch (error) {
@@ -86,10 +87,10 @@ const DataExport: React.FC = () => {
     };
 
     const csvHeader = headers.join(',');
-    const csvRows = data.map(row => 
+    const csvRows = data.map(row =>
       headers.map(header => escapeCSV(row[header])).join(',')
     );
-    
+
     return [csvHeader, ...csvRows].join('\n');
   };
 
@@ -110,7 +111,7 @@ const DataExport: React.FC = () => {
 
   const flattenWorkoutResults = (results: WorkoutResult[]) => {
     const flattened: Record<string, unknown>[] = [];
-    
+
     results.forEach(workout => {
       // Main workout info
       const baseWorkout = {
@@ -167,8 +168,8 @@ const DataExport: React.FC = () => {
       }
 
       // If no sets, add the workout entry anyway
-      if ((!workout.mainSetResults || workout.mainSetResults.length === 0) && 
-          (!workout.warmupResults || workout.warmupResults.length === 0)) {
+      if ((!workout.mainSetResults || workout.mainSetResults.length === 0) &&
+        (!workout.warmupResults || workout.warmupResults.length === 0)) {
         flattened.push({
           ...baseWorkout,
           setType: '',
@@ -194,7 +195,7 @@ const DataExport: React.FC = () => {
 
     try {
       const data = await collectAllData();
-      
+
       // Create multiple CSV files in a zip-like structure
       const csvFiles: { name: string; content: string }[] = [];
 
@@ -244,9 +245,9 @@ const DataExport: React.FC = () => {
       if (data.workoutResults.length > 0) {
         const workoutsCSV = convertToCSV(
           flattenWorkoutResults(data.workoutResults),
-          ['workoutId', 'cycleId', 'cycleName', 'exerciseId', 'exerciseName', 'week', 'day', 'datePerformed', 
-           'setType', 'setNumber', 'plannedReps', 'plannedWeight', 'actualReps', 'actualWeight', 'percentage', 
-           'isAmrap', 'rpe', 'overallRpe', 'setNotes', 'workoutNotes', 'duration', 'bodyWeight']
+          ['workoutId', 'cycleId', 'cycleName', 'exerciseId', 'exerciseName', 'week', 'day', 'datePerformed',
+            'setType', 'setNumber', 'plannedReps', 'plannedWeight', 'actualReps', 'actualWeight', 'percentage',
+            'isAmrap', 'rpe', 'overallRpe', 'setNotes', 'workoutNotes', 'duration', 'bodyWeight']
         );
         csvFiles.push({ name: 'workout-results', content: workoutsCSV });
       }
@@ -255,16 +256,16 @@ const DataExport: React.FC = () => {
       for (const file of csvFiles) {
         const blob = new Blob([file.content], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
-        
+
         const link = document.createElement('a');
         link.href = url;
         link.download = `${file.name}-${new Date().toISOString().split('T')[0]}.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         URL.revokeObjectURL(url);
-        
+
         // Small delay between downloads
         await new Promise(resolve => setTimeout(resolve, 100));
       }
@@ -317,22 +318,52 @@ const DataExport: React.FC = () => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       setExportStatus(`Google Fit sync failed: ${errorMessage}`);
+    }
+  };
+  const downloadHealthKit = async () => {
+    setIsExporting(true);
+    setExportStatus('Preparing HealthKit export...');
+
+    try {
+      await workoutResultsStorage.initialize();
+      const workoutResults = await workoutResultsStorage.getAllWorkoutResults();
+
+      if (workoutResults.length === 0) {
+        setExportStatus('No workout results to export.');
+        return;
+      }
+
+      const healthKitData = exportWorkoutsToHealthKitFormat(workoutResults);
+
+      const jsonString = JSON.stringify(healthKitData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `healthkit-workouts-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+      setExportStatus(`HealthKit export completed! Exported ${healthKitData.length} workouts.`);
+    } catch (error) {
+      setExportStatus(`Export failed: ${error}`);
     } finally {
       setIsExporting(false);
     }
   };
-
   const disconnectGoogleFit = () => {
     googleFitService.disconnect();
     setIsGoogleFitConnected(false);
     setExportStatus('Disconnected from Google Fit.');
   };
-
   return (
     <div className="data-export-container">
       <h2 className="data-export-title">Data Export</h2>
       <p className="data-export-description">
-        Export all your fitness data for backup, analysis, or migration purposes. 
+        Export all your fitness data for backup, analysis, or migration purposes.
         This includes exercise records, one-rep-max formulas, 5/3/1 programs, and workout results.
       </p>
 
@@ -370,6 +401,13 @@ const DataExport: React.FC = () => {
             Disconnect Google Fit
           </button>
         )}
+        <button
+          onClick={downloadHealthKit}
+          disabled={isExporting}
+          className="export-button-healthkit"
+        >
+          {isExporting ? 'Exporting...' : 'Download HealthKit'}
+        </button>
       </div>
 
       {exportStatus && (
@@ -384,6 +422,7 @@ const DataExport: React.FC = () => {
           <li><strong>JSON:</strong> Single file with all data in structured format</li>
           <li><strong>CSV:</strong> Multiple files - one for each data type (exercise records, formulas, etc.)</li>
           <li><strong>Google Fit:</strong> Sync your workout sessions to Google Fit for health tracking integration</li>
+          <li><strong>HealthKit:</strong> Workout data in Apple HealthKit-compatible format</li>
           <li>All exports include timestamps and can be used for data backup</li>
           <li>Your data never leaves your device - exports are generated locally</li>
         </ul>
