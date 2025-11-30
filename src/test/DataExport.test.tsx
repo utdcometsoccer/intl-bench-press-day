@@ -154,10 +154,13 @@ describe('DataExport', () => {
     // Check for buttons
     const jsonButton = container.querySelector('.export-button-json');
     const csvButton = container.querySelector('.export-button-csv');
+    const healthkitButton = container.querySelector('.export-button-healthkit');
     expect(jsonButton).toBeTruthy();
     expect(csvButton).toBeTruthy();
+    expect(healthkitButton).toBeTruthy();
     expect(jsonButton?.textContent).toBe('Download JSON');
     expect(csvButton?.textContent).toBe('Download CSV');
+    expect(healthkitButton?.textContent).toBe('Download HealthKit');
   });
 
   it('shows export details information', () => {
@@ -167,10 +170,11 @@ describe('DataExport', () => {
     const detailsSection = container.querySelector('.export-details');
     expect(detailsSection).toBeTruthy();
     
-    // Check if it contains information about JSON and CSV exports
+    // Check if it contains information about JSON, CSV, and HealthKit exports
     const content = container.textContent || '';
     expect(content).toMatch(/json/i);
     expect(content).toMatch(/csv/i);
+    expect(content).toMatch(/healthkit/i);
     expect(content).toMatch(/your data never leaves your device/i);
   });
 
@@ -216,15 +220,18 @@ describe('DataExport', () => {
     
     const jsonButton = container.querySelector('.export-button-json') as HTMLButtonElement;
     const csvButton = container.querySelector('.export-button-csv') as HTMLButtonElement;
+    const healthkitButton = container.querySelector('.export-button-healthkit') as HTMLButtonElement;
     expect(jsonButton).toBeTruthy();
     expect(csvButton).toBeTruthy();
+    expect(healthkitButton).toBeTruthy();
 
     fireEvent.click(jsonButton);
 
-    // Both buttons should be disabled during export
+    // All buttons should be disabled during export
     await waitFor(() => {
       expect(jsonButton).toBeDisabled();
       expect(csvButton).toBeDisabled();
+      expect(healthkitButton).toBeDisabled();
     });
   });
 
@@ -241,5 +248,24 @@ describe('DataExport', () => {
     await waitFor(() => {
       expect(mockLink.click).toHaveBeenCalled();
     }, { timeout: 3000 });
+  });
+
+  it('handles HealthKit export successfully', async () => {
+    const { container } = customRender(<DataExport />);
+    
+    const healthkitButton = container.querySelector('.export-button-healthkit') as HTMLButtonElement;
+    expect(healthkitButton).toBeTruthy();
+    
+    fireEvent.click(healthkitButton);
+
+    // Test that the export function is called and download happens
+    await waitFor(() => {
+      expect(mockLink.click).toHaveBeenCalled();
+    }, { timeout: 3000 });
+
+    // Verify download link was created and clicked
+    expect(document.createElement).toHaveBeenCalledWith('a');
+    expect(window.URL.createObjectURL).toHaveBeenCalled();
+    expect(window.URL.revokeObjectURL).toHaveBeenCalled();
   });
 });

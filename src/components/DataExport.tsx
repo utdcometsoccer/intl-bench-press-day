@@ -3,6 +3,7 @@ import { oneRepMaxStorage } from '../services/oneRepMaxStorage';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage } from '../services/workoutResultsStorage';
+import { exportWorkoutsToHealthKitFormat } from '../services/appleHealthExport';
 import type { 
   ExerciseRecord, 
   WorkoutResult,
@@ -275,6 +276,41 @@ const DataExport: React.FC = () => {
     }
   };
 
+  const downloadHealthKit = async () => {
+    setIsExporting(true);
+    setExportStatus('Preparing HealthKit export...');
+
+    try {
+      await workoutResultsStorage.initialize();
+      const workoutResults = await workoutResultsStorage.getAllWorkoutResults();
+      
+      if (workoutResults.length === 0) {
+        setExportStatus('No workout results to export.');
+        return;
+      }
+
+      const healthKitData = exportWorkoutsToHealthKitFormat(workoutResults);
+      
+      const jsonString = JSON.stringify(healthKitData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `healthkit-workouts-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      URL.revokeObjectURL(url);
+      setExportStatus(`HealthKit export completed! Exported ${healthKitData.length} workouts.`);
+    } catch (error) {
+      setExportStatus(`Export failed: ${error}`);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="data-export-container">
       <h2 className="data-export-title">Data Export</h2>
@@ -299,6 +335,14 @@ const DataExport: React.FC = () => {
         >
           {isExporting ? 'Exporting...' : 'Download CSV'}
         </button>
+
+        <button
+          onClick={downloadHealthKit}
+          disabled={isExporting}
+          className="export-button-healthkit"
+        >
+          {isExporting ? 'Exporting...' : 'Download HealthKit'}
+        </button>
       </div>
 
       {exportStatus && (
@@ -312,6 +356,7 @@ const DataExport: React.FC = () => {
         <ul className="export-details-list">
           <li><strong>JSON:</strong> Single file with all data in structured format</li>
           <li><strong>CSV:</strong> Multiple files - one for each data type (exercise records, formulas, etc.)</li>
+          <li><strong>HealthKit:</strong> Workout data in Apple HealthKit-compatible format</li>
           <li>All exports include timestamps and can be used for data backup</li>
           <li>Your data never leaves your device - exports are generated locally</li>
         </ul>
