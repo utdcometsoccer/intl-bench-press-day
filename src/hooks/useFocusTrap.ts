@@ -1,7 +1,29 @@
 import { useEffect, useRef, useCallback } from 'react';
 
-const FOCUSABLE_ELEMENTS_SELECTOR = 
-  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+// Comprehensive selector for focusable elements
+const FOCUSABLE_ELEMENTS_SELECTOR = [
+  'a[href]',
+  'area[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+  '[contenteditable="true"]',
+  'audio[controls]',
+  'video[controls]',
+  'iframe',
+  'object',
+  'embed'
+].join(', ');
+
+/**
+ * Checks if an element is visible and can receive focus.
+ */
+const isElementVisible = (el: HTMLElement): boolean => {
+  const style = window.getComputedStyle(el);
+  return style.display !== 'none' && style.visibility !== 'hidden';
+};
 
 /**
  * Hook to trap focus within a container element.
@@ -18,11 +40,7 @@ export const useFocusTrap = <T extends HTMLElement>(isActive: boolean) => {
     if (!containerRef.current) return [];
     
     const elements = containerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS_SELECTOR);
-    return Array.from(elements).filter(el => {
-      // Filter out elements that are not visible
-      const style = window.getComputedStyle(el);
-      return style.display !== 'none' && style.visibility !== 'hidden';
-    });
+    return Array.from(elements).filter(isElementVisible);
   }, []);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
