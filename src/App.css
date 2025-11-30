@@ -4313,6 +4313,7 @@ a:focus {
 }
 
 /* Current workout cards - highlighted */
+/* Note: For screen reader accessibility, add aria-label="Today's workout" to elements with .current class */
 .workout-card.current,
 .week-day-button.current {
   border: 2px solid var(--workout-current);
@@ -4320,6 +4321,7 @@ a:focus {
   position: relative;
 }
 
+/* Visual indicator only - decorative, use aria-label on parent for accessibility */
 .workout-card.current::after,
 .week-day-button.current::after {
   content: 'TODAY';
@@ -4399,29 +4401,29 @@ a:focus {
    EXERCISE TYPE COLOR INDICATORS
    ======================================== */
 
-/* Exercise type badge colors */
+/* Exercise type badge colors - using dark text for better contrast */
 .exercise-type-squat,
 .exercise-badge-squat {
   background-color: var(--exercise-squat);
-  color: white;
+  color: #1a1a1a;
 }
 
 .exercise-type-bench,
 .exercise-badge-bench {
   background-color: var(--exercise-bench);
-  color: white;
+  color: #1a1a1a;
 }
 
 .exercise-type-deadlift,
 .exercise-badge-deadlift {
   background-color: var(--exercise-deadlift);
-  color: white;
+  color: #1a1a1a;
 }
 
 .exercise-type-press,
 .exercise-badge-press {
   background-color: var(--exercise-press);
-  color: white;
+  color: #1a1a1a;
 }
 
 /* Exercise card left border indicators */

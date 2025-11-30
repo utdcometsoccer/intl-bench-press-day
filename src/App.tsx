@@ -55,7 +55,8 @@ function App() {
           title={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
           aria-pressed={colorBlindMode}
         >
-          {colorBlindMode ? '👁️' : '👁️‍🗨️'}
+          <span aria-hidden="true">{colorBlindMode ? '👁️' : '👁️‍🗨️'}</span>
+          <span className="sr-only">{colorBlindMode ? 'Color-blind mode on' : 'Color-blind mode off'}</span>
         </button>
       </header>
       
