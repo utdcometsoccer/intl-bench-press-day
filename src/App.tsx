@@ -16,7 +16,7 @@ type TabType = 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'expor
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
@@ -57,6 +57,18 @@ function App() {
           title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'high contrast' : 'light'} mode (Current: ${theme})`}
         >
           {theme === 'light' ? '🌙' : theme === 'dark' ? '◐' : '☀️'}
+        </button>
+        
+        {/* Color-Blind Mode Toggle Button */}
+        <button 
+          onClick={toggleColorBlindMode}
+          className="color-blind-toggle-button"
+          aria-label={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
+          title={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
+          aria-pressed={colorBlindMode}
+        >
+          <span aria-hidden="true">{colorBlindMode ? '👁️' : '👁️‍🗨️'}</span>
+          <span className="sr-only">{colorBlindMode ? 'Color-blind mode on' : 'Color-blind mode off'}</span>
         </button>
       </header>
       
