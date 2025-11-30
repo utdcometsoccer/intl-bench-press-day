@@ -5,7 +5,7 @@ import { oneRepMaxStorage, initializeWithPredefinedFormulas } from '../services/
 const OneRepMaxCalculator: React.FC = () => {
   const [availableFunctions, setAvailableFunctions] = useState<StoredFunctionInfo[]>([]);
   const [selectedFunctionId, setSelectedFunctionId] = useState<string>('');
-  const [workoutSet, setWorkoutSet] = useState<WorkoutSet>({ Repetions: 5, Weight: 135 });
+  const [workoutSet, setWorkoutSet] = useState<WorkoutSet>({ Repetions: 0, Weight: 0 });
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -126,9 +126,10 @@ const OneRepMaxCalculator: React.FC = () => {
             id="repetitions"
             type="number"
             min="1"
-            value={workoutSet.Repetions}
+            value={workoutSet.Repetions || ''}
             onChange={(e) => handleWorkoutSetChange('Repetions', e.target.value)}
             className="form-input"
+            required
           />
         </div>
         
@@ -141,9 +142,10 @@ const OneRepMaxCalculator: React.FC = () => {
             type="number"
             min="0"
             step="0.01"
-            value={workoutSet.Weight}
+            value={workoutSet.Weight || ''}
             onChange={(e) => handleWorkoutSetChange('Weight', e.target.value)}
             className="form-input"
+            required
           />
         </div>
       </div>

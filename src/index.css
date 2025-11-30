@@ -1,5 +1,10 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Typography Font Stacks */
+  --font-display: 'Montserrat', 'Inter', system-ui, sans-serif;
+  --font-body: 'Open Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
 
@@ -19,6 +24,29 @@
   --button-bg-color: #f9f9f9;
   --button-text-color: #213547;
   --border-color: #e0e0e0;
+  
+  /* Semantic colors for workout states */
+  --workout-warmup: #ffd93d;    /* Yellow - Warmup sets */
+  --workout-main: #6bcb77;      /* Green - Main sets */
+  --workout-amrap: #ff6b6b;     /* Red - AMRAP challenge */
+  --workout-complete: #4d96ff;  /* Blue - Completed */
+  --workout-rest: #c4c4c4;      /* Gray - Rest day */
+  
+  /* Progress indicators */
+  --progress-start: #ff9f43;    /* Orange - Beginning */
+  --progress-mid: #feca57;      /* Yellow - Mid-progress */
+  --progress-end: #26de81;      /* Green - Goal achieved */
+  
+  /* Exercise type colors */
+  --exercise-squat: #8884d8;    /* Purple */
+  --exercise-bench: #ff7c7c;    /* Coral */
+  --exercise-deadlift: #82ca9d; /* Green */
+  --exercise-press: #ffc658;    /* Gold */
+  
+  /* Workout timeline colors */
+  --workout-past: #9ca3af;      /* Gray - Past workouts */
+  --workout-current: #4d96ff;   /* Blue - Current workout */
+  --workout-future: #e5e7eb;    /* Light gray - Future workouts */
 }
 
 /* Dark theme */
@@ -30,6 +58,29 @@
   --button-bg-color: #1a1a1a;
   --button-text-color: rgba(255, 255, 255, 0.87);
   --border-color: #444;
+  
+  /* Semantic colors for workout states - adjusted for dark mode */
+  --workout-warmup: #ffd93d;    /* Yellow - Warmup sets */
+  --workout-main: #6bcb77;      /* Green - Main sets */
+  --workout-amrap: #ff6b6b;     /* Red - AMRAP challenge */
+  --workout-complete: #4d96ff;  /* Blue - Completed */
+  --workout-rest: #6b7280;      /* Darker gray - Rest day */
+  
+  /* Progress indicators - adjusted for dark mode */
+  --progress-start: #ff9f43;    /* Orange - Beginning */
+  --progress-mid: #feca57;      /* Yellow - Mid-progress */
+  --progress-end: #26de81;      /* Green - Goal achieved */
+  
+  /* Exercise type colors - adjusted for dark mode */
+  --exercise-squat: #a5a0e8;    /* Lighter purple */
+  --exercise-bench: #ff9a9a;    /* Lighter coral */
+  --exercise-deadlift: #9ddaab; /* Lighter green */
+  --exercise-press: #ffd477;    /* Lighter gold */
+  
+  /* Workout timeline colors - adjusted for dark mode */
+  --workout-past: #6b7280;      /* Gray - Past workouts */
+  --workout-current: #60a5fa;   /* Lighter blue - Current workout */
+  --workout-future: #374151;    /* Dark gray - Future workouts */
 }
 
 :root {
@@ -56,6 +107,7 @@ body {
 }
 
 h1 {
+  font-family: var(--font-display);
   font-size: 3.2em;
   line-height: 1.1;
 }
@@ -80,4 +132,38 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Remove media query since we're using data-theme */
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+/* Reduced motion support for users who prefer minimal animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+/* High contrast theme for improved visibility */
+:root[data-theme="high-contrast"] {
+  --text-color: #000000;
+  --background-color: #ffffff;
+  --link-color: #0000cc;
+  --link-hover-color: #000099;
+  --button-bg-color: #ffffff;
+  --button-text-color: #000000;
+  --border-color: #000000;
+  
+  /* High contrast specific variables */
+  --focus-outline-color: #000000;
+  --focus-outline-width: 3px;
+  --border-width: 2px;
+}
