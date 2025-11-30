@@ -34,6 +34,16 @@ function App() {
   const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
   const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
+
+  // Voice navigation handler - must be defined before any conditional returns
+  const handleVoiceNavigate = useCallback((tab: string) => {
+    const validTabs: TabType[] = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'plates', 'export'];
+    if (validTabs.includes(tab as TabType)) {
+      setActiveTab(tab as TabType);
+      setIsMobileMenuOpen(false);
+    }
+  }, []);
+
   // Check if user is first-time or returning
   useEffect(() => {
     const checkUserStatus = () => {
@@ -43,6 +53,7 @@ function App() {
     };
     checkUserStatus();
   }, []);
+
   // Keyboard shortcuts handler
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     // Ignore if user is typing in an input field
@@ -86,8 +97,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
 
-
-
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
     setIsMobileMenuOpen(false) // Close mobile menu when tab is selected
@@ -117,14 +126,6 @@ function App() {
       </>
     );
   }
-  // Voice navigation handler
-  const handleVoiceNavigate = useCallback((tab: string) => {
-    const validTabs: TabType[] = ['tracker', 'progress', 'planner', 'logger', 'plates', 'export'];
-    if (validTabs.includes(tab as TabType)) {
-      setActiveTab(tab as TabType);
-      setIsMobileMenuOpen(false);
-    }
-  }, []);
 
   return (
     <>
