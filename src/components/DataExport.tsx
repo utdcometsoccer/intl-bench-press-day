@@ -288,7 +288,8 @@ const DataExport: React.FC = () => {
         try {
           await googleFitService.connect();
           setIsGoogleFitConnected(true);
-        } catch {
+        } catch (connectError) {
+          console.error('Google Fit connection error:', connectError);
           setExportStatus('Google Fit connection requires configuration. Please set up Google OAuth credentials.');
           setIsExporting(false);
           return;
@@ -314,7 +315,8 @@ const DataExport: React.FC = () => {
         setExportStatus(`Google Fit sync partially completed. Synced: ${result.syncedWorkouts}, Failed: ${result.failedWorkouts}`);
       }
     } catch (error) {
-      setExportStatus(`Google Fit sync failed: ${error}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      setExportStatus(`Google Fit sync failed: ${errorMessage}`);
     } finally {
       setIsExporting(false);
     }

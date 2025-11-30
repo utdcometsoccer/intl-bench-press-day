@@ -42,6 +42,11 @@ export class GoogleFitService {
       ? workout.datePerformed 
       : new Date(workout.datePerformed);
     
+    // Validate the date is valid
+    if (isNaN(datePerformed.getTime())) {
+      throw new Error(`Invalid date for workout ${workout.id}: ${workout.datePerformed}`);
+    }
+    
     const durationMinutes = workout.duration || DEFAULT_WORKOUT_DURATION_MINUTES;
     
     const session = {

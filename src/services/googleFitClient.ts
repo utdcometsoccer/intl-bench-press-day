@@ -90,7 +90,10 @@ export class GoogleFitClient {
       throw new Error('No access token available');
     }
 
-    const sessionId = `intl-bench-press-${session.startTimeMillis}`;
+    // Generate unique session ID using name, timestamp, and random suffix for uniqueness
+    const sanitizedName = session.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    const randomSuffix = Math.random().toString(36).substring(2, 8);
+    const sessionId = `intl-bench-press-${sanitizedName}-${session.startTimeMillis}-${randomSuffix}`;
     const url = `${GOOGLE_FIT_API_BASE}/sessions/${sessionId}`;
 
     const response = await fetch(url, {

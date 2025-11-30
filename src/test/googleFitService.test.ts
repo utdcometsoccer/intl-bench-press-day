@@ -121,6 +121,17 @@ describe('GoogleFitService', () => {
       expect(mockClient.sessions.create).toHaveBeenCalled();
     });
 
+    it('should throw error for invalid date', async () => {
+      mockClient.isAuthenticated.mockReturnValue(true);
+      
+      const workoutWithInvalidDate = {
+        ...mockWorkoutResult,
+        datePerformed: 'invalid-date' as unknown as Date,
+      };
+
+      await expect(service.syncWorkout(workoutWithInvalidDate)).rejects.toThrow('Invalid date for workout');
+    });
+
     it('should use default duration when not provided', async () => {
       mockClient.isAuthenticated.mockReturnValue(true);
       
