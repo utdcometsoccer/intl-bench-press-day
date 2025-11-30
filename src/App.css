@@ -4170,6 +4170,13 @@ a:focus {
    MOBILE BOTTOM NAVIGATION
    ======================================== */
 
+/* CSS Custom Properties for safe area calculations */
+:root {
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --bottom-nav-padding: max(8px, var(--safe-area-bottom));
+  --main-content-bottom-padding: calc(70px + var(--safe-area-bottom));
+}
+
 /* Mobile bottom navigation bar */
 @media (max-width: 767px) {
   .mobile-bottom-nav {
@@ -4182,7 +4189,7 @@ a:focus {
     background: var(--background-color, #ffffff);
     border-top: 1px solid var(--border-color, #dee2e6);
     padding: 8px 0;
-    padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    padding-bottom: var(--bottom-nav-padding);
     z-index: 1000;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
@@ -4235,12 +4242,7 @@ a:focus {
   
   /* Add bottom padding to main content to prevent overlap with bottom nav */
   .main-content {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
-  }
-  
-  /* Hide the desktop navigation on mobile when bottom nav is present */
-  .hide-mobile-menu {
-    display: none !important;
+    padding-bottom: var(--main-content-bottom-padding);
   }
 }
 
@@ -4499,7 +4501,7 @@ a:focus {
   /* Bottom navigation safe area */
   @media (max-width: 767px) {
     .mobile-bottom-nav {
-      padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+      padding-bottom: var(--bottom-nav-padding);
       padding-left: env(safe-area-inset-left, 0px);
       padding-right: env(safe-area-inset-right, 0px);
     }
@@ -4534,13 +4536,13 @@ a:focus {
 @media (display-mode: standalone) {
   /* Ensure proper spacing for Android navigation gestures */
   body {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: var(--safe-area-bottom);
   }
   
   /* Adjust for Android's translucent navigation bar */
   @supports (padding: max(0px)) {
     .mobile-bottom-nav {
-      padding-bottom: max(8px, env(safe-area-inset-bottom, 16px));
+      padding-bottom: var(--bottom-nav-padding);
     }
   }
 }
