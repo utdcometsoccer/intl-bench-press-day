@@ -30,6 +30,13 @@ describe('useTheme', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
   });
 
+  it('should load high-contrast theme from localStorage', () => {
+    localStorage.setItem(THEME_STORAGE_KEY, 'high-contrast');
+    const { result } = renderHook(() => useTheme());
+    expect(result.current.theme).toBe('high-contrast');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('high-contrast');
+  });
+
   it('should toggle from light to dark theme', () => {
     const { result } = renderHook(() => useTheme());
     
@@ -44,11 +51,26 @@ describe('useTheme', () => {
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('dark');
   });
 
-  it('should toggle from dark to light theme', () => {
+  it('should toggle from dark to high-contrast theme', () => {
     localStorage.setItem(THEME_STORAGE_KEY, 'dark');
     const { result } = renderHook(() => useTheme());
     
     expect(result.current.theme).toBe('dark');
+    
+    act(() => {
+      result.current.toggleTheme();
+    });
+    
+    expect(result.current.theme).toBe('high-contrast');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('high-contrast');
+    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('high-contrast');
+  });
+
+  it('should toggle from high-contrast to light theme', () => {
+    localStorage.setItem(THEME_STORAGE_KEY, 'high-contrast');
+    const { result } = renderHook(() => useTheme());
+    
+    expect(result.current.theme).toBe('high-contrast');
     
     act(() => {
       result.current.toggleTheme();
@@ -73,21 +95,42 @@ describe('useTheme', () => {
     expect(result2.current.theme).toBe('dark');
   });
 
-  it('should update document attribute when theme changes', () => {
+  it('should cycle through all three themes via toggle', () => {
     const { result } = renderHook(() => useTheme());
     
+    // Start at light
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     
+    // Toggle to dark
     act(() => {
       result.current.toggleTheme();
     });
-    
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     
+    // Toggle to high-contrast
     act(() => {
       result.current.toggleTheme();
     });
+    expect(document.documentElement.getAttribute('data-theme')).toBe('high-contrast');
     
+    // Toggle back to light
+    act(() => {
+      result.current.toggleTheme();
+    });
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+  });
+
+  it('should allow direct theme setting via setTheme', () => {
+    const { result } = renderHook(() => useTheme());
+    
+    expect(result.current.theme).toBe('light');
+    
+    act(() => {
+      result.current.setTheme('high-contrast');
+    });
+    
+    expect(result.current.theme).toBe('high-contrast');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('high-contrast');
+    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('high-contrast');
   });
 });

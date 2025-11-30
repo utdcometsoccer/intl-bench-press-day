@@ -80,4 +80,38 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Remove media query since we're using data-theme */
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+/* Reduced motion support for users who prefer minimal animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+/* High contrast theme for improved visibility */
+:root[data-theme="high-contrast"] {
+  --text-color: #000000;
+  --background-color: #ffffff;
+  --link-color: #0000cc;
+  --link-hover-color: #000099;
+  --button-bg-color: #ffffff;
+  --button-text-color: #000000;
+  --border-color: #000000;
+  
+  /* High contrast specific variables */
+  --focus-outline-color: #000000;
+  --focus-outline-width: 3px;
+  --border-width: 2px;
+}
