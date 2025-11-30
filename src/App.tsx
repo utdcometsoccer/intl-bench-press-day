@@ -27,7 +27,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
 
   // Keyboard shortcuts handler
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -72,7 +72,7 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
 
-  const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
+  
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
