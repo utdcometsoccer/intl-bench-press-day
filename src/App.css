@@ -4,32 +4,46 @@
 
 :root {
   /* Standard Responsive Breakpoints */
-  --breakpoint-xs: 0px;      /* Extra small devices (portrait phones) */
-  --breakpoint-sm: 576px;    /* Small devices (landscape phones) */
-  --breakpoint-md: 768px;    /* Medium devices (tablets) */
-  --breakpoint-lg: 992px;    /* Large devices (large tablets/small laptops) */
-  --breakpoint-xl: 1200px;   /* Extra large devices (desktops) */
-  
+  --breakpoint-xs: 0px;
+  /* Extra small devices (portrait phones) */
+  --breakpoint-sm: 576px;
+  /* Small devices (landscape phones) */
+  --breakpoint-md: 768px;
+  /* Medium devices (tablets) */
+  --breakpoint-lg: 992px;
+  /* Large devices (large tablets/small laptops) */
+  --breakpoint-xl: 1200px;
+  /* Extra large devices (desktops) */
+
   /* Responsive Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
-  
+
   /* Fluid Typography Scale */
-  --font-size-xs: 0.75rem;   /* 12px - fixed for small UI elements */
-  --font-size-sm: 0.875rem;  /* 14px - fixed for labels */
-  --font-size-base: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);         /* 14px-16px */
-  --font-size-lg: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);           /* 16px-18px */
-  --font-size-xl: clamp(1.25rem, 1rem + 1vw, 1.5rem);              /* 20px-24px */
-  --font-size-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);            /* 24px-32px */
-  --font-size-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.375rem);      /* 30px-38px */
-  
+  --font-size-xs: 0.75rem;
+  /* 12px - fixed for small UI elements */
+  --font-size-sm: 0.875rem;
+  /* 14px - fixed for labels */
+  --font-size-base: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);
+  /* 14px-16px */
+  --font-size-lg: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  /* 16px-18px */
+  --font-size-xl: clamp(1.25rem, 1rem + 1vw, 1.5rem);
+  /* 20px-24px */
+  --font-size-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+  /* 24px-32px */
+  --font-size-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.375rem);
+  /* 30px-38px */
+
   /* Reading Optimization */
-  --reading-width: 65ch;     /* Optimal line length for readability */
-  --reading-width-max: 75ch; /* Maximum comfortable line length */
-  
+  --reading-width: 65ch;
+  /* Optimal line length for readability */
+  --reading-width-max: 75ch;
+  /* Maximum comfortable line length */
+
   /* Container Max Widths */
   --container-sm: 540px;
   --container-md: 720px;
@@ -51,7 +65,7 @@
   --info-bg: #d4edda;
   --info-border: #c3e6cb;
   --info-text: #155724;
-  
+
   /* Button Colors */
   --primary-button-bg: #007bff;
   --primary-button-text: white;
@@ -60,18 +74,18 @@
   --secondary-button-text: white;
   --danger-button-bg: #dc3545;
   --danger-button-text: white;
-  
+
   /* Container and Border Colors */
   --container-bg: #f9f9f9;
   --container-border: #ccc;
   --form-section-bg: #f8f9fa;
   --border-color: #dee2e6;
-  
+
   /* Text Colors */
   --text-primary: #213547;
   --text-secondary: #6c757d;
   --text-muted: #666;
-  
+
   /* Tab Navigation */
   --tab-border-color: #dee2e6;
   --tab-text-color: var(--text-secondary, #6c757d);
@@ -91,7 +105,7 @@
   --info-bg: #0c5460;
   --info-border: #117a8b;
   --info-text: #d1ecf1;
-  
+
   /* Button Colors */
   --primary-button-bg: #0d6efd;
   --primary-button-text: white;
@@ -100,21 +114,24 @@
   --secondary-button-text: white;
   --danger-button-bg: #dc3545;
   --danger-button-text: white;
-  
+
   /* Container and Border Colors */
   --container-bg: #1a1a1a;
   --container-border: #444;
   --form-section-bg: #2a2a2a;
   --border-color: #444;
-  
+
   /* Text Colors - Improved contrast ratios for WCAG compliance */
   --text-primary: rgba(255, 255, 255, 0.87);
-  --text-secondary: #c9cfd6;   /* Increased from #adb5bd for better contrast */
-  --text-muted: #b0b0b0;       /* Increased from #999 for better contrast */
-  
+  --text-secondary: #c9cfd6;
+  /* Increased from #adb5bd for better contrast */
+  --text-muted: #b0b0b0;
+  /* Increased from #999 for better contrast */
+
   /* Tab Navigation */
   --tab-border-color: #444;
-  --tab-text-color: #c9cfd6;   /* Increased contrast */
+  --tab-text-color: #c9cfd6;
+  /* Increased contrast */
   --tab-active-color: #0d6efd;
   --tab-hover-bg: #2a2a2a;
 }
@@ -220,6 +237,12 @@
   cursor: pointer;
   font-size: 16px;
   margin-bottom: 15px;
+}
+
+/* Keyboard Shortcuts modal close button spacing */
+.keyboard-shortcuts-modal .keyboard-shortcuts-close {
+  margin-top: 16px;
+  margin-bottom: 0;
 }
 
 .primary-button:disabled {
@@ -423,7 +446,8 @@ header {
 @media (max-width: 767px) {
   .theme-toggle-button {
     top: 10px;
-    right: 60px; /* Position to the left of hamburger menu */
+    right: 60px;
+    /* Position to the left of hamburger menu */
     width: 44px;
     height: 44px;
     font-size: 20px;
@@ -467,7 +491,8 @@ header {
 @media (max-width: 767px) {
   .color-blind-toggle-button {
     top: 10px;
-    right: 110px; /* Position to the left of theme toggle */
+    right: 110px;
+    /* Position to the left of theme toggle */
     width: 44px;
     height: 44px;
     font-size: 20px;
@@ -500,7 +525,7 @@ header {
     margin-bottom: 0;
     padding: 10px 0;
   }
-  
+
   .tab-navigation.mobile-open {
     transform: translateY(0);
     opacity: 1;
@@ -531,15 +556,15 @@ header {
     border-radius: 0;
     margin: 0;
   }
-  
+
   .tab-button:last-child {
     border-bottom: none;
   }
-  
+
   .tab-button:hover {
     background-color: var(--tab-hover-bg);
   }
-  
+
   .tab-button.active {
     background-color: var(--tab-active-color);
     color: white;
@@ -572,6 +597,7 @@ header {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -1396,7 +1422,7 @@ header {
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
   padding: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: var(--text-primary, #213547);
 }
 
@@ -2755,7 +2781,7 @@ header {
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
   padding: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: var(--text-primary, #213547);
 }
 
@@ -2783,9 +2809,11 @@ header {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -2794,6 +2822,7 @@ header {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -3412,14 +3441,37 @@ header {
 
 
 /* Stat card color variants to match chart colors */
-.stat-card-0 { border-left: 4px solid #8884d8; }
-.stat-card-1 { border-left: 4px solid #82ca9d; }
-.stat-card-2 { border-left: 4px solid #ffc658; }
-.stat-card-3 { border-left: 4px solid #ff7c7c; }
-.stat-card-4 { border-left: 4px solid #8dd1e1; }
-.stat-card-5 { border-left: 4px solid #d084d0; }
-.stat-card-6 { border-left: 4px solid #ffb347; }
-.stat-card-7 { border-left: 4px solid #87ceeb; }
+.stat-card-0 {
+  border-left: 4px solid #8884d8;
+}
+
+.stat-card-1 {
+  border-left: 4px solid #82ca9d;
+}
+
+.stat-card-2 {
+  border-left: 4px solid #ffc658;
+}
+
+.stat-card-3 {
+  border-left: 4px solid #ff7c7c;
+}
+
+.stat-card-4 {
+  border-left: 4px solid #8dd1e1;
+}
+
+.stat-card-5 {
+  border-left: 4px solid #d084d0;
+}
+
+.stat-card-6 {
+  border-left: 4px solid #ffb347;
+}
+
+.stat-card-7 {
+  border-left: 4px solid #87ceeb;
+}
 
 /* ========================================
    RESPONSIVE GRID LAYOUT OVERRIDES
@@ -3440,17 +3492,17 @@ header {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
     gap: var(--spacing-md) !important;
   }
-  
+
   .max-config-grid {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
     gap: var(--spacing-md) !important;
   }
-  
+
   .cycles-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
     gap: var(--spacing-md) !important;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
     gap: var(--spacing-md) !important;
@@ -3462,7 +3514,7 @@ header {
   .max-config-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
   }
@@ -3473,15 +3525,15 @@ header {
   .workouts-grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
   }
-  
+
   .max-config-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
   }
-  
+
   .cycles-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
   }
@@ -3497,7 +3549,12 @@ body {
   line-height: 1.4;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
 }
 
@@ -3527,19 +3584,19 @@ h4 {
     font-size: var(--font-size-base);
     line-height: 1.5;
   }
-  
+
   h1 {
     font-size: var(--font-size-2xl);
   }
-  
+
   h2 {
     font-size: var(--font-size-xl);
   }
-  
+
   h3 {
     font-size: var(--font-size-lg);
   }
-  
+
   h4 {
     font-size: var(--font-size-base);
   }
@@ -3549,7 +3606,7 @@ h4 {
   h1 {
     font-size: var(--font-size-3xl);
   }
-  
+
   h2 {
     font-size: var(--font-size-2xl);
   }
@@ -3630,7 +3687,8 @@ h4 {
 
 /* Mobile-optimized buttons with better touch targets */
 .primary-button {
-  min-height: 44px; /* iOS recommended touch target */
+  min-height: 44px;
+  /* iOS recommended touch target */
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-sm);
@@ -3651,7 +3709,7 @@ h4 {
     font-size: var(--font-size-base);
     margin-bottom: var(--spacing-md);
   }
-  
+
   .secondary-button,
   .danger-button {
     padding: var(--spacing-sm) var(--spacing-md);
@@ -3662,9 +3720,11 @@ h4 {
 
 /* Desktop - optimized for mouse interaction */
 @media (min-width: 992px) {
+
   .secondary-button,
   .danger-button {
-    min-height: initial; /* Remove touch target requirement */
+    min-height: initial;
+    /* Remove touch target requirement */
   }
 }
 
@@ -3677,7 +3737,8 @@ h4 {
 .form-select {
   padding: var(--spacing-sm);
   font-size: var(--font-size-base);
-  min-height: 44px; /* Touch-friendly */
+  min-height: 44px;
+  /* Touch-friendly */
   border-radius: 6px;
 }
 
@@ -3703,6 +3764,7 @@ h4 {
 
 /* Small devices and up */
 @media (min-width: 576px) {
+
   .component-container,
   .workout-card,
   .stat-card,
@@ -3710,7 +3772,7 @@ h4 {
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
   }
-  
+
   .success-alert,
   .error-alert,
   .success-message,
@@ -3724,9 +3786,11 @@ h4 {
 
 /* Medium devices and up */
 @media (min-width: 768px) {
+
   .form-input,
   .form-select {
-    min-height: 40px; /* Reduce height for larger screens */
+    min-height: 40px;
+    /* Reduce height for larger screens */
   }
 }
 
@@ -3735,10 +3799,11 @@ h4 {
   .component-container {
     padding: var(--spacing-lg);
   }
-  
+
   .form-input,
   .form-select {
-    min-height: 36px; /* Desktop optimized */
+    min-height: 36px;
+    /* Desktop optimized */
   }
 }
 
@@ -3759,7 +3824,7 @@ h4 {
   .mobile-only {
     display: none;
   }
-  
+
   .desktop-only {
     display: block;
   }
@@ -4051,7 +4116,7 @@ a:focus {
   .hamburger-menu {
     display: none;
   }
-  
+
   .mobile-menu-overlay {
     display: none;
   }
@@ -4210,6 +4275,7 @@ a:focus {
 
 /* Mobile-specific styles for workout logger */
 @media (max-width: 767px) {
+
   /* Make set rows stack vertically on mobile */
   .set-row {
     grid-template-columns: 1fr !important;
@@ -4237,7 +4303,8 @@ a:focus {
 
   .weight-input-container input {
     flex: 1;
-    min-width: 0; /* Allow input to shrink below its minimum content width */
+    min-width: 0;
+    /* Allow input to shrink below its minimum content width */
   }
 
   /* Ensure plate calculator button stays aligned */
@@ -4282,6 +4349,44 @@ a:focus {
 }
 
 /* ========================================
+   APP LOADING STATE
+   ======================================== */
+
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: var(--spacing-lg);
+}
+
+.app-loading .app-logo {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+.app-loading p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-lg);
+  margin-top: var(--spacing-md);
+}
+
+/* ========================================
    MOBILE BOTTOM NAVIGATION
    ======================================== */
 
@@ -4308,7 +4413,7 @@ a:focus {
     z-index: 1000;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   .mobile-bottom-nav-item {
     display: flex;
     flex-direction: column;
@@ -4325,28 +4430,28 @@ a:focus {
     transition: color 0.2s ease;
     text-decoration: none;
   }
-  
+
   .mobile-bottom-nav-item:hover,
   .mobile-bottom-nav-item:focus {
     color: var(--tab-active-color, #007bff);
     outline: none;
   }
-  
+
   .mobile-bottom-nav-item:focus-visible {
     outline: 2px solid var(--tab-active-color, #007bff);
     outline-offset: 2px;
     border-radius: 4px;
   }
-  
+
   .mobile-bottom-nav-item.active {
     color: var(--tab-active-color, #007bff);
   }
-  
+
   .mobile-bottom-nav-icon {
     font-size: 20px;
     margin-bottom: 2px;
   }
-  
+
   .mobile-bottom-nav-label {
     font-weight: 500;
     white-space: nowrap;
@@ -4354,7 +4459,7 @@ a:focus {
     text-overflow: ellipsis;
     max-width: 60px;
   }
-  
+
   /* Add bottom padding to main content to prevent overlap with bottom nav */
   .main-content {
     padding-bottom: var(--main-content-bottom-padding);
@@ -4374,6 +4479,7 @@ a:focus {
 
 /* Tablet two-column layout for workout logger */
 @media (min-width: 768px) and (max-width: 1199px) {
+
   /* Two-column layout for workout sections */
   .workout-logger-tablet-layout {
     display: grid;
@@ -4381,41 +4487,41 @@ a:focus {
     gap: var(--spacing-md, 1.5rem);
     align-items: start;
   }
-  
+
   /* Side-by-side planned vs actual values */
   .planned-actual-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm, 1rem);
   }
-  
+
   .planned-value-column,
   .actual-value-column {
     padding: var(--spacing-sm, 1rem);
     background: var(--form-section-bg, #f8f9fa);
     border-radius: 6px;
   }
-  
+
   .planned-value-column h4,
   .actual-value-column h4 {
     margin-top: 0;
     margin-bottom: var(--spacing-sm, 1rem);
     color: var(--text-secondary, #495057);
   }
-  
+
   /* Larger touch targets for tablet inputs */
   .tablet-optimized-input {
     min-height: 48px;
     padding: var(--spacing-sm, 1rem);
     font-size: var(--font-size-base, 1rem);
   }
-  
+
   /* Set row optimization for tablet */
   .set-row {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
     gap: var(--spacing-sm, 1rem) !important;
   }
-  
+
   /* Assistance set row optimization for tablet */
   .assistance-set-row {
     display: grid !important;
@@ -4424,12 +4530,12 @@ a:focus {
     align-items: center !important;
     flex-direction: row !important;
   }
-  
+
   /* Summary grid optimization */
   .summary-grid {
     grid-template-columns: repeat(3, 1fr) !important;
   }
-  
+
   /* Workout details two-column on tablet */
   .workout-details-tablet {
     display: grid;
@@ -4443,13 +4549,14 @@ a:focus {
    ======================================== */
 
 @media (min-width: 1200px) {
+
   /* Dashboard-like layout for desktop */
   .desktop-dashboard-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: var(--spacing-lg, 2rem);
   }
-  
+
   /* Split-screen workout view */
   .desktop-split-view {
     display: grid;
@@ -4457,27 +4564,27 @@ a:focus {
     gap: var(--spacing-lg, 2rem);
     align-items: start;
   }
-  
+
   .desktop-split-view-main {
     grid-column: 1;
   }
-  
+
   .desktop-split-view-sidebar {
     grid-column: 2;
     position: sticky;
     top: var(--spacing-md, 1.5rem);
   }
-  
+
   /* Enhanced stat cards for desktop */
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
   }
-  
+
   /* Wider container on desktop */
   .component-container {
     max-width: 1000px;
   }
-  
+
   .large-component-container {
     max-width: 1400px;
   }
@@ -4576,22 +4683,24 @@ a:focus {
 
 /* Standalone PWA detection and styling */
 @media all and (display-mode: standalone) {
+
   /* Hide browser-specific elements when running as PWA */
   .browser-only {
     display: none !important;
   }
-  
+
   /* Adjust header for standalone mode */
   header[role="banner"] {
     padding-top: env(safe-area-inset-top, 0px);
   }
-  
+
   /* Full-height app feeling */
   #root {
     min-height: 100vh;
-    min-height: 100dvh; /* Dynamic viewport height for mobile */
+    min-height: 100dvh;
+    /* Dynamic viewport height for mobile */
   }
-  
+
   /* Hide install prompt when already installed */
   .pwa-install-prompt {
     display: none !important;
@@ -4600,19 +4709,20 @@ a:focus {
 
 /* iOS Safe Area Handling */
 @supports (padding: env(safe-area-inset-top)) {
+
   /* Header safe area */
   header[role="banner"] {
     padding-top: env(safe-area-inset-top, 0px);
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
   }
-  
+
   /* Navigation safe areas */
   .tab-navigation {
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
   }
-  
+
   /* Bottom navigation safe area */
   @media (max-width: 767px) {
     .mobile-bottom-nav {
@@ -4621,24 +4731,24 @@ a:focus {
       padding-right: env(safe-area-inset-right, 0px);
     }
   }
-  
+
   /* Main content safe areas */
   .main-content[role="main"] {
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
   }
-  
+
   /* Fixed elements safe areas */
   .hamburger-menu {
     top: calc(var(--spacing-md, 1.5rem) + env(safe-area-inset-top, 0px));
     right: calc(var(--spacing-md, 1.5rem) + env(safe-area-inset-right, 0px));
   }
-  
+
   .theme-toggle-button {
     top: calc(20px + env(safe-area-inset-top, 0px));
     right: calc(20px + env(safe-area-inset-right, 0px));
   }
-  
+
   @media (max-width: 767px) {
     .theme-toggle-button {
       top: calc(10px + env(safe-area-inset-top, 0px));
@@ -4649,11 +4759,12 @@ a:focus {
 
 /* Android Navigation Bar Adaptation */
 @media (display-mode: standalone) {
+
   /* Ensure proper spacing for Android navigation gestures */
   body {
     padding-bottom: var(--safe-area-bottom);
   }
-  
+
   /* Adjust for Android's translucent navigation bar */
   @supports (padding: max(0px)) {
     .mobile-bottom-nav {
@@ -4667,7 +4778,7 @@ a:focus {
   header[role="banner"] {
     padding-top: max(20px, env(safe-area-inset-top, 0px));
   }
-  
+
   .hamburger-menu {
     top: max(20px, calc(var(--spacing-md, 1.5rem) + env(safe-area-inset-top, 0px)));
   }
@@ -4678,6 +4789,7 @@ a:focus {
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -4686,35 +4798,64 @@ a:focus {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
-  .mobile-menu-overlay {
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* ========================================
    COLOR-BLIND FRIENDLY PALETTE OPTION
    ======================================== */
 
 /* Color-blind friendly mode - uses patterns and distinct hues */
 :root[data-color-blind="true"] {
   /* Workout state colors optimized for color blindness */
-  --workout-warmup: #e69f00;    /* Orange - visible to most color blind types */
-  --workout-main: #009e73;      /* Teal-green - distinguishable from red */
-  --workout-amrap: #d55e00;     /* Vermillion - distinct from green */
-  --workout-complete: #0072b2;  /* Blue - universal visibility */
-  --workout-rest: #999999;      /* Gray - neutral */
-  
+  --workout-warmup: #e69f00;
+  /* Orange - visible to most color blind types */
+  --workout-main: #009e73;
+  /* Teal-green - distinguishable from red */
+  --workout-amrap: #d55e00;
+  /* Vermillion - distinct from green */
+  --workout-complete: #0072b2;
+  /* Blue - universal visibility */
+  --workout-rest: #999999;
+  /* Gray - neutral */
+
   /* Progress indicators optimized for color blindness */
-  --progress-start: #e69f00;    /* Orange */
-  --progress-mid: #f0e442;      /* Yellow */
-  --progress-end: #0072b2;      /* Blue */
-  
+  --progress-start: #e69f00;
+  /* Orange */
+  --progress-mid: #f0e442;
+  /* Yellow */
+  --progress-end: #0072b2;
+  /* Blue */
+
   /* Exercise type colors - distinct hues for color blindness */
-  --exercise-squat: #cc79a7;    /* Pink/magenta */
-  --exercise-bench: #56b4e9;    /* Sky blue */
-  --exercise-deadlift: #009e73; /* Teal */
-  --exercise-press: #e69f00;    /* Orange */
-  
+  --exercise-squat: #cc79a7;
+  /* Pink/magenta */
+  --exercise-bench: #56b4e9;
+  /* Sky blue */
+  --exercise-deadlift: #009e73;
+  /* Teal */
+  --exercise-press: #e69f00;
+  /* Orange */
+
   /* Workout timeline colors for color blindness */
-  --workout-past: #999999;      /* Gray */
-  --workout-current: #0072b2;   /* Blue */
-  --workout-future: #cccccc;    /* Light gray */
+  --workout-past: #999999;
+  /* Gray */
+  --workout-current: #0072b2;
+  /* Blue */
+  --workout-future: #cccccc;
+  /* Light gray */
 }
 
 /* ========================================
@@ -4833,12 +4974,10 @@ a:focus {
 
 /* Progress bar with gradient */
 .progress-gradient {
-  background: linear-gradient(
-    to right,
-    var(--progress-start) 0%,
-    var(--progress-mid) 50%,
-    var(--progress-end) 100%
-  );
+  background: linear-gradient(to right,
+      var(--progress-start) 0%,
+      var(--progress-mid) 50%,
+      var(--progress-end) 100%);
   height: 8px;
   border-radius: 4px;
   overflow: hidden;
@@ -4918,6 +5057,9 @@ a:focus {
 
 .workout-card[data-exercise="press"] {
   border-left: 4px solid var(--exercise-press);
+}
+
+/* ========================================
    HIGH CONTRAST MODE STYLES
    ======================================== */
 
@@ -4933,7 +5075,7 @@ a:focus {
   --info-bg: #ffffff;
   --info-border: #00008b;
   --info-text: #00008b;
-  
+
   /* Button Colors - high contrast */
   --primary-button-bg: #000000;
   --primary-button-text: #ffffff;
@@ -4942,18 +5084,18 @@ a:focus {
   --secondary-button-text: #ffffff;
   --danger-button-bg: #8b0000;
   --danger-button-text: #ffffff;
-  
+
   /* Container and Border Colors */
   --container-bg: #ffffff;
   --container-border: #000000;
   --form-section-bg: #f0f0f0;
   --border-color: #000000;
-  
+
   /* Text Colors */
   --text-primary: #000000;
   --text-secondary: #333333;
   --text-muted: #444444;
-  
+
   /* Tab Navigation */
   --tab-border-color: #000000;
   --tab-text-color: #000000;
@@ -5077,9 +5219,11 @@ a:focus {
   0% {
     box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
   }
@@ -5124,9 +5268,11 @@ a:focus {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }
@@ -5155,6 +5301,7 @@ a:focus {
 
 /* Reduced motion - voice indicator */
 @media (prefers-reduced-motion: reduce) {
+
   .voice-command-indicator,
   .voice-nav-button.listening {
     animation: none !important;
@@ -5167,6 +5314,7 @@ a:focus {
 
 /* Ensure all interactive elements meet touch target requirements */
 @media (pointer: coarse) {
+
   /* Minimum touch targets for touch devices */
   button,
   [role="button"],
@@ -5181,7 +5329,7 @@ a:focus {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Larger tap areas for form controls */
   input[type="text"],
   input[type="number"],
@@ -5191,9 +5339,10 @@ a:focus {
   select,
   textarea {
     min-height: 44px;
-    font-size: 16px; /* Prevent zoom on iOS */
+    font-size: 16px;
+    /* Prevent zoom on iOS */
   }
-  
+
   /* Ensure checkboxes and radios have adequate tap targets */
   .checkbox-label,
   .radio-label {
@@ -5202,22 +5351,26 @@ a:focus {
     align-items: center;
     padding: 8px 0;
   }
-  
+
   /* Increase spacing between tappable elements */
   .cycle-actions {
     gap: 12px;
   }
-  
+
   .export-buttons-container {
     gap: 16px;
   }
-  
+
   .select-buttons {
     gap: 12px;
+  }
+}
+
 /* Mobile adjustments for voice navigation */
 @media (max-width: 767px) {
   .voice-nav-button {
-    bottom: 80px; /* Above mobile navigation if present */
+    bottom: 80px;
+    /* Above mobile navigation if present */
     right: 15px;
     width: 50px;
     height: 50px;

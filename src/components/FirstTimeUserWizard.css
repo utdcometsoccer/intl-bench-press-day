@@ -1,0 +1,203 @@
+/* First Time User Wizard Styles */
+
+.first-time-wizard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Wizard progress bar */
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--form-section-bg);
+  border-bottom: 1px solid var(--border-color);
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.wizard-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.wizard-step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+  transition: all 0.3s ease;
+}
+
+.wizard-step.active .wizard-step-number {
+  background-color: #007bff;
+  color: white;
+  transform: scale(1.1);
+}
+
+.wizard-step.completed .wizard-step-number {
+  background-color: #28a745;
+  color: white;
+}
+
+.wizard-step-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.wizard-step.active .wizard-step-label {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.wizard-step.completed .wizard-step-label {
+  color: #28a745;
+}
+
+.wizard-step-connector {
+  width: 30px;
+  height: 2px;
+  background-color: var(--border-color);
+  margin-bottom: 18px;
+}
+
+/* Wizard content */
+.wizard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Create cycle step */
+.wizard-cycle-step {
+  padding: var(--spacing-lg);
+}
+
+.cycle-step-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.cycle-step-header h2 {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.cycle-step-header p {
+  color: var(--text-secondary);
+}
+
+.cycle-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.cycle-created-actions {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 2px solid #28a745;
+  border-radius: 12px;
+}
+
+.cycle-created-message {
+  font-size: var(--font-size-lg);
+  color: #28a745;
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+}
+
+.continue-to-guide-button {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.continue-to-guide-button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.continue-to-guide-button:focus {
+  outline: 3px solid #28a745;
+  outline-offset: 2px;
+}
+
+/* Skip all button */
+.wizard-skip-all {
+  position: fixed;
+  bottom: var(--spacing-md);
+  right: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.wizard-skip-all:hover {
+  background-color: var(--form-section-bg);
+  color: var(--text-secondary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .wizard-progress {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+  }
+  
+  .wizard-step-number {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-size-xs);
+  }
+  
+  .wizard-step-connector {
+    width: 15px;
+    margin-bottom: 16px;
+  }
+  
+  .wizard-step-label {
+    display: none;
+  }
+  
+  .wizard-skip-all {
+    position: static;
+    width: 100%;
+    margin: var(--spacing-md);
+  }
+}
+
+@media (min-width: 768px) {
+  .wizard-progress {
+    gap: var(--spacing-md);
+  }
+  
+  .wizard-step-connector {
+    width: 50px;
+  }
+}

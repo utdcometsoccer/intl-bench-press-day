@@ -1,0 +1,244 @@
+/* Today's Workout Styles */
+
+.todays-workout {
+  background-color: var(--form-section-bg);
+  border: 3px solid #007bff;
+  border-radius: 16px;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+  animation: highlight-pulse 2s ease-in-out infinite;
+}
+
+@keyframes highlight-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+  }
+}
+
+.todays-workout.today {
+  border-color: #28a745;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+}
+
+.todays-workout.today {
+  animation: highlight-pulse-green 2s ease-in-out infinite;
+}
+
+@keyframes highlight-pulse-green {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+  }
+}
+
+.todays-workout.overdue {
+  border-color: #dc3545;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+  animation: highlight-pulse-red 2s ease-in-out infinite;
+}
+
+@keyframes highlight-pulse-red {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+  }
+}
+
+/* Header */
+.workout-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.workout-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.badge-today {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-overdue {
+  background-color: #dc3545;
+  color: white;
+}
+
+.badge-upcoming {
+  background-color: #007bff;
+  color: white;
+}
+
+.workout-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+}
+
+/* Details */
+.workout-details {
+  margin-bottom: var(--spacing-lg);
+}
+
+.exercise-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.exercise-icon {
+  font-size: 1.5rem;
+}
+
+.workout-info {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.info-value {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+/* Sets preview */
+.workout-sets-preview {
+  margin-top: var(--spacing-md);
+}
+
+.workout-sets-preview h4 {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.sets-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.set-preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  font-size: var(--font-size-sm);
+}
+
+.set-preview.amrap {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left: 3px solid #dc3545;
+}
+
+.set-number {
+  color: var(--text-secondary);
+}
+
+.set-details {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.amrap-label {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Actions */
+.workout-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.start-workout-button {
+  flex: 1;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.start-workout-button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.start-workout-button:focus {
+  outline: 3px solid #28a745;
+  outline-offset: 2px;
+}
+
+.full-logger-button {
+  flex: 1;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  background-color: transparent;
+  color: #007bff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.full-logger-button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.full-logger-button:focus {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .workout-actions {
+    flex-direction: column;
+  }
+  
+  .workout-info {
+    gap: var(--spacing-md);
+  }
+}

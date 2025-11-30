@@ -1,0 +1,169 @@
+/* Notification Settings Styles */
+
+.notification-settings {
+  background-color: var(--form-section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.notification-header .icon {
+  font-size: 1.5rem;
+}
+
+.notification-header h4 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+/* Content sections */
+.notification-content {
+  padding-left: calc(1.5rem + var(--spacing-sm));
+}
+
+.notification-enabled-content,
+.notification-request-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.notification-info {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Toggle switch */
+.notification-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+}
+
+.notification-toggle input {
+  display: none;
+}
+
+.toggle-slider {
+  width: 48px;
+  height: 24px;
+  background-color: var(--border-color);
+  border-radius: 12px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.notification-toggle input:checked + .toggle-slider {
+  background-color: #28a745;
+}
+
+.notification-toggle input:checked + .toggle-slider::after {
+  transform: translateX(24px);
+}
+
+.toggle-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+/* Enable button */
+.enable-notifications-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.enable-notifications-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.enable-notifications-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Status messages */
+.notification-unsupported,
+.notification-denied {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  color: var(--text-secondary);
+}
+
+.notification-unsupported .icon,
+.notification-denied .icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notification-unsupported p,
+.notification-denied p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.notification-denied strong {
+  display: block;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+/* Inline toggle */
+.notification-toggle-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+}
+
+.notification-toggle-inline input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.notification-toggle-inline .toggle-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+/* Focus states */
+.notification-toggle input:focus + .toggle-slider {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.enable-notifications-button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}

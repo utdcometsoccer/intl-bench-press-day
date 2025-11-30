@@ -8,10 +8,14 @@ import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
 import PlateCalculator from './components/PlateCalculator'
 import PWAInstallPrompt from './PWAInstallPrompt'
+import FirstTimeUserWizard from './components/FirstTimeUserWizard'
+import Dashboard from './components/Dashboard'
 import VoiceNavigationButton from './components/VoiceNavigationButton'
 import { useTheme } from './hooks/useTheme'
+import { userPreferencesStorage } from './services/userPreferencesStorage'
 
-type TabType = 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'
+type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export';
+
 
 // Tab configuration for navigation items
 const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[] = [
@@ -26,8 +30,29 @@ const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showFirstTimeWizard, setShowFirstTimeWizard] = useState(false)
+  const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
   const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
+
+  // Voice navigation handler - must be defined before any conditional returns
+  const handleVoiceNavigate = useCallback((tab: string) => {
+    const validTabs: TabType[] = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'plates', 'export'];
+    if (validTabs.includes(tab as TabType)) {
+      setActiveTab(tab as TabType);
+      setIsMobileMenuOpen(false);
+    }
+  }, []);
+
+  // Check if user is first-time or returning
+  useEffect(() => {
+    const checkUserStatus = () => {
+      const isFirstTime = userPreferencesStorage.isFirstTimeUser();
+      setShowFirstTimeWizard(isFirstTime);
+      setIsCheckingUserStatus(false);
+    };
+    checkUserStatus();
+  }, []);
 
   // Keyboard shortcuts handler
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -72,21 +97,35 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
 
-  
-
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
     setIsMobileMenuOpen(false) // Close mobile menu when tab is selected
   }
 
-  // Voice navigation handler
-  const handleVoiceNavigate = useCallback((tab: string) => {
-    const validTabs: TabType[] = ['tracker', 'progress', 'planner', 'logger', 'plates', 'export'];
-    if (validTabs.includes(tab as TabType)) {
-      setActiveTab(tab as TabType);
-      setIsMobileMenuOpen(false);
-    }
-  }, []);
+  const handleFirstTimeWizardComplete = () => {
+    setShowFirstTimeWizard(false);
+    setActiveTab('dashboard');
+  };
+
+  // Show loading while checking user status
+  if (isCheckingUserStatus) {
+    return (
+      <div className="app-loading">
+        <img src={logo} alt="International Bench Press Day Logo" className="app-logo" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  // Show first-time wizard for new users
+  if (showFirstTimeWizard) {
+    return (
+      <>
+        <FirstTimeUserWizard onComplete={handleFirstTimeWizardComplete} />
+        <PWAInstallPrompt />
+      </>
+    );
+  }
 
   return (
     <>
@@ -97,16 +136,16 @@ function App() {
       <a href="#main-navigation" className="skip-link">
         Skip to navigation
       </a>
-      
+
       {/* Header Section */}
       <header role="banner">
         <div>
           <img src={logo} alt="International Bench Press Day Logo" className="app-logo" />
         </div>
         <h1>International Bench Press Day</h1>
-        
+
         {/* Theme Toggle Button */}
-        <button 
+        <button
           onClick={toggleTheme}
           className="theme-toggle-button"
           aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'high contrast' : 'light'} mode`}
@@ -114,9 +153,9 @@ function App() {
         >
           {theme === 'light' ? '🌙' : theme === 'dark' ? '◐' : '☀️'}
         </button>
-        
+
         {/* Color-Blind Mode Toggle Button */}
-        <button 
+        <button
           onClick={toggleColorBlindMode}
           className="color-blind-toggle-button"
           aria-label={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
@@ -127,9 +166,9 @@ function App() {
           <span className="sr-only">{colorBlindMode ? 'Color-blind mode on' : 'Color-blind mode off'}</span>
         </button>
       </header>
-      
+
       {/* Mobile Hamburger Menu Button */}
-      <button        
+      <button
         className="hamburger-menu"
         type='button'
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -143,12 +182,19 @@ function App() {
       </button>
 
       {/* Main Navigation */}
-      <nav 
-        role="navigation" 
+      <nav
+        role="navigation"
         aria-label="Main navigation"
         id="main-navigation"
         className={`tab-navigation ${isMobileMenuOpen ? 'mobile-open' : ''}`}
       >
+        <button
+          onClick={() => handleTabClick('dashboard')}
+          className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
+          aria-current={activeTab === 'dashboard' ? 'page' : undefined}
+        >
+          Dashboard
+        </button>
         <button
           onClick={() => handleTabClick('tracker')}
           className={`tab-button ${activeTab === 'tracker' ? 'active' : ''}`}
@@ -195,7 +241,7 @@ function App() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="mobile-menu-overlay"
           onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
@@ -204,6 +250,13 @@ function App() {
 
       {/* Main Content Area */}
       <main role="main" id="main-content" className="main-content">
+        {activeTab === 'dashboard' && (
+          <Dashboard
+            onNavigateToPlanner={() => handleTabClick('planner')}
+            onNavigateToLogger={() => handleTabClick('logger')}
+            onNavigateToProgress={() => handleTabClick('progress')}
+          />
+        )}
         {activeTab === 'tracker' && <ExerciseOneRepMaxTracker />}
         {activeTab === 'progress' && <ProgressChart />}
         {activeTab === 'planner' && <FiveThreeOnePlanner />}
@@ -213,9 +266,9 @@ function App() {
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav 
-        className="mobile-bottom-nav" 
-        role="navigation" 
+      <nav
+        className="mobile-bottom-nav"
+        role="navigation"
         aria-label="Mobile navigation"
       >
         {tabConfig.map((tab) => (
@@ -235,12 +288,12 @@ function App() {
       {/* Keyboard Shortcuts Modal */}
       {showKeyboardShortcuts && (
         <>
-          <div 
+          <div
             className="keyboard-shortcuts-overlay visible"
             onClick={() => setShowKeyboardShortcuts(false)}
             aria-hidden="true"
           />
-          <div 
+          <div
             className="keyboard-shortcuts-modal visible"
             role="dialog"
             aria-modal="true"
@@ -267,10 +320,9 @@ function App() {
                 <span className="shortcut-key">Esc</span>
               </li>
             </ul>
-            <button 
+            <button
               onClick={() => setShowKeyboardShortcuts(false)}
-              className="primary-button"
-              style={{ marginTop: '16px', marginBottom: 0 }}
+              className="primary-button keyboard-shortcuts-close"
             >
               Close
             </button>
