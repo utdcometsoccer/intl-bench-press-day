@@ -50,26 +50,35 @@ class MockSpeechRecognition {
 
 let mockRecognitionInstance: MockSpeechRecognition | null = null;
 
-// Type for window with SpeechRecognition
-type WindowWithSpeechRecognition = Window & { SpeechRecognition?: typeof MockSpeechRecognition };
+// Type for window with SpeechRecognition for cleanup operations in tests
+type WindowWithSpeechRecognition = { SpeechRecognition?: unknown };
 
 describe('useVoiceNavigation', () => {
   beforeEach(() => {
     // Reset mock instance
     mockRecognitionInstance = null;
     
-    // Mock the SpeechRecognition API
-    (window as WindowWithSpeechRecognition).SpeechRecognition = class extends MockSpeechRecognition {
+    // Mock the SpeechRecognition API using Object.defineProperty to bypass TypeScript's strict type checking
+    const MockClass = class extends MockSpeechRecognition {
       constructor() {
         super();
         mockRecognitionInstance = this;
       }
     };
+    Object.defineProperty(window, 'SpeechRecognition', {
+      value: MockClass,
+      writable: true,
+      configurable: true,
+    });
   });
 
   afterEach(() => {
     // Clean up
-    delete (window as WindowWithSpeechRecognition).SpeechRecognition;
+    Object.defineProperty(window, 'SpeechRecognition', {
+      value: undefined,
+      writable: true,
+      configurable: true,
+    });
     mockRecognitionInstance = null;
     vi.clearAllTimers();
   });
