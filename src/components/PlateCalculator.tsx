@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { PlateSet, PlateCalculation, LocationInfo } from '../types/plateCalculator';
 import { plateCalculatorStorage } from '../services/plateCalculatorStorage';
 import PlateSetManager from './PlateSetManager';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import styles from './PlateCalculator.module.css';
 
 interface PlateCalculatorProps {
@@ -27,6 +28,23 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
 
   // UI state
   const [showPlateSetManager, setShowPlateSetManager] = useState(false);
+
+  // Focus trap for modal
+  const modalRef = useFocusTrap<HTMLDivElement>(showPlateSetManager);
+
+  // Handle escape key to close modal
+  const handleEscapeKey = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape' && showPlateSetManager) {
+      setShowPlateSetManager(false);
+    }
+  }, [showPlateSetManager]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [handleEscapeKey]);
 
   useEffect(() => {
     initializePlateCalculator();
@@ -316,8 +334,18 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
       {renderCalculationResult()}
 
       {showPlateSetManager && (
-        <div className={styles.modal} onClick={() => setShowPlateSetManager(false)}>
-          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div 
+          className={styles.modal} 
+          onClick={() => setShowPlateSetManager(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Plate Set Manager"
+        >
+          <div 
+            ref={modalRef}
+            className={styles.modalContent} 
+            onClick={e => e.stopPropagation()}
+          >
             <PlateSetManager
               onClose={() => setShowPlateSetManager(false)}
               onPlateSetChange={(plateSetId) => {
