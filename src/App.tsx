@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
 import ExerciseOneRepMaxTracker from './components/ExerciseOneRepMaxTracker'
@@ -8,17 +8,29 @@ import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
 import PlateCalculator from './components/PlateCalculator'
 import PWAInstallPrompt from './PWAInstallPrompt'
+import VoiceNavigationButton from './components/VoiceNavigationButton'
 import { useTheme } from './hooks/useTheme'
 
+type TabType = 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export';
+
 function App() {
-  const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'>('tracker')
+  const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
 
-  const handleTabClick = (tab: 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export') => {
+  const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
     setIsMobileMenuOpen(false) // Close mobile menu when tab is selected
   }
+
+  // Voice navigation handler
+  const handleVoiceNavigate = useCallback((tab: string) => {
+    const validTabs: TabType[] = ['tracker', 'progress', 'planner', 'logger', 'plates', 'export'];
+    if (validTabs.includes(tab as TabType)) {
+      setActiveTab(tab as TabType);
+      setIsMobileMenuOpen(false);
+    }
+  }, []);
 
   return (
     <>
@@ -41,10 +53,10 @@ function App() {
         <button 
           onClick={toggleTheme}
           className="theme-toggle-button"
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'high contrast' : 'light'} mode`}
+          title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'high contrast' : 'light'} mode (Current: ${theme})`}
         >
-          {theme === 'light' ? '🌙' : '☀️'}
+          {theme === 'light' ? '🌙' : theme === 'dark' ? '◐' : '☀️'}
         </button>
         
         {/* Color-Blind Mode Toggle Button */}
@@ -146,6 +158,9 @@ function App() {
 
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
+
+      {/* Voice Navigation Button */}
+      <VoiceNavigationButton onNavigate={handleVoiceNavigate} />
     </>
   )
 }
