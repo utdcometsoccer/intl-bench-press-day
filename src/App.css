@@ -4282,6 +4282,412 @@ a:focus {
 }
 
 /* ========================================
+   MOBILE BOTTOM NAVIGATION
+   ======================================== */
+
+/* CSS Custom Properties for safe area calculations */
+:root {
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --bottom-nav-padding: max(8px, var(--safe-area-bottom));
+  --main-content-bottom-padding: calc(70px + var(--safe-area-bottom));
+}
+
+/* Mobile bottom navigation bar */
+@media (max-width: 767px) {
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    background: var(--background-color, #ffffff);
+    border-top: 1px solid var(--border-color, #dee2e6);
+    padding: 8px 0;
+    padding-bottom: var(--bottom-nav-padding);
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 44px;
+    padding: 4px 8px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, #6c757d);
+    font-size: 10px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .mobile-bottom-nav-item:hover,
+  .mobile-bottom-nav-item:focus {
+    color: var(--tab-active-color, #007bff);
+    outline: none;
+  }
+  
+  .mobile-bottom-nav-item:focus-visible {
+    outline: 2px solid var(--tab-active-color, #007bff);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  
+  .mobile-bottom-nav-item.active {
+    color: var(--tab-active-color, #007bff);
+  }
+  
+  .mobile-bottom-nav-icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+  
+  .mobile-bottom-nav-label {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60px;
+  }
+  
+  /* Add bottom padding to main content to prevent overlap with bottom nav */
+  .main-content {
+    padding-bottom: var(--main-content-bottom-padding);
+  }
+}
+
+/* Hide bottom navigation on larger screens */
+@media (min-width: 768px) {
+  .mobile-bottom-nav {
+    display: none;
+  }
+}
+
+/* ========================================
+   TABLET OPTIMIZATION STYLES
+   ======================================== */
+
+/* Tablet two-column layout for workout logger */
+@media (min-width: 768px) and (max-width: 1199px) {
+  /* Two-column layout for workout sections */
+  .workout-logger-tablet-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md, 1.5rem);
+    align-items: start;
+  }
+  
+  /* Side-by-side planned vs actual values */
+  .planned-actual-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm, 1rem);
+  }
+  
+  .planned-value-column,
+  .actual-value-column {
+    padding: var(--spacing-sm, 1rem);
+    background: var(--form-section-bg, #f8f9fa);
+    border-radius: 6px;
+  }
+  
+  .planned-value-column h4,
+  .actual-value-column h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm, 1rem);
+    color: var(--text-secondary, #495057);
+  }
+  
+  /* Larger touch targets for tablet inputs */
+  .tablet-optimized-input {
+    min-height: 48px;
+    padding: var(--spacing-sm, 1rem);
+    font-size: var(--font-size-base, 1rem);
+  }
+  
+  /* Set row optimization for tablet */
+  .set-row {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+    gap: var(--spacing-sm, 1rem) !important;
+  }
+  
+  /* Assistance set row optimization for tablet */
+  .assistance-set-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr auto !important;
+    gap: var(--spacing-sm, 1rem) !important;
+    align-items: center !important;
+    flex-direction: row !important;
+  }
+  
+  /* Summary grid optimization */
+  .summary-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  /* Workout details two-column on tablet */
+  .workout-details-tablet {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md, 1.5rem);
+  }
+}
+
+/* ========================================
+   DESKTOP ENHANCEMENTS
+   ======================================== */
+
+@media (min-width: 1200px) {
+  /* Dashboard-like layout for desktop */
+  .desktop-dashboard-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg, 2rem);
+  }
+  
+  /* Split-screen workout view */
+  .desktop-split-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg, 2rem);
+    align-items: start;
+  }
+  
+  .desktop-split-view-main {
+    grid-column: 1;
+  }
+  
+  .desktop-split-view-sidebar {
+    grid-column: 2;
+    position: sticky;
+    top: var(--spacing-md, 1.5rem);
+  }
+  
+  /* Enhanced stat cards for desktop */
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  }
+  
+  /* Wider container on desktop */
+  .component-container {
+    max-width: 1000px;
+  }
+  
+  .large-component-container {
+    max-width: 1400px;
+  }
+}
+
+/* ========================================
+   KEYBOARD SHORTCUTS INDICATOR
+   ======================================== */
+
+/* Keyboard shortcut badge */
+.keyboard-shortcut {
+  display: none;
+  padding: 2px 6px;
+  background: var(--form-section-bg, #f8f9fa);
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: monospace;
+  color: var(--text-secondary, #6c757d);
+  margin-left: 8px;
+}
+
+/* Show keyboard shortcuts on desktop */
+@media (min-width: 992px) {
+  .keyboard-shortcut {
+    display: inline-block;
+  }
+}
+
+/* Keyboard shortcuts help modal */
+.keyboard-shortcuts-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background-color, #ffffff);
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 8px;
+  padding: var(--spacing-lg, 2rem);
+  max-width: 400px;
+  width: 90%;
+  z-index: 1100;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.keyboard-shortcuts-modal.visible {
+  display: block;
+}
+
+.keyboard-shortcuts-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1099;
+}
+
+.keyboard-shortcuts-overlay.visible {
+  display: block;
+}
+
+.keyboard-shortcuts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.keyboard-shortcuts-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color, #dee2e6);
+}
+
+.keyboard-shortcuts-list li:last-child {
+  border-bottom: none;
+}
+
+.keyboard-shortcuts-list .shortcut-key {
+  padding: 4px 8px;
+  background: var(--form-section-bg, #f8f9fa);
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+/* ========================================
+   PWA OPTIMIZATION STYLES
+   ======================================== */
+
+/* Standalone PWA detection and styling */
+@media all and (display-mode: standalone) {
+  /* Hide browser-specific elements when running as PWA */
+  .browser-only {
+    display: none !important;
+  }
+  
+  /* Adjust header for standalone mode */
+  header[role="banner"] {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  
+  /* Full-height app feeling */
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+  
+  /* Hide install prompt when already installed */
+  .pwa-install-prompt {
+    display: none !important;
+  }
+}
+
+/* iOS Safe Area Handling */
+@supports (padding: env(safe-area-inset-top)) {
+  /* Header safe area */
+  header[role="banner"] {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  
+  /* Navigation safe areas */
+  .tab-navigation {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  
+  /* Bottom navigation safe area */
+  @media (max-width: 767px) {
+    .mobile-bottom-nav {
+      padding-bottom: var(--bottom-nav-padding);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+    }
+  }
+  
+  /* Main content safe areas */
+  .main-content[role="main"] {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  
+  /* Fixed elements safe areas */
+  .hamburger-menu {
+    top: calc(var(--spacing-md, 1.5rem) + env(safe-area-inset-top, 0px));
+    right: calc(var(--spacing-md, 1.5rem) + env(safe-area-inset-right, 0px));
+  }
+  
+  .theme-toggle-button {
+    top: calc(20px + env(safe-area-inset-top, 0px));
+    right: calc(20px + env(safe-area-inset-right, 0px));
+  }
+  
+  @media (max-width: 767px) {
+    .theme-toggle-button {
+      top: calc(10px + env(safe-area-inset-top, 0px));
+      right: calc(60px + env(safe-area-inset-right, 0px));
+    }
+  }
+}
+
+/* Android Navigation Bar Adaptation */
+@media (display-mode: standalone) {
+  /* Ensure proper spacing for Android navigation gestures */
+  body {
+    padding-bottom: var(--safe-area-bottom);
+  }
+  
+  /* Adjust for Android's translucent navigation bar */
+  @supports (padding: max(0px)) {
+    .mobile-bottom-nav {
+      padding-bottom: var(--bottom-nav-padding);
+    }
+  }
+}
+
+/* Fullscreen mode adjustments */
+@media all and (display-mode: fullscreen) {
+  header[role="banner"] {
+    padding-top: max(20px, env(safe-area-inset-top, 0px));
+  }
+  
+  .hamburger-menu {
+    top: max(20px, calc(var(--spacing-md, 1.5rem) + env(safe-area-inset-top, 0px)));
+  }
+}
+
+/* ========================================
+   REDUCED MOTION ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .mobile-menu-overlay {
    COLOR-BLIND FRIENDLY PALETTE OPTION
    ======================================== */
 
@@ -4755,6 +5161,59 @@ a:focus {
   }
 }
 
+/* ========================================
+   TOUCH TARGET OPTIMIZATION
+   ======================================== */
+
+/* Ensure all interactive elements meet touch target requirements */
+@media (pointer: coarse) {
+  /* Minimum touch targets for touch devices */
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  .tab-button,
+  .cycle-action-button,
+  .add-set-button,
+  .remove-set-button,
+  .assistance-action-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Larger tap areas for form controls */
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  /* Ensure checkboxes and radios have adequate tap targets */
+  .checkbox-label,
+  .radio-label {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+  }
+  
+  /* Increase spacing between tappable elements */
+  .cycle-actions {
+    gap: 12px;
+  }
+  
+  .export-buttons-container {
+    gap: 16px;
+  }
+  
+  .select-buttons {
+    gap: 12px;
 /* Mobile adjustments for voice navigation */
 @media (max-width: 767px) {
   .voice-nav-button {
