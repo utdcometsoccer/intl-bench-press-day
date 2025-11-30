@@ -8,6 +8,7 @@ import TodaysWorkout from './TodaysWorkout';
 import QuickLog from './QuickLog';
 import ProgressSummary from './ProgressSummary';
 import CalendarView from './CalendarView';
+import NotificationSettings from './NotificationSettings';
 import './Dashboard.css';
 
 interface DashboardProps {
@@ -160,6 +161,9 @@ const Dashboard: FC<DashboardProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Notification Settings */}
+      <NotificationSettings />
     </div>
   );
 };
