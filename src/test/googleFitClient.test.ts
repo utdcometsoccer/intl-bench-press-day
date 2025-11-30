@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GoogleFitClient, createGoogleFitClient } from '../services/googleFitClient';
 
 // Mock fetch
-global.fetch = vi.fn();
+globalThis.fetch = vi.fn();
 
 describe('GoogleFitClient', () => {
   let client: GoogleFitClient;
@@ -113,7 +113,7 @@ describe('GoogleFitClient', () => {
         ok: true,
         json: vi.fn().mockResolvedValue({}),
       };
-      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResponse);
+      (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResponse);
 
       client.setAuthResult({
         accessToken: 'test-token',
@@ -130,7 +130,7 @@ describe('GoogleFitClient', () => {
 
       await expect(client.sessions.create(session)).resolves.not.toThrow();
 
-      expect(global.fetch).toHaveBeenCalledWith(
+      expect(globalThis.fetch).toHaveBeenCalledWith(
         expect.stringContaining('https://www.googleapis.com/fitness/v1/users/me/sessions/'),
         expect.objectContaining({
           method: 'PUT',
@@ -148,7 +148,7 @@ describe('GoogleFitClient', () => {
         status: 401,
         text: vi.fn().mockResolvedValue('Unauthorized'),
       };
-      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResponse);
+      (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResponse);
 
       client.setAuthResult({
         accessToken: 'invalid-token',

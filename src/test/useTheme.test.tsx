@@ -143,7 +143,7 @@ describe('useTheme', () => {
     expect(result.current.colorBlindMode).toBe(false);
 
     act(() => {
-      result.current.toggleColorBlindMode();
+      result.current.toggleColorBlindMode?.();
     });
 
     expect(result.current.colorBlindMode).toBe(true);
@@ -151,7 +151,7 @@ describe('useTheme', () => {
     expect(localStorage.getItem(COLOR_BLIND_STORAGE_KEY)).toBe('true');
 
     act(() => {
-      result.current.toggleColorBlindMode();
+      result.current.toggleColorBlindMode?.();
     });
 
     expect(result.current.colorBlindMode).toBe(false);
@@ -163,7 +163,7 @@ describe('useTheme', () => {
     const { result } = renderHook(() => useTheme());
 
     act(() => {
-      result.current.toggleColorBlindMode();
+      result.current.toggleColorBlindMode?.();
     });
 
     expect(localStorage.getItem(COLOR_BLIND_STORAGE_KEY)).toBe('true');
