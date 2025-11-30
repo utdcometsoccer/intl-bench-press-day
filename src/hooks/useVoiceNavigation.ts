@@ -8,7 +8,6 @@ interface SpeechRecognitionEvent {
 
 interface SpeechRecognitionErrorEvent {
   error: string;
-  message?: string;
 }
 
 interface SpeechRecognition extends EventTarget {
@@ -264,10 +263,13 @@ export const useVoiceNavigation = (onNavigate?: (tab: string) => void) => {
       recognitionRef.current = recognition;
       try {
         recognition.start();
-      } catch {
+      } catch (err) {
+        const errorMessage = err instanceof Error 
+          ? `Failed to start speech recognition: ${err.message}`
+          : 'Failed to start speech recognition. Please try again.';
         setState(prev => ({
           ...prev,
-          error: 'Failed to start speech recognition.',
+          error: errorMessage,
         }));
       }
     }

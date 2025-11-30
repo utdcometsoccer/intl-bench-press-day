@@ -50,13 +50,16 @@ class MockSpeechRecognition {
 
 let mockRecognitionInstance: MockSpeechRecognition | null = null;
 
+// Type for window with SpeechRecognition
+type WindowWithSpeechRecognition = Window & { SpeechRecognition?: typeof MockSpeechRecognition };
+
 describe('useVoiceNavigation', () => {
   beforeEach(() => {
     // Reset mock instance
     mockRecognitionInstance = null;
     
     // Mock the SpeechRecognition API
-    (window as Window & { SpeechRecognition?: typeof MockSpeechRecognition }).SpeechRecognition = class extends MockSpeechRecognition {
+    (window as WindowWithSpeechRecognition).SpeechRecognition = class extends MockSpeechRecognition {
       constructor() {
         super();
         mockRecognitionInstance = this;
@@ -66,7 +69,7 @@ describe('useVoiceNavigation', () => {
 
   afterEach(() => {
     // Clean up
-    delete (window as Window & { SpeechRecognition?: typeof MockSpeechRecognition }).SpeechRecognition;
+    delete (window as WindowWithSpeechRecognition).SpeechRecognition;
     mockRecognitionInstance = null;
     vi.clearAllTimers();
   });
@@ -77,7 +80,7 @@ describe('useVoiceNavigation', () => {
   });
 
   it('should detect when speech recognition is not supported', () => {
-    delete (window as Window & { SpeechRecognition?: typeof MockSpeechRecognition }).SpeechRecognition;
+    delete (window as WindowWithSpeechRecognition).SpeechRecognition;
     
     const { result } = renderHook(() => useVoiceNavigation());
     expect(result.current.isSupported).toBe(false);
@@ -259,7 +262,7 @@ describe('useVoiceNavigation', () => {
   });
 
   it('should show error when speech recognition is not supported and trying to start', () => {
-    delete (window as Window & { SpeechRecognition?: typeof MockSpeechRecognition }).SpeechRecognition;
+    delete (window as WindowWithSpeechRecognition).SpeechRecognition;
     
     const { result } = renderHook(() => useVoiceNavigation());
     
