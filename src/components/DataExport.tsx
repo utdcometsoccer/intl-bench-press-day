@@ -3,6 +3,7 @@ import { oneRepMaxStorage } from '../services/oneRepMaxStorage';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage } from '../services/workoutResultsStorage';
+import { googleFitService } from '../services/googleFitService';
 import type { 
   ExerciseRecord, 
   WorkoutResult,
@@ -13,6 +14,7 @@ import type {
 const DataExport: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportStatus, setExportStatus] = useState<string>('');
+  const [isGoogleFitConnected, setIsGoogleFitConnected] = useState(googleFitService.isConnected());
 
   const collectAllData = async (): Promise<ExportData> => {
     setExportStatus('Collecting data from storage...');
@@ -275,6 +277,55 @@ const DataExport: React.FC = () => {
     }
   };
 
+  const syncToGoogleFit = async () => {
+    setIsExporting(true);
+    setExportStatus('Syncing to Google Fit...');
+
+    try {
+      // Check if connected
+      if (!googleFitService.isConnected()) {
+        setExportStatus('Connecting to Google Fit...');
+        try {
+          await googleFitService.connect();
+          setIsGoogleFitConnected(true);
+        } catch {
+          setExportStatus('Google Fit connection requires configuration. Please set up Google OAuth credentials.');
+          setIsExporting(false);
+          return;
+        }
+      }
+
+      // Initialize workout storage and get workouts
+      await workoutResultsStorage.initialize();
+      const workoutResults = await workoutResultsStorage.getAllWorkoutResults();
+
+      if (workoutResults.length === 0) {
+        setExportStatus('No workouts to sync to Google Fit.');
+        setIsExporting(false);
+        return;
+      }
+
+      // Sync workouts
+      const result = await googleFitService.syncWorkouts(workoutResults);
+
+      if (result.success) {
+        setExportStatus(`Google Fit sync completed! Synced ${result.syncedWorkouts} workout(s).`);
+      } else {
+        setExportStatus(`Google Fit sync partially completed. Synced: ${result.syncedWorkouts}, Failed: ${result.failedWorkouts}`);
+      }
+    } catch (error) {
+      setExportStatus(`Google Fit sync failed: ${error}`);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const disconnectGoogleFit = () => {
+    googleFitService.disconnect();
+    setIsGoogleFitConnected(false);
+    setExportStatus('Disconnected from Google Fit.');
+  };
+
   return (
     <div className="data-export-container">
       <h2 className="data-export-title">Data Export</h2>
@@ -299,6 +350,24 @@ const DataExport: React.FC = () => {
         >
           {isExporting ? 'Exporting...' : 'Download CSV'}
         </button>
+
+        <button
+          onClick={syncToGoogleFit}
+          disabled={isExporting}
+          className="export-button-google-fit"
+        >
+          {isExporting ? 'Syncing...' : 'Sync to Google Fit'}
+        </button>
+
+        {isGoogleFitConnected && (
+          <button
+            onClick={disconnectGoogleFit}
+            disabled={isExporting}
+            className="export-button-disconnect"
+          >
+            Disconnect Google Fit
+          </button>
+        )}
       </div>
 
       {exportStatus && (
@@ -312,6 +381,7 @@ const DataExport: React.FC = () => {
         <ul className="export-details-list">
           <li><strong>JSON:</strong> Single file with all data in structured format</li>
           <li><strong>CSV:</strong> Multiple files - one for each data type (exercise records, formulas, etc.)</li>
+          <li><strong>Google Fit:</strong> Sync your workout sessions to Google Fit for health tracking integration</li>
           <li>All exports include timestamps and can be used for data backup</li>
           <li>Your data never leaves your device - exports are generated locally</li>
         </ul>

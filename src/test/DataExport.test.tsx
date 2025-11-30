@@ -94,6 +94,21 @@ vi.mock('../services/workoutResultsStorage', () => ({
   }
 }));
 
+// Mock Google Fit service
+vi.mock('../services/googleFitService', () => ({
+  googleFitService: {
+    isConnected: vi.fn().mockReturnValue(false),
+    connect: vi.fn().mockRejectedValue(new Error('OAuth authentication not implemented')),
+    disconnect: vi.fn(),
+    syncWorkouts: vi.fn().mockResolvedValue({
+      success: true,
+      syncedWorkouts: 1,
+      failedWorkouts: 0,
+      errors: []
+    })
+  }
+}));
+
 // Mock URL.createObjectURL and URL.revokeObjectURL
 Object.defineProperty(window.URL, 'createObjectURL', {
   value: vi.fn(() => 'mocked-blob-url'),
@@ -154,10 +169,13 @@ describe('DataExport', () => {
     // Check for buttons
     const jsonButton = container.querySelector('.export-button-json');
     const csvButton = container.querySelector('.export-button-csv');
+    const googleFitButton = container.querySelector('.export-button-google-fit');
     expect(jsonButton).toBeTruthy();
     expect(csvButton).toBeTruthy();
+    expect(googleFitButton).toBeTruthy();
     expect(jsonButton?.textContent).toBe('Download JSON');
     expect(csvButton?.textContent).toBe('Download CSV');
+    expect(googleFitButton?.textContent).toBe('Sync to Google Fit');
   });
 
   it('shows export details information', () => {
@@ -167,10 +185,11 @@ describe('DataExport', () => {
     const detailsSection = container.querySelector('.export-details');
     expect(detailsSection).toBeTruthy();
     
-    // Check if it contains information about JSON and CSV exports
+    // Check if it contains information about JSON, CSV and Google Fit exports
     const content = container.textContent || '';
     expect(content).toMatch(/json/i);
     expect(content).toMatch(/csv/i);
+    expect(content).toMatch(/google fit/i);
     expect(content).toMatch(/your data never leaves your device/i);
   });
 
@@ -240,6 +259,42 @@ describe('DataExport', () => {
     // (Timing-dependent status messages are hard to test reliably)
     await waitFor(() => {
       expect(mockLink.click).toHaveBeenCalled();
+    }, { timeout: 3000 });
+  });
+
+  it('renders Google Fit sync button', () => {
+    const { container } = customRender(<DataExport />);
+    
+    const googleFitButton = container.querySelector('.export-button-google-fit') as HTMLButtonElement;
+    expect(googleFitButton).toBeTruthy();
+    expect(googleFitButton.textContent).toBe('Sync to Google Fit');
+  });
+
+  it('shows Google Fit info in export details', () => {
+    const { container } = customRender(<DataExport />);
+    
+    const content = container.textContent || '';
+    expect(content).toMatch(/google fit/i);
+    expect(content).toMatch(/sync your workout sessions/i);
+  });
+
+  it('handles Google Fit sync attempt when not configured', async () => {
+    const { container } = customRender(<DataExport />);
+    
+    const googleFitButton = container.querySelector('.export-button-google-fit') as HTMLButtonElement;
+    expect(googleFitButton).toBeTruthy();
+    
+    fireEvent.click(googleFitButton);
+
+    // The button should be disabled while syncing
+    await waitFor(() => {
+      expect(googleFitButton).toBeDisabled();
+    });
+
+    // Wait for the sync to complete and show status
+    await waitFor(() => {
+      const statusText = container.textContent || '';
+      expect(statusText).toMatch(/configuration|OAuth|credentials/i);
     }, { timeout: 3000 });
   });
 });
