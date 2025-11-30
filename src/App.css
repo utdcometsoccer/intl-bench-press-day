@@ -17,14 +17,18 @@
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
   
-  /* Responsive Font Sizes */
-  --font-size-xs: 0.75rem;   /* 12px */
-  --font-size-sm: 0.875rem;  /* 14px */
-  --font-size-base: 1rem;    /* 16px */
-  --font-size-lg: 1.125rem;  /* 18px */
-  --font-size-xl: 1.25rem;   /* 20px */
-  --font-size-2xl: 1.5rem;   /* 24px */
-  --font-size-3xl: 1.875rem; /* 30px */
+  /* Fluid Typography Scale */
+  --font-size-xs: 0.75rem;   /* 12px - fixed for small UI elements */
+  --font-size-sm: 0.875rem;  /* 14px - fixed for labels */
+  --font-size-base: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);         /* 14px-16px */
+  --font-size-lg: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);           /* 16px-18px */
+  --font-size-xl: clamp(1.25rem, 1rem + 1vw, 1.5rem);              /* 20px-24px */
+  --font-size-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);            /* 24px-32px */
+  --font-size-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.375rem);      /* 30px-38px */
+  
+  /* Reading Optimization */
+  --reading-width: 65ch;     /* Optimal line length for readability */
+  --reading-width-max: 75ch; /* Maximum comfortable line length */
   
   /* Container Max Widths */
   --container-sm: 540px;
@@ -3449,6 +3453,10 @@ body {
   line-height: 1.4;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
 h1 {
   font-size: var(--font-size-xl);
   line-height: 1.2;
@@ -3507,6 +3515,69 @@ h4 {
   body {
     line-height: 1.6;
   }
+}
+
+/* ========================================
+   NUMBER FORMATTING FOR WORKOUT DATA
+   ======================================== */
+
+/* Use tabular (monospace) numbers for workout data */
+.workout-number {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Apply tabular numbers to numeric workout inputs and displays */
+.stat-value,
+.record-value,
+.estimated-1rm,
+.estimated-1rm-display,
+.duration-display,
+.reps-input,
+.weight-input,
+.set-input,
+.rpe-input,
+.body-weight-input,
+.custom-max-input,
+.workout-set-detail,
+.main-set {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========================================
+   READING OPTIMIZATION
+   ======================================== */
+
+/* Maximum line width for readability in text content */
+.notes-textarea,
+.workout-notes-section,
+.past-result-notes,
+.cycle-notes,
+.record-notes,
+.info-message p,
+.data-export-description {
+  max-width: var(--reading-width-max);
+}
+
+/* Increased letter-spacing for all-caps labels */
+.all-caps-label,
+.amrap-indicator,
+.active-badge {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Proper paragraph spacing in notes sections */
+.notes-textarea {
+  line-height: 1.6;
+}
+
+.past-result-notes,
+.cycle-notes,
+.record-notes {
+  line-height: 1.5;
+  margin-top: 0.5em;
 }
 
 /* ========================================
