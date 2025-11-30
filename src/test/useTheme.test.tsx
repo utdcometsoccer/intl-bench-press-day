@@ -4,17 +4,20 @@ import { useTheme } from '../hooks/useTheme';
 
 describe('useTheme', () => {
   const THEME_STORAGE_KEY = 'ibpd_theme';
+  const COLOR_BLIND_STORAGE_KEY = 'ibpd_color_blind';
 
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
-    // Reset document attribute
+    // Reset document attributes
     document.documentElement.removeAttribute('data-theme');
+    document.documentElement.removeAttribute('data-color-blind');
   });
 
   afterEach(() => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-theme');
+    document.documentElement.removeAttribute('data-color-blind');
   });
 
   it('should default to light theme when no saved preference', () => {
@@ -89,5 +92,55 @@ describe('useTheme', () => {
     });
     
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+  });
+
+  // Color-blind mode tests
+  it('should default to color-blind mode disabled', () => {
+    const { result } = renderHook(() => useTheme());
+    expect(result.current.colorBlindMode).toBe(false);
+    expect(document.documentElement.getAttribute('data-color-blind')).toBe('false');
+  });
+
+  it('should load saved color-blind mode from localStorage', () => {
+    localStorage.setItem(COLOR_BLIND_STORAGE_KEY, 'true');
+    const { result } = renderHook(() => useTheme());
+    expect(result.current.colorBlindMode).toBe(true);
+    expect(document.documentElement.getAttribute('data-color-blind')).toBe('true');
+  });
+
+  it('should toggle color-blind mode on and off', () => {
+    const { result } = renderHook(() => useTheme());
+    
+    expect(result.current.colorBlindMode).toBe(false);
+    
+    act(() => {
+      result.current.toggleColorBlindMode();
+    });
+    
+    expect(result.current.colorBlindMode).toBe(true);
+    expect(document.documentElement.getAttribute('data-color-blind')).toBe('true');
+    expect(localStorage.getItem(COLOR_BLIND_STORAGE_KEY)).toBe('true');
+    
+    act(() => {
+      result.current.toggleColorBlindMode();
+    });
+    
+    expect(result.current.colorBlindMode).toBe(false);
+    expect(document.documentElement.getAttribute('data-color-blind')).toBe('false');
+    expect(localStorage.getItem(COLOR_BLIND_STORAGE_KEY)).toBe('false');
+  });
+
+  it('should persist color-blind mode preference to localStorage', () => {
+    const { result } = renderHook(() => useTheme());
+    
+    act(() => {
+      result.current.toggleColorBlindMode();
+    });
+    
+    expect(localStorage.getItem(COLOR_BLIND_STORAGE_KEY)).toBe('true');
+    
+    // Create a new hook instance to verify persistence
+    const { result: result2 } = renderHook(() => useTheme());
+    expect(result2.current.colorBlindMode).toBe(true);
   });
 });

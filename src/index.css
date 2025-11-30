@@ -19,6 +19,29 @@
   --button-bg-color: #f9f9f9;
   --button-text-color: #213547;
   --border-color: #e0e0e0;
+  
+  /* Semantic colors for workout states */
+  --workout-warmup: #ffd93d;    /* Yellow - Warmup sets */
+  --workout-main: #6bcb77;      /* Green - Main sets */
+  --workout-amrap: #ff6b6b;     /* Red - AMRAP challenge */
+  --workout-complete: #4d96ff;  /* Blue - Completed */
+  --workout-rest: #c4c4c4;      /* Gray - Rest day */
+  
+  /* Progress indicators */
+  --progress-start: #ff9f43;    /* Orange - Beginning */
+  --progress-mid: #feca57;      /* Yellow - Mid-progress */
+  --progress-end: #26de81;      /* Green - Goal achieved */
+  
+  /* Exercise type colors */
+  --exercise-squat: #8884d8;    /* Purple */
+  --exercise-bench: #ff7c7c;    /* Coral */
+  --exercise-deadlift: #82ca9d; /* Green */
+  --exercise-press: #ffc658;    /* Gold */
+  
+  /* Workout timeline colors */
+  --workout-past: #9ca3af;      /* Gray - Past workouts */
+  --workout-current: #4d96ff;   /* Blue - Current workout */
+  --workout-future: #e5e7eb;    /* Light gray - Future workouts */
 }
 
 /* Dark theme */
@@ -30,6 +53,29 @@
   --button-bg-color: #1a1a1a;
   --button-text-color: rgba(255, 255, 255, 0.87);
   --border-color: #444;
+  
+  /* Semantic colors for workout states - adjusted for dark mode */
+  --workout-warmup: #ffd93d;    /* Yellow - Warmup sets */
+  --workout-main: #6bcb77;      /* Green - Main sets */
+  --workout-amrap: #ff6b6b;     /* Red - AMRAP challenge */
+  --workout-complete: #4d96ff;  /* Blue - Completed */
+  --workout-rest: #6b7280;      /* Darker gray - Rest day */
+  
+  /* Progress indicators - adjusted for dark mode */
+  --progress-start: #ff9f43;    /* Orange - Beginning */
+  --progress-mid: #feca57;      /* Yellow - Mid-progress */
+  --progress-end: #26de81;      /* Green - Goal achieved */
+  
+  /* Exercise type colors - adjusted for dark mode */
+  --exercise-squat: #a5a0e8;    /* Lighter purple */
+  --exercise-bench: #ff9a9a;    /* Lighter coral */
+  --exercise-deadlift: #9ddaab; /* Lighter green */
+  --exercise-press: #ffd477;    /* Lighter gold */
+  
+  /* Workout timeline colors - adjusted for dark mode */
+  --workout-past: #6b7280;      /* Gray - Past workouts */
+  --workout-current: #60a5fa;   /* Lighter blue - Current workout */
+  --workout-future: #374151;    /* Dark gray - Future workouts */
 }
 
 :root {

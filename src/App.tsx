@@ -13,7 +13,7 @@ import { useTheme } from './hooks/useTheme'
 function App() {
   const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
 
   const handleTabClick = (tab: 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export') => {
     setActiveTab(tab)
@@ -45,6 +45,17 @@ function App() {
           title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
         >
           {theme === 'light' ? '🌙' : '☀️'}
+        </button>
+        
+        {/* Color-Blind Mode Toggle Button */}
+        <button 
+          onClick={toggleColorBlindMode}
+          className="color-blind-toggle-button"
+          aria-label={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
+          title={`${colorBlindMode ? 'Disable' : 'Enable'} color-blind friendly mode`}
+          aria-pressed={colorBlindMode}
+        >
+          {colorBlindMode ? '👁️' : '👁️‍🗨️'}
         </button>
       </header>
       

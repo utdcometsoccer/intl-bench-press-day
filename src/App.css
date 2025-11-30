@@ -103,14 +103,14 @@
   --form-section-bg: #2a2a2a;
   --border-color: #444;
   
-  /* Text Colors */
+  /* Text Colors - Improved contrast ratios for WCAG compliance */
   --text-primary: rgba(255, 255, 255, 0.87);
-  --text-secondary: #adb5bd;
-  --text-muted: #999;
+  --text-secondary: #c9cfd6;   /* Increased from #adb5bd for better contrast */
+  --text-muted: #b0b0b0;       /* Increased from #999 for better contrast */
   
   /* Tab Navigation */
   --tab-border-color: #444;
-  --tab-text-color: #adb5bd;
+  --tab-text-color: #c9cfd6;   /* Increased contrast */
   --tab-active-color: #0d6efd;
   --tab-hover-bg: #2a2a2a;
 }
@@ -420,6 +420,50 @@ header {
   .theme-toggle-button {
     top: 10px;
     right: 60px; /* Position to the left of hamburger menu */
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+}
+
+/* Color-Blind Mode Toggle Button */
+.color-blind-toggle-button {
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  background-color: var(--button-bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.color-blind-toggle-button:hover {
+  transform: scale(1.1);
+  border-color: var(--tab-active-color);
+}
+
+.color-blind-toggle-button:focus {
+  outline: 2px solid var(--tab-active-color);
+  outline-offset: 2px;
+}
+
+.color-blind-toggle-button[aria-pressed="true"] {
+  border-color: var(--workout-complete);
+  background-color: rgba(77, 150, 255, 0.1);
+}
+
+@media (max-width: 767px) {
+  .color-blind-toggle-button {
+    top: 10px;
+    right: 110px; /* Position to the left of theme toggle */
     width: 44px;
     height: 44px;
     font-size: 20px;
@@ -4164,4 +4208,235 @@ a:focus {
     display: block;
     margin-bottom: 4px;
   }
+}
+
+/* ========================================
+   COLOR-BLIND FRIENDLY PALETTE OPTION
+   ======================================== */
+
+/* Color-blind friendly mode - uses patterns and distinct hues */
+:root[data-color-blind="true"] {
+  /* Workout state colors optimized for color blindness */
+  --workout-warmup: #e69f00;    /* Orange - visible to most color blind types */
+  --workout-main: #009e73;      /* Teal-green - distinguishable from red */
+  --workout-amrap: #d55e00;     /* Vermillion - distinct from green */
+  --workout-complete: #0072b2;  /* Blue - universal visibility */
+  --workout-rest: #999999;      /* Gray - neutral */
+  
+  /* Progress indicators optimized for color blindness */
+  --progress-start: #e69f00;    /* Orange */
+  --progress-mid: #f0e442;      /* Yellow */
+  --progress-end: #0072b2;      /* Blue */
+  
+  /* Exercise type colors - distinct hues for color blindness */
+  --exercise-squat: #cc79a7;    /* Pink/magenta */
+  --exercise-bench: #56b4e9;    /* Sky blue */
+  --exercise-deadlift: #009e73; /* Teal */
+  --exercise-press: #e69f00;    /* Orange */
+  
+  /* Workout timeline colors for color blindness */
+  --workout-past: #999999;      /* Gray */
+  --workout-current: #0072b2;   /* Blue */
+  --workout-future: #cccccc;    /* Light gray */
+}
+
+/* ========================================
+   WORKOUT STATE STYLING
+   ======================================== */
+
+/* Warmup set styling */
+.set-row.warmup-set,
+.warmup-set-row {
+  border-left: 4px solid var(--workout-warmup);
+  background-color: rgba(255, 217, 61, 0.1);
+}
+
+:root[data-theme="dark"] .set-row.warmup-set,
+:root[data-theme="dark"] .warmup-set-row {
+  background-color: rgba(255, 217, 61, 0.15);
+}
+
+/* Main set styling */
+.set-row.main-set,
+.main-set-indicator {
+  border-left: 4px solid var(--workout-main);
+  background-color: rgba(107, 203, 119, 0.1);
+}
+
+:root[data-theme="dark"] .set-row.main-set,
+:root[data-theme="dark"] .main-set-indicator {
+  background-color: rgba(107, 203, 119, 0.15);
+}
+
+/* AMRAP set styling - enhanced visibility */
+.set-row.amrap-set {
+  border-left: 4px solid var(--workout-amrap);
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 2px solid var(--workout-amrap);
+}
+
+:root[data-theme="dark"] .set-row.amrap-set {
+  background-color: rgba(255, 107, 107, 0.2);
+}
+
+/* Completed workout styling */
+.workout-card.completed,
+.week-day-button.completed {
+  border-left: 4px solid var(--workout-complete);
+  background-color: rgba(77, 150, 255, 0.1);
+}
+
+:root[data-theme="dark"] .workout-card.completed,
+:root[data-theme="dark"] .week-day-button.completed {
+  background-color: rgba(77, 150, 255, 0.15);
+}
+
+/* ========================================
+   WORKOUT TIMELINE / VISUAL HIERARCHY
+   ======================================== */
+
+/* Past workout cards */
+.workout-card.past,
+.week-day-button.past {
+  opacity: 0.7;
+  border-color: var(--workout-past);
+}
+
+.workout-card.past::before,
+.week-day-button.past::before {
+  content: '✓';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 12px;
+  color: var(--workout-complete);
+}
+
+/* Current workout cards - highlighted */
+.workout-card.current,
+.week-day-button.current {
+  border: 2px solid var(--workout-current);
+  box-shadow: 0 0 10px rgba(77, 150, 255, 0.3);
+  position: relative;
+}
+
+.workout-card.current::after,
+.week-day-button.current::after {
+  content: 'TODAY';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--workout-current);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Future workout cards */
+.workout-card.future,
+.week-day-button.future {
+  opacity: 0.6;
+  border-color: var(--workout-future);
+  background-color: var(--workout-future);
+}
+
+:root[data-theme="dark"] .workout-card.future,
+:root[data-theme="dark"] .week-day-button.future {
+  background-color: var(--workout-future);
+}
+
+/* ========================================
+   PROGRESS GRADIENT INDICATORS
+   ======================================== */
+
+/* Progress bar with gradient */
+.progress-gradient {
+  background: linear-gradient(
+    to right,
+    var(--progress-start) 0%,
+    var(--progress-mid) 50%,
+    var(--progress-end) 100%
+  );
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-gradient-fill {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.15);
+  transition: width 0.3s ease;
+}
+
+/* Week progress indicator */
+.week-progress-indicator {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.week-progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--workout-future);
+  transition: background-color 0.2s ease;
+}
+
+.week-progress-dot.completed {
+  background-color: var(--workout-complete);
+}
+
+.week-progress-dot.current {
+  background-color: var(--workout-current);
+  box-shadow: 0 0 6px var(--workout-current);
+}
+
+/* ========================================
+   EXERCISE TYPE COLOR INDICATORS
+   ======================================== */
+
+/* Exercise type badge colors */
+.exercise-type-squat,
+.exercise-badge-squat {
+  background-color: var(--exercise-squat);
+  color: white;
+}
+
+.exercise-type-bench,
+.exercise-badge-bench {
+  background-color: var(--exercise-bench);
+  color: white;
+}
+
+.exercise-type-deadlift,
+.exercise-badge-deadlift {
+  background-color: var(--exercise-deadlift);
+  color: white;
+}
+
+.exercise-type-press,
+.exercise-badge-press {
+  background-color: var(--exercise-press);
+  color: white;
+}
+
+/* Exercise card left border indicators */
+.workout-card[data-exercise="squat"] {
+  border-left: 4px solid var(--exercise-squat);
+}
+
+.workout-card[data-exercise="bench"] {
+  border-left: 4px solid var(--exercise-bench);
+}
+
+.workout-card[data-exercise="deadlift"] {
+  border-left: 4px solid var(--exercise-deadlift);
+}
+
+.workout-card[data-exercise="press"] {
+  border-left: 4px solid var(--exercise-press);
 }
