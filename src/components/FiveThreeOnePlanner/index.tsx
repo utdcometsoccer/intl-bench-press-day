@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, useEffect, useRef } from 'react';
 import { useFiveThreeOnePlanner } from '../../hooks/useFiveThreeOnePlanner';
 import ErrorMessage from '../ErrorMessage';
 import SuccessMessage from '../SuccessMessage';
@@ -8,7 +8,11 @@ import LoadingState from '../LoadingState';
 import ManageCyclesTab from '../ManageCyclesTab';
 import ViewWorkoutsTab from '../ViewWorkoutsTab';
 
-const FiveThreeOnePlanner: FC = () => {
+interface FiveThreeOnePlannerProps {
+  onCycleCreated?: () => void;
+}
+
+const FiveThreeOnePlanner: FC<FiveThreeOnePlannerProps> = ({ onCycleCreated }) => {
   // Use the custom hook for all state and logic
   const {
     state,
@@ -23,6 +27,21 @@ const FiveThreeOnePlanner: FC = () => {
     setActiveCycleHandler,
     deleteCycle
   } = useFiveThreeOnePlanner();
+
+  // Track if we've called onCycleCreated to prevent duplicate calls
+  const hasCalledOnCycleCreated = useRef(false);
+
+  // Call onCycleCreated when a cycle is successfully created
+  useEffect(() => {
+    if (state.success.includes('created successfully') && onCycleCreated && !hasCalledOnCycleCreated.current) {
+      hasCalledOnCycleCreated.current = true;
+      onCycleCreated();
+    }
+    // Reset the flag when success message clears
+    if (!state.success) {
+      hasCalledOnCycleCreated.current = false;
+    }
+  }, [state.success, onCycleCreated]);
 
   if (state.isLoading) {
     return <LoadingState title="5-3-1 Workout Planner" />;

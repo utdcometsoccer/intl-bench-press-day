@@ -1,0 +1,187 @@
+/* Progress Summary Styles */
+
+.progress-summary {
+  background-color: var(--form-section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Header */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.progress-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.view-full-button {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-full-button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Overall progress bar */
+.overall-progress {
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.progress-count {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.progress-percent {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: #28a745;
+}
+
+.progress-bar {
+  height: 12px;
+  background-color: var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+/* Weeks progress */
+.weeks-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.week-progress {
+  padding: var(--spacing-sm);
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.week-progress.current {
+  border-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.week-progress.complete {
+  border-color: #28a745;
+  background-color: rgba(40, 167, 69, 0.05);
+}
+
+.week-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.week-number {
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  color: var(--text-secondary);
+}
+
+.current-badge {
+  font-size: 9px;
+  padding: 1px 4px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+}
+
+.complete-badge {
+  color: #28a745;
+  font-size: var(--font-size-base);
+}
+
+.week-days {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.day-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  color: var(--text-muted);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.day-dot.completed {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Progress message */
+.progress-message {
+  text-align: center;
+}
+
+.progress-message p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.complete-message {
+  color: #28a745 !important;
+  font-weight: bold;
+}
+
+.almost-message {
+  color: #ffc107 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .weeks-progress {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .progress-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .view-full-button {
+    width: 100%;
+  }
+}

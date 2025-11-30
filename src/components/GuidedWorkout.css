@@ -1,0 +1,184 @@
+/* Guided Workout Styles */
+
+.guided-workout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: var(--spacing-lg);
+}
+
+.guided-content {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.guided-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.guided-title {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.guided-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+}
+
+/* Progress dots */
+.step-progress {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  background-color: #007bff;
+  transform: scale(1.2);
+}
+
+.step-dot.completed {
+  background-color: #28a745;
+}
+
+/* Step content */
+.step-content {
+  background-color: var(--form-section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  text-align: left;
+}
+
+.step-icon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.step-title {
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.step-description {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.step-tips {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.tip-item:last-child {
+  border-bottom: none;
+}
+
+.tip-bullet {
+  color: #28a745;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Navigation buttons */
+.guided-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.guided-prev-button {
+  flex: 1;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guided-prev-button:hover {
+  background-color: var(--form-section-bg);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.guided-next-button {
+  flex: 1;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guided-next-button:hover {
+  background-color: #0056b3;
+}
+
+.guided-next-button:focus,
+.guided-prev-button:focus {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+.guided-skip-button {
+  width: 100%;
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  background-color: transparent;
+  color: var(--text-muted);
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.guided-skip-button:hover {
+  color: var(--text-secondary);
+}
+
+/* Responsive adjustments */
+@media (min-width: 576px) {
+  .guided-title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .step-content {
+    padding: var(--spacing-xl);
+  }
+}

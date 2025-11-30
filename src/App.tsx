@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
 import ExerciseOneRepMaxTracker from './components/ExerciseOneRepMaxTracker'
@@ -8,16 +8,58 @@ import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
 import PlateCalculator from './components/PlateCalculator'
 import PWAInstallPrompt from './PWAInstallPrompt'
+import FirstTimeUserWizard from './components/FirstTimeUserWizard'
+import Dashboard from './components/Dashboard'
 import { useTheme } from './hooks/useTheme'
+import { userPreferencesStorage } from './services/userPreferencesStorage'
+
+type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export'>('tracker')
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showFirstTimeWizard, setShowFirstTimeWizard] = useState(false)
+  const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)
   const { theme, toggleTheme } = useTheme()
 
-  const handleTabClick = (tab: 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export') => {
+  // Check if user is first-time or returning
+  useEffect(() => {
+    const checkUserStatus = () => {
+      const isFirstTime = userPreferencesStorage.isFirstTimeUser();
+      setShowFirstTimeWizard(isFirstTime);
+      setIsCheckingUserStatus(false);
+    };
+    checkUserStatus();
+  }, []);
+
+  const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
     setIsMobileMenuOpen(false) // Close mobile menu when tab is selected
+  }
+
+  const handleFirstTimeWizardComplete = () => {
+    setShowFirstTimeWizard(false);
+    setActiveTab('dashboard');
+  };
+
+  // Show loading while checking user status
+  if (isCheckingUserStatus) {
+    return (
+      <div className="app-loading">
+        <img src={logo} alt="International Bench Press Day Logo" className="app-logo" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  // Show first-time wizard for new users
+  if (showFirstTimeWizard) {
+    return (
+      <>
+        <FirstTimeUserWizard onComplete={handleFirstTimeWizardComplete} />
+        <PWAInstallPrompt />
+      </>
+    );
   }
 
   return (
@@ -69,6 +111,13 @@ function App() {
         id="main-navigation"
         className={`tab-navigation ${isMobileMenuOpen ? 'mobile-open' : ''}`}
       >
+        <button
+          onClick={() => handleTabClick('dashboard')}
+          className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
+          aria-current={activeTab === 'dashboard' ? 'page' : undefined}
+        >
+          Dashboard
+        </button>
         <button
           onClick={() => handleTabClick('tracker')}
           className={`tab-button ${activeTab === 'tracker' ? 'active' : ''}`}
@@ -124,6 +173,13 @@ function App() {
 
       {/* Main Content Area */}
       <main role="main" id="main-content" className="main-content">
+        {activeTab === 'dashboard' && (
+          <Dashboard
+            onNavigateToPlanner={() => handleTabClick('planner')}
+            onNavigateToLogger={() => handleTabClick('logger')}
+            onNavigateToProgress={() => handleTabClick('progress')}
+          />
+        )}
         {activeTab === 'tracker' && <ExerciseOneRepMaxTracker />}
         {activeTab === 'progress' && <ProgressChart />}
         {activeTab === 'planner' && <FiveThreeOnePlanner />}
