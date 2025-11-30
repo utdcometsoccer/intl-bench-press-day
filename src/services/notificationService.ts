@@ -1,6 +1,10 @@
 // Push Notification Service for Workout Reminders
 // Uses the Web Notifications API and Service Worker for push notifications
 
+// Time constants
+const ONE_HOUR_MS = 60 * 60 * 1000;
+const NOTIFICATION_GRACE_PERIOD_MS = ONE_HOUR_MS; // Show notification if within the last hour
+
 export interface NotificationPermissionStatus {
   granted: boolean;
   denied: boolean;
@@ -111,8 +115,8 @@ class NotificationService {
     const delay = scheduledTime - now;
 
     if (delay <= 0) {
-      // Notification time has passed, show immediately if within last hour
-      if (delay > -3600000) {
+      // Notification time has passed, show immediately if within grace period
+      if (delay > -NOTIFICATION_GRACE_PERIOD_MS) {
         this.showNotification(notification.title, { body: notification.body });
       }
       return notification.id;

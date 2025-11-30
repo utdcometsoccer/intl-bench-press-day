@@ -8,6 +8,21 @@ import './FirstTimeUserWizard.css';
 
 type WizardStep = 'welcome' | 'profile' | 'createCycle' | 'guidedWorkout';
 
+// Wizard steps in order
+const WIZARD_STEPS: WizardStep[] = ['welcome', 'profile', 'createCycle', 'guidedWorkout'];
+
+// Helper function to determine wizard step CSS class
+const getWizardStepClass = (stepIndex: number, currentStep: WizardStep): string => {
+  const currentStepIndex = WIZARD_STEPS.indexOf(currentStep);
+  
+  if (stepIndex === currentStepIndex) {
+    return 'active';
+  } else if (stepIndex < currentStepIndex) {
+    return 'completed';
+  }
+  return '';
+};
+
 interface FirstTimeUserWizardProps {
   onComplete: () => void;
 }
@@ -57,22 +72,22 @@ const FirstTimeUserWizard: FC<FirstTimeUserWizardProps> = ({ onComplete }) => {
     <div className="first-time-wizard">
       {/* Progress indicator for full wizard */}
       <div className="wizard-progress" aria-label="Setup progress">
-        <div className={`wizard-step ${currentStep === 'welcome' ? 'active' : 'completed'}`}>
+        <div className={`wizard-step ${getWizardStepClass(0, currentStep)}`}>
           <div className="wizard-step-number">1</div>
           <span className="wizard-step-label">Welcome</span>
         </div>
         <div className="wizard-step-connector" />
-        <div className={`wizard-step ${currentStep === 'profile' ? 'active' : ['createCycle', 'guidedWorkout'].includes(currentStep) ? 'completed' : ''}`}>
+        <div className={`wizard-step ${getWizardStepClass(1, currentStep)}`}>
           <div className="wizard-step-number">2</div>
           <span className="wizard-step-label">Setup</span>
         </div>
         <div className="wizard-step-connector" />
-        <div className={`wizard-step ${currentStep === 'createCycle' ? 'active' : currentStep === 'guidedWorkout' ? 'completed' : ''}`}>
+        <div className={`wizard-step ${getWizardStepClass(2, currentStep)}`}>
           <div className="wizard-step-number">3</div>
           <span className="wizard-step-label">Create Cycle</span>
         </div>
         <div className="wizard-step-connector" />
-        <div className={`wizard-step ${currentStep === 'guidedWorkout' ? 'active' : ''}`}>
+        <div className={`wizard-step ${getWizardStepClass(3, currentStep)}`}>
           <div className="wizard-step-number">4</div>
           <span className="wizard-step-label">Learn</span>
         </div>

@@ -4,6 +4,12 @@
 import type { FiveThreeOneCycle, FiveThreeOneWorkout } from '../types';
 import type { WorkoutResult } from '../types';
 
+// Constants
+const WEEKS_PER_CYCLE = 4;
+const WORKOUTS_PER_WEEK = 4;
+const DEFAULT_TOTAL_WORKOUTS = WEEKS_PER_CYCLE * WORKOUTS_PER_WEEK; // 16 workouts per cycle
+const DAYS_PER_WEEK = 7;
+
 export interface WorkoutSuggestion {
   week: number;
   day: number;
@@ -49,8 +55,8 @@ export const getNextWorkout = (
   );
 
   // Find the first incomplete workout in order (week 1-4, day 1-4)
-  for (let week = 1; week <= 4; week++) {
-    for (let day = 1; day <= 4; day++) {
+  for (let week = 1; week <= WEEKS_PER_CYCLE; week++) {
+    for (let day = 1; day <= WORKOUTS_PER_WEEK; day++) {
       const key = `${week}-${day}`;
       if (!completedSet.has(key)) {
         const workout = cycle.workouts.find(w => w.week === week && w.day === day);
@@ -58,7 +64,7 @@ export const getNextWorkout = (
           // Check if overdue (if we're past expected schedule)
           const cycleStartDate = new Date(cycle.startDate);
           const expectedDate = new Date(cycleStartDate);
-          expectedDate.setDate(expectedDate.getDate() + (week - 1) * 7 + (day - 1) * 2);
+          expectedDate.setDate(expectedDate.getDate() + (week - 1) * DAYS_PER_WEEK + (day - 1) * 2);
           
           const today = new Date();
           const daysUntilDue = Math.ceil((expectedDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
@@ -116,7 +122,7 @@ export const getAllWorkoutSuggestions = (
     const completed = completedMap.get(key);
     
     const expectedDate = new Date(cycleStartDate);
-    expectedDate.setDate(expectedDate.getDate() + (workout.week - 1) * 7 + (workout.day - 1) * 2);
+    expectedDate.setDate(expectedDate.getDate() + (workout.week - 1) * DAYS_PER_WEEK + (workout.day - 1) * 2);
     const daysUntilDue = Math.ceil((expectedDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
     if (completed) {
@@ -164,7 +170,7 @@ export const getCycleProgress = (
   results: WorkoutResult[]
 ): CycleProgress => {
   const cycleResults = results.filter(r => r.cycleId === cycle.id);
-  const totalWorkouts = cycle.workouts?.length || 16;
+  const totalWorkouts = cycle.workouts?.length || DEFAULT_TOTAL_WORKOUTS;
   const completedWorkouts = cycleResults.length;
 
   // Build week progress

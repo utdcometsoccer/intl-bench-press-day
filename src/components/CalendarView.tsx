@@ -4,6 +4,20 @@ import type { WorkoutResult } from '../types';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, getDay } from 'date-fns';
 import './CalendarView.css';
 
+// Calendar constants
+const DAYS_PER_WEEK = 7;
+const WEEKS_PER_CYCLE = 4;
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+// Default workout day mapping (configurable workout schedule)
+// Maps day of week (0=Sunday, 1=Monday, etc.) to workout day number (1-4)
+const DEFAULT_WORKOUT_DAY_MAP: Record<number, number> = {
+  1: 1, // Monday - Workout Day 1 (e.g., Squat)
+  2: 2, // Tuesday - Workout Day 2 (e.g., Bench)
+  4: 3, // Thursday - Workout Day 3 (e.g., Deadlift)
+  5: 4, // Friday - Workout Day 4 (e.g., OHP)
+};
+
 interface CalendarViewProps {
   cycle: FiveThreeOneCycle;
   results: WorkoutResult[];
@@ -26,24 +40,17 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
 
   const getPlannedWorkoutForDay = (date: Date): { week: number; day: number; exerciseName: string } | undefined => {
     const cycleStart = new Date(cycle.startDate);
-    const daysDiff = Math.floor((date.getTime() - cycleStart.getTime()) / (1000 * 60 * 60 * 24));
+    const daysDiff = Math.floor((date.getTime() - cycleStart.getTime()) / MS_PER_DAY);
     
     // Assuming 2 days between workouts, roughly 4 workouts per week
     if (daysDiff < 0) return undefined;
     
-    const week = Math.floor(daysDiff / 7) + 1;
-    if (week > 4) return undefined;
+    const week = Math.floor(daysDiff / DAYS_PER_WEEK) + 1;
+    if (week > WEEKS_PER_CYCLE) return undefined;
     
-    // Map workout days (typically 4 per week)
+    // Map workout days based on day of week
     const dayOfWeek = getDay(date);
-    const workoutDayMap: Record<number, number> = {
-      1: 1, // Monday - Squat
-      2: 2, // Tuesday - Bench
-      4: 3, // Thursday - Deadlift
-      5: 4, // Friday - OHP
-    };
-    
-    const workoutDay = workoutDayMap[dayOfWeek];
+    const workoutDay = DEFAULT_WORKOUT_DAY_MAP[dayOfWeek];
     if (!workoutDay) return undefined;
     
     const workout = cycle.workouts?.find(w => w.week === week && w.day === workoutDay);

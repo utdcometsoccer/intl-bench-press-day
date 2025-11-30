@@ -159,8 +159,12 @@ describe('WorkoutSuggestionService', () => {
       expect(suggestions[1].isNextWorkout).toBe(true);
     });
 
-    it('should return empty array for null cycle', () => {
-      const suggestions = getAllWorkoutSuggestions(null as unknown as FiveThreeOneCycle, []);
+    it('should return empty array for cycle with empty workouts array', () => {
+      const cycleWithNoWorkouts: FiveThreeOneCycle = {
+        ...createMockCycle(),
+        workouts: [],
+      };
+      const suggestions = getAllWorkoutSuggestions(cycleWithNoWorkouts, []);
       expect(suggestions).toHaveLength(0);
     });
   });
