@@ -37,6 +37,21 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **High Contrast**: Accessible color schemes and visual indicators
 - **Focus Management**: Logical tab order and clear focus indicators
 
+### 🎤 Voice Navigation
+- **Hands-free Control**: Navigate the app using voice commands while training
+- **Speech Recognition**: Uses Web Speech API for browser-native speech recognition
+- **Navigation Commands**: Voice commands for all major app sections
+- **Help System**: Say "help" or "commands" for available voice commands
+- **Visual Feedback**: Real-time display of recognized commands and status
+- **Accessibility Feature**: Additional input method for users with motor impairments
+
+### 🔗 Health Platform Integration
+- **Google Fit Sync**: Export workouts directly to Google Fit
+- **Apple Health Export**: Export workout data in HealthKit-compatible format
+- **Session Tracking**: Complete workout sessions with duration and activity type
+- **OAuth Integration**: Secure Google Fit authentication
+- **Cross-Platform Data**: Share workout data across health and fitness apps
+
 ### 🔧 Advanced Features
 - **Custom Formula System**: Create and store custom one-rep-max calculation formulas
 - **Exercise Records**: Detailed history of all exercise performances with trend analysis
@@ -82,17 +97,27 @@ src/
 │   ├── FiveThreeOnePlanner/            # Complete 5/3/1 program management
 │   ├── DataExport.tsx                  # Data export functionality
 │   ├── PlateCalculator.tsx             # Smart plate calculation system
-│   └── PlateSetManager.tsx             # Location-aware plate set management
+│   ├── PlateSetManager.tsx             # Location-aware plate set management
+│   └── VoiceNavigationButton.tsx       # Voice command navigation controls
 ├── services/
 │   ├── oneRepMaxStorage.ts             # One-rep-max formula management
 │   ├── exerciseRecordsStorage.ts       # Exercise history storage
 │   ├── fiveThreeOneStorage.ts          # 5/3/1 program calculations
 │   ├── workoutResultsStorage.ts        # Workout session management
-│   └── plateCalculatorStorage.ts       # Plate set and location management
+│   ├── plateCalculatorStorage.ts       # Plate set and location management
+│   ├── googleFitClient.ts              # Google Fit API integration
+│   ├── googleFitService.ts             # Google Fit sync operations
+│   └── appleHealthExport.ts            # Apple HealthKit export format
+├── hooks/
+│   ├── useFiveThreeOnePlanner.ts       # 5/3/1 planner state management
+│   ├── useFocusTrap.ts                 # Modal focus trap accessibility
+│   ├── useTheme.ts                     # Dark/light theme management
+│   └── useVoiceNavigation.ts           # Voice command recognition
 ├── types/
 │   ├── plateCalculator.ts              # Plate calculator type definitions
+│   ├── googleFit.ts                    # Google Fit API types
 │   └── index.ts                        # Core type definitions
-├── test/                               # Comprehensive test suite (175 tests)
+├── test/                               # Comprehensive test suite (251 tests)
 ├── PWAInstallPrompt.tsx                # Progressive Web App install prompt
 ├── exercises.ts                        # Exercise database
 └── main.tsx                            # Application entry point with PWA setup
@@ -100,7 +125,7 @@ src/
 
 ## 🧪 Testing Infrastructure
 
-This project features a robust testing suite with **175 passing tests** covering all functionality:
+This project features a robust testing suite with **251 passing tests** covering all functionality:
 
 ### Test Coverage
 - **Storage Systems**: Database operations, CRUD functionality, error handling
@@ -109,6 +134,8 @@ This project features a robust testing suite with **175 passing tests** covering
 - **Accessibility**: ARIA implementation, keyboard navigation, screen reader support
 - **PWA Features**: Service worker registration, offline functionality
 - **Plate Calculator**: Algorithm testing, location services, custom configurations
+- **Voice Navigation**: Speech recognition, command parsing, navigation handling
+- **Health Integration**: Google Fit and Apple Health export functionality
 - **Error Handling**: Graceful degradation and comprehensive error recovery
 
 ### Testing Tools
@@ -119,8 +146,8 @@ This project features a robust testing suite with **175 passing tests** covering
 - **User Event**: Realistic user interaction simulation
 
 ### Test Statistics
-- ✅ **175 tests passing** (100% success rate)
-- ✅ **18 test files** completely passing
+- ✅ **251 tests passing** (100% success rate)
+- ✅ **23 test files** completely passing
 - ✅ **Complete coverage** of all functionality including accessibility
 - ✅ **Zero test failures** - fully stable test suite
 - 🚀 **Continuous Integration** with GitHub Actions
@@ -161,7 +188,7 @@ npm run build            # Build for production with PWA generation
 npm run preview          # Preview production build locally
 
 # Testing
-npm run test             # Run tests in watch mode (175 tests)
+npm run test             # Run tests in watch mode (251 tests)
 npm run test:run         # Run all tests once
 npm run test:ui          # Run tests with interactive UI
 
@@ -189,6 +216,8 @@ The application uses **IndexedDB** and **Service Workers** for complete offline 
 4. **WorkoutResultsStorage**: Detailed workout session data and analytics
 5. **PlateCalculatorStorage**: Location-aware plate set configurations
 6. **PWA Cache**: Service worker manages app shell and data caching
+7. **GoogleFitClient**: Google Fit API authentication and session sync
+8. **AppleHealthExport**: HealthKit-compatible workout data export
 
 ### Progressive Web App Features
 - **Install Prompt**: Custom install banner with one-click installation
@@ -262,6 +291,8 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Error Announcements**: Screen reader alerts for form validation and errors
 - **Alternative Text**: Descriptive labels for all visual elements
 - **Responsive Design**: Accessible on all device sizes and orientations
+- **Focus Trap**: Modal focus management for keyboard navigation
+- **Voice Navigation**: Hands-free control via speech recognition
 
 ### Accessibility Testing
 - **Automated Testing**: ESLint accessibility rules and automated checks
@@ -279,7 +310,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Security**: No eval() usage, secure data handling, and input validation
 
 ### Testing Excellence
-- **175 Comprehensive Tests**: Complete coverage of all functionality
+- **251 Comprehensive Tests**: Complete coverage of all functionality
 - **Test-Driven Development**: Tests written alongside feature development
 - **Accessibility Testing**: Automated and manual accessibility validation
 - **Integration Testing**: Full component and storage system integration
@@ -296,9 +327,9 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 ## 🚀 Deployment & Production
 
 ### Live Application
-[![Build and Deploy](https://github.com/iidahosa/intl-bench-press-day/actions/workflows/azure-static-web-apps-nice-sea-0aa18020f.yml/badge.svg)](https://github.com/iidahosa/intl-bench-press-day/actions/workflows/azure-static-web-apps-nice-sea-0aa18020f.yml)
+[![Build and Deploy](https://github.com/utdcometsoccer/intl-bench-press-day/actions/workflows/azure-static-web-apps-orange-mud-0a4faef1e.yml/badge.svg)](https://github.com/utdcometsoccer/intl-bench-press-day/actions/workflows/azure-static-web-apps-orange-mud-0a4faef1e.yml)
 
-🌐 **Live App**: [https://nice-sea-0aa18020f.1.azurestaticapps.net](https://nice-sea-0aa18020f.1.azurestaticapps.net)
+🌐 **Live App**: [https://orange-mud-0a4faef1e.5.azurestaticapps.net](https://orange-mud-0a4faef1e.5.azurestaticapps.net)
 
 ### Production Features
 - **Azure Static Web Apps**: Enterprise-grade hosting with global CDN
@@ -322,7 +353,7 @@ We welcome contributions! Here's how to get started:
 1. **Fork and Clone**: Fork the repository and clone your fork
 2. **Install Dependencies**: `npm install`
 3. **Start Development**: `npm run dev`
-4. **Run Tests**: `npm test` (ensure all 175 tests pass)
+4. **Run Tests**: `npm test` (ensure all 251 tests pass)
 5. **Build Validation**: `npm run build` to ensure production readiness
 
 ### Contribution Guidelines
@@ -376,9 +407,9 @@ This project is open source and available under the **MIT License**.
 ## 📞 Support & Resources
 
 ### Getting Help
-- **📋 Issues**: [Report bugs or request features](https://github.com/iidahosa/intl-bench-press-day/issues)
+- **📋 Issues**: [Report bugs or request features](https://github.com/utdcometsoccer/intl-bench-press-day/issues)
 - **📖 Documentation**: Comprehensive inline code documentation and README
-- **🧪 Testing**: Run `npm test` to verify functionality and see all 175 tests
+- **🧪 Testing**: Run `npm test` to verify functionality and see all 251 tests
 - **🔧 Development**: Use `npm run dev` for local development with hot reload
 
 ### Training Resources
@@ -389,4 +420,4 @@ This project is open source and available under the **MIT License**.
 
 ---
 
-**Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready • 175 Tests Strong**
+**Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready • 251 Tests Strong**
