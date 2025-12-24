@@ -250,6 +250,62 @@ class WorkoutResultsStorage {
     });
   }
 
+  // Get all incomplete workout sessions
+  async getIncompleteWorkoutSessions(): Promise<WorkoutSession[]> {
+    this.ensureInitialized();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([this.config.sessionsStoreName], 'readonly');
+      const store = transaction.objectStore(this.config.sessionsStoreName);
+      const index = store.index('isCompleted');
+      
+      const request = index.getAll(IDBKeyRange.only(false));
+      
+      request.onsuccess = () => {
+        const sessions = request.result as WorkoutSession[];
+        sessions.sort((a, b) => new Date(b.dateStarted).getTime() - new Date(a.dateStarted).getTime());
+        resolve(sessions);
+      };
+      
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  // Delete workout session
+  async deleteWorkoutSession(id: string): Promise<void> {
+    this.ensureInitialized();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([this.config.sessionsStoreName], 'readwrite');
+      const store = transaction.objectStore(this.config.sessionsStoreName);
+      
+      const request = store.delete(id);
+      
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  // Clean up old incomplete workout sessions (older than specified hours)
+  async cleanupOldIncompleteSessions(maxAgeHours: number = 3): Promise<number> {
+    this.ensureInitialized();
+
+    const incompleteSessions = await this.getIncompleteWorkoutSessions();
+    const now = Date.now();
+    const maxAgeMs = maxAgeHours * 60 * 60 * 1000;
+    
+    let deletedCount = 0;
+    for (const session of incompleteSessions) {
+      const sessionAge = now - new Date(session.dateStarted).getTime();
+      if (sessionAge > maxAgeMs) {
+        await this.deleteWorkoutSession(session.id);
+        deletedCount++;
+      }
+    }
+    
+    return deletedCount;
+  }
+
   // Delete workout result
   async deleteWorkoutResult(id: string): Promise<void> {
     this.ensureInitialized();
