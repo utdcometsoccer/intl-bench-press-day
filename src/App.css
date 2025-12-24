@@ -5292,6 +5292,56 @@ a:focus {
   border: 1px solid var(--border-color, #e0e0e0);
 }
 
+.voice-help-panel h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.voice-help-panel h4 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.voice-help-panel p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: var(--text-secondary, #6c757d);
+}
+
+.voice-help-panel ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.voice-help-panel li {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.voice-help-close-button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: var(--primary-button-bg, #007bff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+}
+
+.voice-help-close-button:hover {
+  background-color: var(--link-hover-color, #0056b3);
+}
+
+.voice-help-close-button:focus {
+  outline: 2px solid var(--link-color, #646cff);
+  outline-offset: 2px;
+}
+
 @keyframes pulse-button {
   0% {
     transform: scale(1);

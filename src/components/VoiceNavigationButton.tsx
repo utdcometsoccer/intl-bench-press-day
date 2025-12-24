@@ -79,48 +79,39 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
           role="dialog"
           aria-label="Voice Commands Help"
         >
-          <h3 style={{ marginTop: 0, marginBottom: '12px', fontSize: '16px' }}>
+          <h3>
             🎤 Voice Commands
           </h3>
-          <p style={{ fontSize: '14px', marginBottom: '12px', color: 'var(--text-secondary, #6c757d)' }}>
+          <p>
             Click the microphone button and say a command:
           </p>
-          <div style={{ fontSize: '13px' }}>
-            <h4 style={{ marginBottom: '8px', fontSize: '14px' }}>Navigation:</h4>
-            <ul style={{ margin: 0, paddingLeft: '20px', listStyle: 'disc' }}>
+          <div>
+            <h4>Navigation:</h4>
+            <ul>
               {VOICE_COMMANDS
                 .filter(cmd => cmd.action === 'navigate')
                 .filter((cmd, index, arr) => 
                   arr.findIndex(c => c.description === cmd.description) === index
                 )
                 .map((cmd) => (
-                  <li key={cmd.command} style={{ marginBottom: '4px' }}>
+                  <li key={cmd.command}>
                     <strong>"{cmd.command}"</strong> - {cmd.description}
                   </li>
                 ))}
             </ul>
-            <h4 style={{ marginTop: '12px', marginBottom: '8px', fontSize: '14px' }}>Other:</h4>
-            <ul style={{ margin: 0, paddingLeft: '20px', listStyle: 'disc' }}>
-              <li style={{ marginBottom: '4px' }}>
+            <h4>Other:</h4>
+            <ul>
+              <li>
                 <strong>"help"</strong> - Show available commands
               </li>
-              <li style={{ marginBottom: '4px' }}>
+              <li>
                 <strong>"stop"</strong> - Stop listening
               </li>
             </ul>
           </div>
           <button
             onClick={() => setShowHelp(false)}
-            style={{
-              marginTop: '12px',
-              padding: '8px 16px',
-              backgroundColor: 'var(--primary-button-bg, #007bff)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              width: '100%',
-            }}
+            className="voice-help-close-button"
           >
             Close
           </button>
