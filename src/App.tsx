@@ -42,7 +42,15 @@ const appInsights = new ApplicationInsights({
     }
   }
 });
-appInsights.loadAppInsights();
+
+// Only load App Insights if connection string is provided
+if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
+  try {
+    appInsights.loadAppInsights();
+  } catch (error) {
+    console.warn('Failed to initialize Application Insights:', error);
+  }
+}
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)

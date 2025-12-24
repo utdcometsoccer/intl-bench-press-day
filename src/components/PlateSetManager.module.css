@@ -375,7 +375,7 @@
 
 .plateRow {
   display: grid;
-  grid-template-columns: 100px 80px 120px 1fr 40px;
+  grid-template-columns: 100px 80px 120px 1fr auto;
   gap: 10px;
   align-items: center;
   padding: 12px;
@@ -416,17 +416,27 @@
   background: #dc3545;
   color: white;
   border: none;
-  width: 32px;
-  height: 32px;
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
   line-height: 1;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .removeButton:hover {
   background: #c82333;
+  transform: scale(1.05);
+}
+
+.removeButton:focus-visible {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
 }
 
 .closeSection {
