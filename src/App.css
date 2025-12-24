@@ -226,6 +226,13 @@
   color: var(--info-text);
 }
 
+.info-message-list {
+  text-align: left;
+  margin: 10px auto;
+  max-width: 400px;
+  padding-left: 20px;
+}
+
 /* Buttons */
 .primary-button {
   width: 100%;
@@ -576,6 +583,7 @@ header {
   border-bottom: 3px solid var(--tab-active-color);
   font-weight: bold;
   color: var(--tab-active-color);
+  background-color: rgba(0, 123, 255, 0.08);
 }
 
 .logo {
@@ -5237,6 +5245,103 @@ a:focus {
   animation: pulse-button 1s ease-in-out infinite;
 }
 
+/* Voice help button */
+.voice-help-button {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--secondary-button-bg, #6c757d);
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.voice-help-button:hover {
+  transform: scale(1.1);
+}
+
+.voice-help-button:focus {
+  outline: 2px solid var(--link-color, #646cff);
+  outline-offset: 2px;
+}
+
+/* Voice help panel */
+.voice-help-panel {
+  position: fixed;
+  bottom: 130px;
+  right: 20px;
+  max-width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: var(--container-bg, white);
+  color: var(--text-primary, #213547);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 10001;
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.voice-help-panel h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.voice-help-panel h4 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.voice-help-panel p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: var(--text-secondary, #6c757d);
+}
+
+.voice-help-panel ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.voice-help-panel li {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.voice-help-close-button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: var(--primary-button-bg, #007bff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+}
+
+.voice-help-close-button:hover {
+  background-color: var(--link-hover-color, #0056b3);
+}
+
+.voice-help-close-button:focus {
+  outline: 2px solid var(--link-color, #646cff);
+  outline-offset: 2px;
+}
+
 @keyframes pulse-button {
   0% {
     transform: scale(1);
@@ -5342,24 +5447,46 @@ a:focus {
 /* Mobile adjustments for voice navigation */
 @media (max-width: 767px) {
   .voice-nav-button {
-    bottom: 80px;
-    /* Above mobile navigation if present */
+    bottom: calc(70px + var(--safe-area-bottom) + 10px);
+    /* Above mobile navigation with spacing */
     right: 15px;
     width: 50px;
     height: 50px;
     font-size: 20px;
+    z-index: 1001;
+    /* Above mobile bottom nav */
+  }
+
+  .voice-help-button {
+    bottom: calc(70px + var(--safe-area-bottom) + 70px);
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    z-index: 1001;
+  }
+
+  .voice-help-panel {
+    bottom: calc(70px + var(--safe-area-bottom) + 110px);
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    max-height: 300px;
+    z-index: 1002;
   }
 
   .voice-feedback {
-    bottom: 140px;
+    bottom: calc(70px + var(--safe-area-bottom) + 70px);
     right: 15px;
     max-width: 250px;
+    z-index: 1001;
   }
 
   .voice-command-indicator {
     top: auto;
-    bottom: 200px;
+    bottom: calc(70px + var(--safe-area-bottom) + 130px);
     font-size: 14px;
     padding: 10px 20px;
+    z-index: 1001;
   }
 }
