@@ -37,14 +37,17 @@ const browserHistory = createBrowserHistory();
 const reactPlugin = new ReactPlugin();
 const appInsights = new ApplicationInsights({
   config: {
-    connectionString: import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING,
+    connectionString: import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING || '',
     extensions: [reactPlugin],
     extensionConfig: {
       [reactPlugin.identifier]: { history: browserHistory }
-    }
+    },
+    disableTelemetry: !import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING
   }
 });
-appInsights.loadAppInsights();
+if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
+  appInsights.loadAppInsights();
+}
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
