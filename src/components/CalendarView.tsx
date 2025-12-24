@@ -145,8 +145,8 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
           const isToday = isSameDay(day, new Date());
 
           // Get workout name from scheduled workout if available
-          const workout = scheduledWorkout ? 
-            cycle.workouts?.find(w => w.id === scheduledWorkout.workoutId) : 
+          const workout = scheduledWorkout && cycle?.workouts ? 
+            cycle.workouts.find(w => w.id === scheduledWorkout.workoutId) : 
             null;
 
           return (

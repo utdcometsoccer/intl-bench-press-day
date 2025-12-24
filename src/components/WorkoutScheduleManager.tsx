@@ -60,7 +60,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       if (!workout) return;
 
       const newSchedule: WorkoutSchedule = {
-        id: `schedule-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: `schedule-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
         cycleId: cycle.id,
         workoutId: workout.id,
         scheduledDate: new Date(selectedDate),
@@ -270,7 +270,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
           schedules
             .sort((a, b) => a.scheduledDate.getTime() - b.scheduledDate.getTime())
             .map((schedule) => {
-              const workout = cycle?.workouts.find(w => w.id === schedule.workoutId);
+              const workout = cycle?.workouts?.find(w => w.id === schedule.workoutId);
               return (
                 <div
                   key={schedule.id}
