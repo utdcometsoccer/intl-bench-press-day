@@ -434,15 +434,6 @@
   transform: scale(1.05);
 }
 
-.removeButton:focus {
-  outline: 3px solid #007bff;
-  outline-offset: 2px;
-}
-
-.removeButton:focus:not(:focus-visible) {
-  outline: none;
-}
-
 .removeButton:focus-visible {
   outline: 3px solid #007bff;
   outline-offset: 2px;
@@ -450,12 +441,6 @@
 
 .removeButtonText {
   display: inline;
-}
-
-@media (max-width: 768px) {
-  .removeButtonText {
-    display: inline;
-  }
 }
 
 .closeSection {
