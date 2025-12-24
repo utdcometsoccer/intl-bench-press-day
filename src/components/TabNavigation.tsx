@@ -1,6 +1,6 @@
 import { type FC, type KeyboardEvent } from 'react';
 
-type TabKey = 'create' | 'manage' | 'view';
+type TabKey = 'create' | 'manage' | 'view' | 'schedule';
 
 interface Tab {
   key: TabKey;
@@ -20,7 +20,8 @@ const TabNavigation: FC<TabNavigationProps> = ({
   tabs = [
     { key: 'create', label: 'Create Cycle' },
     { key: 'manage', label: 'Manage Cycles' },
-    { key: 'view', label: 'View Workouts' }
+    { key: 'view', label: 'View Workouts' },
+    { key: 'schedule', label: 'Schedule' }
   ],
   ariaLabel = "5-3-1 Planner Navigation"
 }) => {

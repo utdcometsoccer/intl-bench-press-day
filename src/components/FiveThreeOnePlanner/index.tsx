@@ -7,6 +7,7 @@ import CreateCycleForm from '../CreateCycleForm';
 import LoadingState from '../LoadingState';
 import ManageCyclesTab from '../ManageCyclesTab';
 import ViewWorkoutsTab from '../ViewWorkoutsTab';
+import WorkoutScheduleManager from '../WorkoutScheduleManager';
 
 interface FiveThreeOnePlannerProps {
   onCycleCreated?: () => void;
@@ -114,6 +115,18 @@ const FiveThreeOnePlanner: FC<FiveThreeOnePlannerProps> = ({ onCycleCreated }) =
             selectedCycle={state.selectedCycle}
             onBackToActiveCycle={() => setSelectedCycle(null)}
           />
+        </div>
+      )}
+
+      {/* Schedule Tab */}
+      {state.activeTab === 'schedule' && (
+        <div 
+          role="tabpanel"
+          id="panel-schedule"
+          aria-labelledby="tab-schedule"
+          tabIndex={0}
+        >
+          <WorkoutScheduleManager cycle={state.activeCycle || undefined} />
         </div>
       )}
 

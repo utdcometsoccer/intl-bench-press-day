@@ -1,6 +1,8 @@
 // User Preferences Storage Service
 // Tracks user status (first-time vs returning) and preferences
 
+import type { DefaultWorkoutTimes } from '../types';
+
 export interface UserPreferences {
   isFirstTimeUser: boolean;
   profileCompleted: boolean;
@@ -10,6 +12,8 @@ export interface UserPreferences {
   preferredRestTime: number; // in seconds
   autoSaveEnabled: boolean; // Auto-save workout sessions
   autoSaveInterval: number; // Auto-save interval in seconds (default: 30)
+  defaultWorkoutTimes?: DefaultWorkoutTimes; // Default workout times for each day of the week
+  notificationLeadTime?: number; // Minutes before workout to send notification (default: 30)
   createdAt: string;
   updatedAt: string;
 }
@@ -23,6 +27,13 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   preferredRestTime: 90,
   autoSaveEnabled: true,
   autoSaveInterval: 30,
+  defaultWorkoutTimes: {
+    day1: '09:00', // Monday
+    day2: '09:00', // Tuesday
+    day4: '09:00', // Thursday
+    day5: '09:00', // Friday
+  },
+  notificationLeadTime: 30, // 30 minutes before workout
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -113,6 +124,20 @@ class UserPreferencesStorage {
   setAutoSaveInterval(seconds: number): void {
     const preferences = this.getPreferences();
     preferences.autoSaveInterval = seconds;
+    this.savePreferences(preferences);
+  }
+
+  // Update default workout times
+  setDefaultWorkoutTimes(times: DefaultWorkoutTimes): void {
+    const preferences = this.getPreferences();
+    preferences.defaultWorkoutTimes = times;
+    this.savePreferences(preferences);
+  }
+
+  // Update notification lead time
+  setNotificationLeadTime(minutes: number): void {
+    const preferences = this.getPreferences();
+    preferences.notificationLeadTime = minutes;
     this.savePreferences(preferences);
   }
 

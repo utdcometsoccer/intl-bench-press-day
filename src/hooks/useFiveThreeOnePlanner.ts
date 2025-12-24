@@ -29,7 +29,7 @@ interface FiveThreeOnePlannerState {
   isCreating: boolean;
   error: string;
   success: string;
-  activeTab: 'create' | 'manage' | 'view';
+  activeTab: 'create' | 'manage' | 'view' | 'schedule';
 }
 
 // Action types
@@ -47,7 +47,7 @@ type FiveThreeOnePlannerAction =
   | { type: 'SET_IS_CREATING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'SET_SUCCESS'; payload: string }
-  | { type: 'SET_ACTIVE_TAB'; payload: 'create' | 'manage' | 'view' }
+  | { type: 'SET_ACTIVE_TAB'; payload: 'create' | 'manage' | 'view' | 'schedule' }
   | { type: 'RESET_FORM' }
   | { type: 'CLEAR_MESSAGES' }
   | { type: 'INITIALIZE_CUSTOM_MAXES'; payload: Record<string, number> };
@@ -155,7 +155,7 @@ export interface UseFiveThreeOnePlannerReturn {
   setNotes: (notes: string) => void;
   setUsePersonalRecords: (use: boolean) => void;
   setSelectedCycle: (cycle: FiveThreeOneCycle | null) => void;
-  setActiveTab: (tab: 'create' | 'manage' | 'view') => void;
+  setActiveTab: (tab: 'create' | 'manage' | 'view' | 'schedule') => void;
   
   // Event handlers
   handleCustomMaxChange: (exerciseId: string, value: string) => void;
@@ -251,7 +251,7 @@ export const useFiveThreeOnePlanner = (): UseFiveThreeOnePlannerReturn => {
     dispatch({ type: 'SET_SELECTED_CYCLE', payload: cycle });
   };
 
-  const setActiveTab = (tab: 'create' | 'manage' | 'view') => {
+  const setActiveTab = (tab: 'create' | 'manage' | 'view' | 'schedule') => {
     dispatch({ type: 'SET_ACTIVE_TAB', payload: tab });
   };
 

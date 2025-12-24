@@ -128,6 +128,44 @@ describe('UserPreferencesStorage', () => {
     });
   });
 
+  describe('default workout times', () => {
+    it('should set and get default workout times', () => {
+      const defaultTimes = {
+        day1: '09:00',
+        day2: '09:00',
+        day4: '10:00',
+        day5: '10:00',
+      };
+
+      userPreferencesStorage.setDefaultWorkoutTimes(defaultTimes);
+      const preferences = userPreferencesStorage.getPreferences();
+
+      expect(preferences.defaultWorkoutTimes).toEqual(defaultTimes);
+    });
+
+    it('should have default workout times when first initialized', () => {
+      const preferences = userPreferencesStorage.getPreferences();
+      
+      expect(preferences.defaultWorkoutTimes).toBeDefined();
+      expect(preferences.defaultWorkoutTimes?.day1).toBe('09:00');
+    });
+  });
+
+  describe('notification lead time', () => {
+    it('should set and get notification lead time', () => {
+      userPreferencesStorage.setNotificationLeadTime(60);
+      const preferences = userPreferencesStorage.getPreferences();
+
+      expect(preferences.notificationLeadTime).toBe(60);
+    });
+
+    it('should have default notification lead time of 30 minutes', () => {
+      const preferences = userPreferencesStorage.getPreferences();
+      
+      expect(preferences.notificationLeadTime).toBe(30);
+    });
+  });
+
   describe('UserPreferencesStorage class', () => {
     it('should create instance', () => {
       const storage = new UserPreferencesStorage();
