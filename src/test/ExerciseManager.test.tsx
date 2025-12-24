@@ -186,7 +186,6 @@ describe('ExerciseManager', () => {
   it('should prevent conflicts with built-in exercise IDs (if manually set)', async () => {
     // Note: This test is for future-proofing in case we allow manual ID setting
     // Currently, IDs are auto-generated with 'custom-' prefix so conflicts are unlikely
-    const user = userEvent.setup()
     
     // We'll need to test the logic by mocking a scenario where the ID could conflict
     // For now, we'll skip this specific test since the auto-generation prevents conflicts
@@ -210,7 +209,7 @@ describe('ExerciseManager', () => {
       expect(screen.getByText('Bulgarian Split Squat')).toBeInTheDocument()
       expect(screen.getByText('Category:')).toBeInTheDocument()
       expect(screen.getByText('Legs')).toBeInTheDocument()
-      expect(screen.getByText((content, element) => {
+      expect(screen.getByText((_content, element) => {
         return element?.textContent === 'Muscles: Quadriceps, Glutes, Hamstrings'
       })).toBeInTheDocument()
     })

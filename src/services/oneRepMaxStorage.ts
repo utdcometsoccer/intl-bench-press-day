@@ -225,7 +225,6 @@ class OneRepMaxStorageSystem {
         return new Function('workoutSet', body) as OneRepetitionMaximum;
       } else {
         // Fallback: try to evaluate the entire string as a function
-        // eslint-disable-next-line no-eval
         return eval(`(${functionBody})`) as OneRepetitionMaximum;
       }
     } catch (error) {
