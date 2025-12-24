@@ -36,7 +36,7 @@ const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[
 
 // Loading component for lazy-loaded components
 const LoadingFallback = () => (
-  <div className="app-loading">
+  <div className="app-loading" role="status" aria-live="polite">
     <p>Loading...</p>
   </div>
 )
