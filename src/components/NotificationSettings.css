@@ -167,3 +167,45 @@
   outline: 2px solid #007bff;
   outline-offset: 2px;
 }
+
+/* Auto-save settings */
+.auto-save-settings {
+  margin-top: var(--spacing-md);
+}
+
+.auto-save-interval {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.auto-save-interval label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.interval-select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  max-width: 200px;
+}
+
+.interval-select:hover {
+  border-color: #007bff;
+}
+
+.interval-select:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+  border-color: #007bff;
+}
