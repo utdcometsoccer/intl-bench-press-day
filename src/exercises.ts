@@ -145,11 +145,28 @@ export const BARBELL_EXERCISES: Exercise[] = [
 
 // Initialize custom exercises storage
 let isInitialized = false;
+let initializationPromise: Promise<void> | null = null;
+
 export const initializeExercises = async (): Promise<void> => {
-  if (!isInitialized) {
-    await customExercisesStorage.initialize();
-    isInitialized = true;
+  if (isInitialized) {
+    return;
   }
+
+  if (!initializationPromise) {
+    initializationPromise = (async () => {
+      try {
+        await customExercisesStorage.initialize();
+        isInitialized = true;
+      } finally {
+        // If initialization failed, allow future retries
+        if (!isInitialized) {
+          initializationPromise = null;
+        }
+      }
+    })();
+  }
+
+  await initializationPromise;
 };
 
 // Get all exercises (built-in + custom)

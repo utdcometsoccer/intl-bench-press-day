@@ -37,9 +37,14 @@ const ProgressChart: React.FC = () => {
 
   useEffect(() => {
     const initialize = async () => {
-      await loadAllRecords();
-      const cats = await getExerciseCategories();
-      setCategories(cats);
+      try {
+        await loadAllRecords();
+        const cats = await getExerciseCategories();
+        setCategories(cats);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(`Failed to initialize progress chart: ${message}`);
+      }
     };
     initialize();
   }, []);
@@ -138,6 +143,10 @@ const ProgressChart: React.FC = () => {
         );
       } catch (err) {
         console.error('Failed to filter by category:', err);
+        // Clear chart data to avoid displaying inconsistent results
+        setChartData([]);
+        setExerciseStats([]);
+        return;
       }
     }
 

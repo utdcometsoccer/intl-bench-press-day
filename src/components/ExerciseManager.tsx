@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { Exercise } from '../types';
 import { customExercisesStorage } from '../services/customExercisesStorage';
 import { BARBELL_EXERCISES } from '../exercises';
@@ -12,6 +12,9 @@ const ExerciseManager: React.FC = () => {
   const [success, setSuccess] = useState<string>('');
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
+  
+  // Ref to store timeout IDs for cleanup
+  const successTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -39,6 +42,13 @@ const ExerciseManager: React.FC = () => {
 
   useEffect(() => {
     loadCustomExercises();
+    
+    // Cleanup timeout on unmount
+    return () => {
+      if (successTimeoutRef.current) {
+        clearTimeout(successTimeoutRef.current);
+      }
+    };
   }, [loadCustomExercises]);
 
   // Reset form
@@ -73,11 +83,26 @@ const ExerciseManager: React.FC = () => {
         return;
       }
 
+      // Check if ID conflicts with existing custom exercises (only when creating)
+      if (!editingExercise) {
+        const existingCustomExercise = customExercises.find(ex => ex.id === exerciseId);
+        if (existingCustomExercise) {
+          setError('Exercise ID conflicts with an existing custom exercise. Please use a different name.');
+          return;
+        }
+      }
+
       // Parse muscle groups
       const muscleGroups = formData.muscleGroups
         .split(',')
         .map(m => m.trim())
         .filter(m => m.length > 0);
+
+      // Validate that at least one muscle group is provided
+      if (muscleGroups.length === 0) {
+        setError('Please provide at least one muscle group.');
+        return;
+      }
 
       const exercise: Exercise = {
         id: exerciseId,
@@ -98,8 +123,12 @@ const ExerciseManager: React.FC = () => {
       await loadCustomExercises();
       resetForm();
 
+      // Clear any existing timeout
+      if (successTimeoutRef.current) {
+        clearTimeout(successTimeoutRef.current);
+      }
       // Clear success message after 3 seconds
-      setTimeout(() => setSuccess(''), 3000);
+      successTimeoutRef.current = setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError(`Failed to save exercise: ${err}`);
     }
@@ -131,20 +160,26 @@ const ExerciseManager: React.FC = () => {
       setSuccess('Exercise deleted successfully!');
       await loadCustomExercises();
       
+      // Clear any existing timeout
+      if (successTimeoutRef.current) {
+        clearTimeout(successTimeoutRef.current);
+      }
       // Clear success message after 3 seconds
-      setTimeout(() => setSuccess(''), 3000);
+      successTimeoutRef.current = setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError(`Failed to delete exercise: ${err}`);
     }
   };
 
   // Get all unique categories from both built-in and custom exercises
-  const allCategories = Array.from(
-    new Set([
-      ...BARBELL_EXERCISES.map(ex => ex.category),
-      ...customExercises.map(ex => ex.category)
-    ])
-  ).sort();
+  const allCategories = useMemo(() => {
+    return Array.from(
+      new Set([
+        ...BARBELL_EXERCISES.map(ex => ex.category),
+        ...customExercises.map(ex => ex.category)
+      ])
+    ).sort();
+  }, [customExercises]);
 
   if (isLoading) {
     return <div role="status" aria-live="polite">Loading exercises...</div>;

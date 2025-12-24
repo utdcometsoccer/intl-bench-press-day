@@ -45,6 +45,8 @@ const appInsights = new ApplicationInsights({
     disableTelemetry: !import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING
   }
 });
+// Only load Application Insights when a connection string is provided.
+// The disableTelemetry flag above is set to mirror this condition.
 if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
   appInsights.loadAppInsights();
 }
