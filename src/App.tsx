@@ -19,8 +19,9 @@ const PlateCalculator = lazy(() => import('./components/PlateCalculator'))
 const ExerciseManager = lazy(() => import('./components/ExerciseManager'))
 const FirstTimeUserWizard = lazy(() => import('./components/FirstTimeUserWizard'))
 const Dashboard = lazy(() => import('./components/Dashboard'))
+const CustomWorkoutBuilder = lazy(() => import('./components/CustomWorkoutBuilder'))
 
-type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises';
+type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom';
 
 
 // Tab configuration for navigation items
@@ -29,9 +30,10 @@ const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[
   { id: 'progress', label: 'Progress', icon: '📊', shortcut: '2' },
   { id: 'planner', label: 'Planner', icon: '📋', shortcut: '3' },
   { id: 'logger', label: 'Logger', icon: '📝', shortcut: '4' },
-  { id: 'exercises', label: 'Exercises', icon: '📚', shortcut: '5' },
-  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '6' },
-  { id: 'export', label: 'Export', icon: '💾', shortcut: '7' },
+  { id: 'custom', label: 'Custom', icon: '✏️', shortcut: '5' },
+  { id: 'exercises', label: 'Exercises', icon: '📚', shortcut: '6' },
+  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '7' },
+  { id: 'export', label: 'Export', icon: '💾', shortcut: '8' },
 ]
 
 // Loading component for lazy-loaded components
@@ -73,7 +75,7 @@ function App() {
 
   // Voice navigation handler - must be defined before any conditional returns
   const handleVoiceNavigate = useCallback((tab: string) => {
-    const validTabs: TabType[] = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'exercises', 'plates', 'export'];
+    const validTabs: TabType[] = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'exercises', 'custom', 'plates', 'export'];
     if (validTabs.includes(tab as TabType)) {
       setActiveTab(tab as TabType);
       setIsMobileMenuOpen(false);
@@ -308,6 +310,7 @@ function App() {
             {activeTab === 'progress' && <ProgressChart />}
             {activeTab === 'planner' && <FiveThreeOnePlanner />}
             {activeTab === 'logger' && <WorkoutLogger />}
+            {activeTab === 'custom' && <CustomWorkoutBuilder />}
             {activeTab === 'exercises' && <ExerciseManager />}
             {activeTab === 'plates' && <PlateCalculator />}
             {activeTab === 'export' && <DataExport />}
