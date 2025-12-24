@@ -62,6 +62,7 @@ export interface FiveThreeOneWorkout {
   mainSets: FiveThreeOneSet[];
   warmupSets: FiveThreeOneSet[];
   assistanceExercises?: string[];
+  scheduledTime?: string; // Time in HH:mm format (24-hour) for scheduled workouts
 }
 
 export interface FiveThreeOneCycle {
@@ -205,4 +206,51 @@ export interface ExerciseStats {
   latestOneRepMax: number;
   improvement: number;
   color: string;
+}
+
+// ============================================================================
+// WORKOUT SCHEDULING TYPES
+// ============================================================================
+
+export interface WorkoutSchedule {
+  id: string;
+  cycleId?: string; // Optional - null for standalone workouts
+  workoutId: string; // Reference to FiveThreeOneWorkout or CustomWorkout
+  scheduledDate: Date;
+  scheduledTime: string; // Time in HH:mm format (24-hour)
+  isCompleted: boolean;
+  completedDate?: Date;
+  notificationEnabled: boolean;
+  notificationTime?: string; // Time before workout to send notification (e.g., "30min", "1hour")
+}
+
+export interface CustomWorkout {
+  id: string;
+  name: string;
+  description?: string;
+  exerciseId: string;
+  exerciseName: string;
+  sets: {
+    reps: number;
+    weight: number;
+    isAmrap?: boolean;
+  }[];
+  warmupSets?: {
+    reps: number;
+    weight: number;
+  }[];
+  assistanceExercises?: string[];
+  createdDate: Date;
+  createdBy: 'user' | 'coach' | 'auto'; // Track source of workout
+  notes?: string;
+}
+
+export interface DefaultWorkoutTimes {
+  day1?: string; // Monday - format "HH:mm"
+  day2?: string; // Tuesday
+  day3?: string; // Wednesday
+  day4?: string; // Thursday
+  day5?: string; // Friday
+  day6?: string; // Saturday
+  day7?: string; // Sunday
 }

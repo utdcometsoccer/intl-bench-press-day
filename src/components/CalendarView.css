@@ -123,6 +123,15 @@
   color: #007bff;
 }
 
+.scheduled-indicator {
+  color: #6610f2;
+}
+
+.indicator-time {
+  font-size: 7px;
+  font-weight: bold;
+}
+
 /* Legend */
 .calendar-legend {
   display: flex;
@@ -153,6 +162,10 @@
 
 .legend-dot.planned {
   background-color: #007bff;
+}
+
+.legend-dot.scheduled {
+  background-color: #6610f2;
 }
 
 .legend-dot.today-dot {

@@ -1,7 +1,8 @@
-import { type FC, useState, useMemo } from 'react';
-import type { FiveThreeOneCycle } from '../types';
+import { type FC, useState, useMemo, useEffect } from 'react';
+import type { FiveThreeOneCycle, WorkoutSchedule } from '../types';
 import type { WorkoutResult } from '../types';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, getDay } from 'date-fns';
+import { workoutScheduleStorage } from '../services/workoutScheduleStorage';
 import './CalendarView.css';
 
 // Calendar constants
@@ -25,6 +26,24 @@ interface CalendarViewProps {
 
 const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [schedules, setSchedules] = useState<WorkoutSchedule[]>([]);
+
+  const loadSchedules = async () => {
+    try {
+      await workoutScheduleStorage.initialize();
+      if (cycle) {
+        const cycleSchedules = await workoutScheduleStorage.getSchedulesForCycle(cycle.id);
+        setSchedules(cycleSchedules);
+      }
+    } catch (error) {
+      console.error('Failed to load schedules:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadSchedules();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cycle]);
 
   const calendarDays = useMemo(() => {
     const start = startOfMonth(currentMonth);
@@ -35,6 +54,12 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
   const getWorkoutForDay = (date: Date): WorkoutResult | undefined => {
     return results.find(result =>
       isSameDay(new Date(result.datePerformed), date)
+    );
+  };
+
+  const getScheduledWorkoutForDay = (date: Date): WorkoutSchedule | undefined => {
+    return schedules.find(schedule =>
+      isSameDay(new Date(schedule.scheduledDate), date)
     );
   };
 
@@ -116,15 +141,23 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
         {calendarDays.map(day => {
           const completedWorkout = getWorkoutForDay(day);
           const plannedWorkout = getPlannedWorkoutForDay(day);
+          const scheduledWorkout = getScheduledWorkoutForDay(day);
           const isToday = isSameDay(day, new Date());
+
+          // Get workout name from scheduled workout if available
+          const workout = scheduledWorkout ? 
+            cycle.workouts?.find(w => w.id === scheduledWorkout.workoutId) : 
+            null;
 
           return (
             <div
               key={day.toISOString()}
-              className={`calendar-day ${isToday ? 'today' : ''} ${completedWorkout ? 'completed' : ''} ${plannedWorkout && !completedWorkout ? 'planned' : ''}`}
+              className={`calendar-day ${isToday ? 'today' : ''} ${completedWorkout ? 'completed' : ''} ${(plannedWorkout || scheduledWorkout) && !completedWorkout ? 'planned' : ''}`}
               title={
                 completedWorkout
                   ? `${completedWorkout.exerciseName} (Completed)`
+                  : scheduledWorkout && workout
+                  ? `${workout.exerciseName} at ${scheduledWorkout.scheduledTime} (Scheduled)`
                   : plannedWorkout
                   ? `${plannedWorkout.exerciseName} (Planned)`
                   : undefined
@@ -137,7 +170,13 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
                   <span className="indicator-text">{completedWorkout.exerciseName.substring(0, 2)}</span>
                 </div>
               )}
-              {plannedWorkout && !completedWorkout && (
+              {!completedWorkout && scheduledWorkout && workout && (
+                <div className="workout-indicator scheduled-indicator">
+                  <span className="indicator-time">{scheduledWorkout.scheduledTime}</span>
+                  <span className="indicator-text">{workout.exerciseName.substring(0, 2)}</span>
+                </div>
+              )}
+              {!completedWorkout && !scheduledWorkout && plannedWorkout && (
                 <div className="workout-indicator planned-indicator">
                   <span className="indicator-text">{plannedWorkout.exerciseName.substring(0, 2)}</span>
                 </div>
@@ -151,6 +190,10 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
         <div className="legend-item">
           <span className="legend-dot completed" />
           <span>Completed</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-dot scheduled" />
+          <span>Scheduled</span>
         </div>
         <div className="legend-item">
           <span className="legend-dot planned" />
