@@ -1,5 +1,5 @@
 // Hook for auto-saving workout sessions
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useMemo } from 'react';
 import type { WorkoutSession } from '../types';
 import { workoutResultsStorage } from '../services/workoutResultsStorage';
 import { userPreferencesStorage } from '../services/userPreferencesStorage';
@@ -25,10 +25,14 @@ export const useAutoSave = (
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastSavedRef = useRef<string | null>(null);
 
-  // Get user preferences for auto-save settings
-  const preferences = userPreferencesStorage.getPreferences();
-  const enabled = optionsEnabled !== undefined ? optionsEnabled : preferences.autoSaveEnabled;
-  const interval = optionsInterval !== undefined ? optionsInterval : preferences.autoSaveInterval;
+  // Get user preferences for auto-save settings (memoized to avoid unnecessary calls)
+  const { autoSaveEnabled: prefAutoSaveEnabled, autoSaveInterval: prefAutoSaveInterval } = useMemo(
+    () => userPreferencesStorage.getPreferences(),
+    [] // Only get preferences once on mount
+  );
+  
+  const enabled = optionsEnabled !== undefined ? optionsEnabled : prefAutoSaveEnabled;
+  const interval = optionsInterval !== undefined ? optionsInterval : prefAutoSaveInterval;
 
   // Auto-save function
   const autoSave = useCallback(async () => {
@@ -129,11 +133,12 @@ export const useAutoSave = (
     }
   }, [session, onSave, onError]);
 
-  return {
+  // Memoize return value to prevent unnecessary re-renders
+  return useMemo(() => ({
     manualSave,
     isAutoSaveEnabled: enabled,
     autoSaveInterval: interval,
-  };
+  }), [manualSave, enabled, interval]);
 };
 
 // Hook for cleaning up old incomplete sessions

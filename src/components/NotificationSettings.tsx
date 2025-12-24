@@ -187,7 +187,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
   }
 
   return (
-    <div>
+    <>
       <div className="notification-settings">
         <div className="notification-header">
           <span className="icon" aria-hidden="true">🔔</span>
@@ -232,7 +232,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
         </div>
       </div>
       {showAutoSave && renderAutoSaveSettings()}
-    </div>
+    </>
   );
 };
 

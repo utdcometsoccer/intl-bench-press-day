@@ -22,6 +22,21 @@ vi.mock('../services/userPreferencesStorage', () => ({
   },
 }));
 
+// Helper to create mock user preferences
+const createMockPreferences = (overrides = {}) => ({
+  autoSaveEnabled: true,
+  autoSaveInterval: 30,
+  isFirstTimeUser: false,
+  profileCompleted: true,
+  onboardingCompleted: true,
+  lastVisitDate: new Date().toISOString(),
+  notificationsEnabled: false,
+  preferredRestTime: 90,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  ...overrides,
+});
+
 describe('useAutoSave', () => {
   let mockSession: WorkoutSession;
 
@@ -33,18 +48,7 @@ describe('useAutoSave', () => {
     vi.mocked(workoutResultsStorage.saveWorkoutSession).mockResolvedValue('session-id');
     vi.mocked(workoutResultsStorage.cleanupOldIncompleteSessions).mockResolvedValue(0);
     
-    vi.mocked(userPreferencesStorage.getPreferences).mockReturnValue({
-      autoSaveEnabled: true,
-      autoSaveInterval: 30,
-      isFirstTimeUser: false,
-      profileCompleted: true,
-      onboardingCompleted: true,
-      lastVisitDate: new Date().toISOString(),
-      notificationsEnabled: false,
-      preferredRestTime: 90,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    vi.mocked(userPreferencesStorage.getPreferences).mockReturnValue(createMockPreferences());
 
     mockSession = {
       id: 'session-1',
@@ -95,18 +99,9 @@ describe('useAutoSave', () => {
   });
 
   it('should respect user preference for auto-save enabled', async () => {
-    vi.mocked(userPreferencesStorage.getPreferences).mockReturnValue({
-      autoSaveEnabled: false,
-      autoSaveInterval: 30,
-      isFirstTimeUser: false,
-      profileCompleted: true,
-      onboardingCompleted: true,
-      lastVisitDate: new Date().toISOString(),
-      notificationsEnabled: false,
-      preferredRestTime: 90,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    vi.mocked(userPreferencesStorage.getPreferences).mockReturnValue(
+      createMockPreferences({ autoSaveEnabled: false })
+    );
 
     const { result } = renderHook(() => useAutoSave(mockSession));
 
@@ -118,18 +113,9 @@ describe('useAutoSave', () => {
   });
 
   it('should allow options to override user preferences', async () => {
-    vi.mocked(userPreferencesStorage.getPreferences).mockReturnValue({
-      autoSaveEnabled: false,
-      autoSaveInterval: 30,
-      isFirstTimeUser: false,
-      profileCompleted: true,
-      onboardingCompleted: true,
-      lastVisitDate: new Date().toISOString(),
-      notificationsEnabled: false,
-      preferredRestTime: 90,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    vi.mocked(userPreferencesStorage.getPreferences).mockReturnValue(
+      createMockPreferences({ autoSaveEnabled: false, autoSaveInterval: 30 })
+    );
 
     const { result } = renderHook(() => 
       useAutoSave(mockSession, { enabled: true, interval: 5 })
