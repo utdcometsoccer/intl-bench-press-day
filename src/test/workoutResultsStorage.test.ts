@@ -357,4 +357,121 @@ describe('WorkoutResultsStorage', () => {
       expect(mockStore.index).toHaveBeenCalledWith('exerciseId')
     })
   })
+
+  describe('workout session management', () => {
+    beforeEach(async () => {
+      await storage.initialize()
+    })
+
+    it('should get all incomplete workout sessions', async () => {
+      const mockIncompleteSessions = [
+        {
+          id: 'session1',
+          cycleId: 'cycle1',
+          week: 1,
+          day: 1,
+          dateStarted: new Date('2024-01-01'),
+          isCompleted: false,
+          workoutResults: []
+        },
+        {
+          id: 'session2',
+          cycleId: 'cycle1',
+          week: 1,
+          day: 2,
+          dateStarted: new Date('2024-01-02'),
+          isCompleted: false,
+          workoutResults: []
+        }
+      ]
+
+      const mockRequest = mockDbConnection.getMockRequest()
+      const mockStore = mockDbConnection.getMockStore()
+
+      mockStore.index.mockReturnValue({
+        getAll: vi.fn().mockReturnValue(mockRequest)
+      })
+
+      setTimeout(() => {
+        mockRequest.result = mockIncompleteSessions
+        if (mockRequest.onsuccess) {
+          mockRequest.onsuccess({ target: { result: mockIncompleteSessions } } as any)
+        }
+      }, 0)
+
+      const sessions = await storage.getIncompleteWorkoutSessions()
+      expect(sessions).toEqual(mockIncompleteSessions)
+      expect(mockStore.index).toHaveBeenCalledWith('isCompleted')
+    })
+
+    it('should delete a workout session', async () => {
+      const mockRequest = mockDbConnection.getMockRequest()
+      const mockStore = mockDbConnection.getMockStore()
+
+      setTimeout(() => {
+        if (mockRequest.onsuccess) {
+          mockRequest.onsuccess({ target: { result: undefined } } as any)
+        }
+      }, 0)
+
+      await storage.deleteWorkoutSession('session1')
+      expect(mockStore.delete).toHaveBeenCalledWith('session1')
+    })
+
+    it('should cleanup old incomplete sessions', async () => {
+      const now = Date.now()
+      const fourHoursAgo = new Date(now - 4 * 60 * 60 * 1000)
+      const twoHoursAgo = new Date(now - 2 * 60 * 60 * 1000)
+
+      const mockIncompleteSessions = [
+        {
+          id: 'session-old',
+          cycleId: 'cycle1',
+          week: 1,
+          day: 1,
+          dateStarted: fourHoursAgo,
+          isCompleted: false,
+          workoutResults: []
+        },
+        {
+          id: 'session-recent',
+          cycleId: 'cycle1',
+          week: 1,
+          day: 2,
+          dateStarted: twoHoursAgo,
+          isCompleted: false,
+          workoutResults: []
+        }
+      ]
+
+      const mockRequest = mockDbConnection.getMockRequest()
+      const mockStore = mockDbConnection.getMockStore()
+
+      mockStore.index.mockReturnValue({
+        getAll: vi.fn().mockReturnValue(mockRequest)
+      })
+
+      // Mock getIncompleteWorkoutSessions
+      setTimeout(() => {
+        mockRequest.result = mockIncompleteSessions
+        if (mockRequest.onsuccess) {
+          mockRequest.onsuccess({ target: { result: mockIncompleteSessions } } as any)
+        }
+      }, 0)
+
+      // Mock delete for old session
+      const deleteRequest = { ...mockRequest }
+      mockStore.delete.mockReturnValue(deleteRequest)
+      setTimeout(() => {
+        if (deleteRequest.onsuccess) {
+          deleteRequest.onsuccess({ target: { result: undefined } } as any)
+        }
+      }, 0)
+
+      const deletedCount = await storage.cleanupOldIncompleteSessions(3)
+      
+      expect(deletedCount).toBe(1)
+      expect(mockStore.delete).toHaveBeenCalledWith('session-old')
+    })
+  })
 })

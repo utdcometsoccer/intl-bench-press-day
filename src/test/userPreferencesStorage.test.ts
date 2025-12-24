@@ -86,6 +86,34 @@ describe('UserPreferencesStorage', () => {
     });
   });
 
+  describe('setAutoSaveEnabled', () => {
+    it('should update auto-save enabled preference', () => {
+      userPreferencesStorage.setAutoSaveEnabled(false);
+      
+      const preferences = userPreferencesStorage.getPreferences();
+      expect(preferences.autoSaveEnabled).toBe(false);
+    });
+
+    it('should default to true for new users', () => {
+      const preferences = userPreferencesStorage.getPreferences();
+      expect(preferences.autoSaveEnabled).toBe(true);
+    });
+  });
+
+  describe('setAutoSaveInterval', () => {
+    it('should update auto-save interval', () => {
+      userPreferencesStorage.setAutoSaveInterval(60);
+      
+      const preferences = userPreferencesStorage.getPreferences();
+      expect(preferences.autoSaveInterval).toBe(60);
+    });
+
+    it('should default to 30 seconds for new users', () => {
+      const preferences = userPreferencesStorage.getPreferences();
+      expect(preferences.autoSaveInterval).toBe(30);
+    });
+  });
+
   describe('reset', () => {
     it('should clear all preferences', () => {
       // Set some preferences

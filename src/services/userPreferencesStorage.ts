@@ -8,6 +8,8 @@ export interface UserPreferences {
   lastVisitDate: string | null;
   notificationsEnabled: boolean;
   preferredRestTime: number; // in seconds
+  autoSaveEnabled: boolean; // Auto-save workout sessions
+  autoSaveInterval: number; // Auto-save interval in seconds (default: 30)
   createdAt: string;
   updatedAt: string;
 }
@@ -19,6 +21,8 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   lastVisitDate: null,
   notificationsEnabled: false,
   preferredRestTime: 90,
+  autoSaveEnabled: true,
+  autoSaveInterval: 30,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -95,6 +99,20 @@ class UserPreferencesStorage {
   setPreferredRestTime(seconds: number): void {
     const preferences = this.getPreferences();
     preferences.preferredRestTime = seconds;
+    this.savePreferences(preferences);
+  }
+
+  // Update auto-save enabled preference
+  setAutoSaveEnabled(enabled: boolean): void {
+    const preferences = this.getPreferences();
+    preferences.autoSaveEnabled = enabled;
+    this.savePreferences(preferences);
+  }
+
+  // Update auto-save interval
+  setAutoSaveInterval(seconds: number): void {
+    const preferences = this.getPreferences();
+    preferences.autoSaveInterval = seconds;
     this.savePreferences(preferences);
   }
 

@@ -48,7 +48,11 @@ const appInsights = new ApplicationInsights({
 // Only load Application Insights when a connection string is provided.
 // The disableTelemetry flag above is set to mirror this condition.
 if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
-  appInsights.loadAppInsights();
+  try {
+    appInsights.loadAppInsights();
+  } catch (error) {
+    console.warn('Failed to initialize Application Insights:', error);
+  }
 }
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('tracker')
