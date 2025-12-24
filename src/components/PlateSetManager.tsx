@@ -69,7 +69,8 @@ const PlateSetManager: React.FC<PlateSetManagerProps> = ({
 
     try {
       if (isCreatingNew) {
-        const { id, ...plateSetData } = editingPlateSet;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _id, ...plateSetData } = editingPlateSet;
         await plateCalculatorStorage.createPlateSet(plateSetData);
         setSuccess('Plate set created successfully!');
       } else {
@@ -127,12 +128,12 @@ const PlateSetManager: React.FC<PlateSetManagerProps> = ({
     }
   };
 
-  const updatePlateSetField = (field: keyof PlateSet, value: any) => {
+  const updatePlateSetField = (field: keyof PlateSet, value: PlateSet[keyof PlateSet]) => {
     if (!editingPlateSet) return;
     setEditingPlateSet({ ...editingPlateSet, [field]: value });
   };
 
-  const updatePlate = (plateIndex: number, field: keyof Plate, value: any) => {
+  const updatePlate = (plateIndex: number, field: keyof Plate, value: Plate[keyof Plate]) => {
     if (!editingPlateSet) return;
     
     const updatedPlates = editingPlateSet.plates.map((plate, index) =>

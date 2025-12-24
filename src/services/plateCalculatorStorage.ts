@@ -17,8 +17,8 @@ class PlateCalculatorStorage {
       // Load existing plate sets
       const storedData = localStorage.getItem(STORAGE_KEY);
       if (storedData) {
-        const parsed = JSON.parse(storedData);
-        this.plateSets = parsed.map((ps: any) => ({
+        const parsed = JSON.parse(storedData) as Array<Omit<PlateSet, 'createdAt' | 'lastUsed'> & { createdAt: string; lastUsed?: string }>;
+        this.plateSets = parsed.map((ps) => ({
           ...ps,
           createdAt: new Date(ps.createdAt),
           lastUsed: ps.lastUsed ? new Date(ps.lastUsed) : undefined
