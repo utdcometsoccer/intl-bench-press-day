@@ -62,6 +62,8 @@ describe('useVoiceNavigation', () => {
     const MockClass = class extends MockSpeechRecognition {
       constructor() {
         super();
+        // Assign directly to module-level variable
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         mockRecognitionInstance = this;
       }
     };

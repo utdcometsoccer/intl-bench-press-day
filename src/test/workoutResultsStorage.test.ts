@@ -11,8 +11,8 @@ class MockDatabaseConnection implements DatabaseConnection {
 
   private mockTransaction = {
     objectStore: vi.fn(),
-    oncomplete: null as any,
-    onerror: null as any
+    oncomplete: null as ((this: IDBTransaction, ev: Event) => void) | null,
+    onerror: null as ((this: IDBTransaction, ev: Event) => void) | null
   }
 
   private mockStore = {
@@ -27,9 +27,9 @@ class MockDatabaseConnection implements DatabaseConnection {
   }
 
   private mockRequest = {
-    onsuccess: null as any,
-    onerror: null as any,
-    result: null as any
+    onsuccess: null as ((this: IDBRequest, ev: Event) => void) | null,
+    onerror: null as ((this: IDBRequest, ev: Event) => void) | null,
+    result: null as unknown
   }
 
   constructor() {
@@ -48,9 +48,10 @@ class MockDatabaseConnection implements DatabaseConnection {
   }
 
   getDatabase(): IDBDatabase | null {
-    return this.mockDb as any
+    return this.mockDb as unknown as IDBDatabase
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async initialize(_config: DatabaseConfig): Promise<void> {
     // Mock initialization - always succeeds
     return Promise.resolve()
@@ -137,7 +138,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = workoutResult.id
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: workoutResult.id } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: workoutResult.id } } as unknown as Event)
         }
       }, 0)
 
@@ -176,7 +177,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: mockResults } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as unknown as Event)
         }
       }, 0)
 
@@ -211,7 +212,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: mockResults } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as unknown as Event)
         }
       }, 0)
 
@@ -228,7 +229,7 @@ describe('WorkoutResultsStorage', () => {
       // Mock successful deletion
       setTimeout(() => {
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: undefined } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: undefined } } as unknown as Event)
         }
       }, 0)
 
@@ -266,7 +267,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: mockResults } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as unknown as Event)
         }
       }, 0)
 
@@ -346,7 +347,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockWorkoutResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: mockWorkoutResults } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockWorkoutResults } } as unknown as Event)
         }
       }, 0)
 
@@ -395,7 +396,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockIncompleteSessions
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: mockIncompleteSessions } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockIncompleteSessions } } as unknown as Event)
         }
       }, 0)
 
@@ -410,7 +411,7 @@ describe('WorkoutResultsStorage', () => {
 
       setTimeout(() => {
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: undefined } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: undefined } } as unknown as Event)
         }
       }, 0)
 
@@ -455,7 +456,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockIncompleteSessions
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess({ target: { result: mockIncompleteSessions } } as any)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockIncompleteSessions } } as unknown as Event)
         }
       }, 0)
 
@@ -464,7 +465,7 @@ describe('WorkoutResultsStorage', () => {
       mockStore.delete.mockReturnValue(deleteRequest)
       setTimeout(() => {
         if (deleteRequest.onsuccess) {
-          deleteRequest.onsuccess({ target: { result: undefined } } as any)
+          deleteRequest.onsuccess.call(deleteRequest as unknown as IDBRequest, { target: { result: undefined } } as unknown as Event)
         }
       }, 0)
 
