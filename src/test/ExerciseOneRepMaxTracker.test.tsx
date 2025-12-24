@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import ExerciseOneRepMaxTracker from '../components/ExerciseOneRepMaxTracker'
 
+// Mock the exercises module
+vi.mock('../exercises', () => ({
+  getAllExercises: vi.fn(),
+  getExerciseCategories: vi.fn(),
+  findExerciseById: vi.fn(),
+}))
+
 // Mock the storage modules
 vi.mock('../services/oneRepMaxStorage', () => ({
   oneRepMaxStorage: {
@@ -20,15 +27,43 @@ vi.mock('../services/exerciseRecordsStorage', () => ({
 }))
 
 // Import the mocked modules
+import { getAllExercises, getExerciseCategories, findExerciseById } from '../exercises'
 import { oneRepMaxStorage } from '../services/oneRepMaxStorage'
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage'
 
+const mockedGetAllExercises = vi.mocked(getAllExercises)
+const mockedGetExerciseCategories = vi.mocked(getExerciseCategories)
+const mockedFindExerciseById = vi.mocked(findExerciseById)
 const mockedOneRepMaxStorage = vi.mocked(oneRepMaxStorage)
 const mockedExerciseRecordsStorage = vi.mocked(exerciseRecordsStorage)
+
+const mockExercises = [
+  {
+    id: 'bench-press',
+    name: 'Bench Press',
+    category: 'Chest',
+    description: 'Classic horizontal pressing movement',
+    muscleGroups: ['Chest', 'Triceps', 'Front Delts']
+  },
+  {
+    id: 'back-squat',
+    name: 'Back Squat',
+    category: 'Legs',
+    description: 'The king of leg exercises',
+    muscleGroups: ['Quadriceps', 'Glutes', 'Hamstrings', 'Calves']
+  }
+]
 
 describe('ExerciseOneRepMaxTracker', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    
+    // Setup exercise mocks
+    mockedGetAllExercises.mockResolvedValue(mockExercises)
+    mockedGetExerciseCategories.mockResolvedValue(['Chest', 'Legs'])
+    mockedFindExerciseById.mockImplementation(async (id: string) => {
+      return mockExercises.find(ex => ex.id === id)
+    })
     
     // Setup default mocks
     mockedOneRepMaxStorage.listFunctions.mockResolvedValue([

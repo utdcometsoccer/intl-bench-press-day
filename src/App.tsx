@@ -7,6 +7,7 @@ import FiveThreeOnePlanner from './components/FiveThreeOnePlanner/index'
 import WorkoutLogger from './components/WorkoutLogger'
 import DataExport from './components/DataExport'
 import PlateCalculator from './components/PlateCalculator'
+import ExerciseManager from './components/ExerciseManager'
 import PWAInstallPrompt from './PWAInstallPrompt'
 import FirstTimeUserWizard from './components/FirstTimeUserWizard'
 import Dashboard from './components/Dashboard'
@@ -17,7 +18,7 @@ import { AppInsightsErrorBoundary, ReactPlugin } from '@microsoft/applicationins
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { createBrowserHistory } from "history";
 
-type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export';
+type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises';
 
 
 // Tab configuration for navigation items
@@ -26,8 +27,9 @@ const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[
   { id: 'progress', label: 'Progress', icon: '📊', shortcut: '2' },
   { id: 'planner', label: 'Planner', icon: '📋', shortcut: '3' },
   { id: 'logger', label: 'Logger', icon: '📝', shortcut: '4' },
-  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '5' },
-  { id: 'export', label: 'Export', icon: '💾', shortcut: '6' },
+  { id: 'exercises', label: 'Exercises', icon: '📚', shortcut: '5' },
+  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '6' },
+  { id: 'export', label: 'Export', icon: '💾', shortcut: '7' },
 ]
 
 // Initialize Application Insights outside component to prevent re-instantiation
@@ -35,15 +37,16 @@ const browserHistory = createBrowserHistory();
 const reactPlugin = new ReactPlugin();
 const appInsights = new ApplicationInsights({
   config: {
-    connectionString: import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING,
+    connectionString: import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING || '',
     extensions: [reactPlugin],
     extensionConfig: {
       [reactPlugin.identifier]: { history: browserHistory }
-    }
+    },
+    disableTelemetry: !import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING
   }
 });
-
-// Only load App Insights if connection string is provided
+// Only load Application Insights when a connection string is provided.
+// The disableTelemetry flag above is set to mirror this condition.
 if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
   try {
     appInsights.loadAppInsights();
@@ -61,7 +64,7 @@ function App() {
 
   // Voice navigation handler - must be defined before any conditional returns
   const handleVoiceNavigate = useCallback((tab: string) => {
-    const validTabs: TabType[] = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'plates', 'export'];
+    const validTabs: TabType[] = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'exercises', 'plates', 'export'];
     if (validTabs.includes(tab as TabType)) {
       setActiveTab(tab as TabType);
       setIsMobileMenuOpen(false);
@@ -286,6 +289,7 @@ function App() {
           {activeTab === 'progress' && <ProgressChart />}
           {activeTab === 'planner' && <FiveThreeOnePlanner />}
           {activeTab === 'logger' && <WorkoutLogger />}
+          {activeTab === 'exercises' && <ExerciseManager />}
           {activeTab === 'plates' && <PlateCalculator />}
           {activeTab === 'export' && <DataExport />}
         </main>

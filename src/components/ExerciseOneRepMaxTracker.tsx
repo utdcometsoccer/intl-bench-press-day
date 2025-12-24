@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { WorkoutSet, Exercise, ExerciseRecord, StoredFunctionInfo } from '../types';
-import { BARBELL_EXERCISES, getExerciseCategories, findExerciseById } from '../exercises';
+import { getAllExercises, getExerciseCategories, findExerciseById } from '../exercises';
 import { oneRepMaxStorage, initializeWithPredefinedFormulas } from '../services/oneRepMaxStorage';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 
@@ -9,6 +9,8 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('');
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [exercisesInCategory, setExercisesInCategory] = useState<Exercise[]>([]);
 
   // Calculator state
   const [availableFunctions, setAvailableFunctions] = useState<StoredFunctionInfo[]>([]);
@@ -41,6 +43,32 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
     }
   }, [selectedFunctionId]);
 
+  // Load categories
+  const loadCategories = useCallback(async () => {
+    try {
+      const cats = await getExerciseCategories();
+      setCategories(cats);
+    } catch (err) {
+      setError(`Failed to load categories: ${err}`);
+    }
+  }, []);
+
+  // Load exercises for selected category
+  const loadExercisesInCategory = useCallback(async () => {
+    if (!selectedCategory) {
+      setExercisesInCategory([]);
+      return;
+    }
+
+    try {
+      const allExercises = await getAllExercises();
+      const filtered = allExercises.filter(ex => ex.category === selectedCategory);
+      setExercisesInCategory(filtered);
+    } catch (err) {
+      setError(`Failed to load exercises: ${err}`);
+    }
+  }, [selectedCategory]);
+
   // Initialize the systems
   useEffect(() => {
     const initializeSystems = async () => {
@@ -49,6 +77,7 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
         await initializeWithPredefinedFormulas();
         await exerciseRecordsStorage.initialize();
         await loadAvailableFunctions();
+        await loadCategories();
       } catch (err) {
         setError(`Failed to initialize systems: ${err}`);
       } finally {
@@ -57,7 +86,12 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
     };
 
     initializeSystems();
-  }, [loadAvailableFunctions]);
+  }, [loadAvailableFunctions, loadCategories]);
+
+  // Load exercises when category changes
+  useEffect(() => {
+    loadExercisesInCategory();
+  }, [loadExercisesInCategory]);
 
   // Load records for the selected exercise
   const loadExerciseRecords = useCallback(async () => {
@@ -85,12 +119,17 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
   }, [selectedExerciseId, loadExerciseRecords]);
 
   // Handle exercise selection
-  const handleExerciseChange = (exerciseId: string) => {
+  const handleExerciseChange = async (exerciseId: string) => {
     setSelectedExerciseId(exerciseId);
-    const exercise = findExerciseById(exerciseId);
-    setSelectedExercise(exercise || null);
     setResult(null);
     setShowSuccess(false);
+    
+    try {
+      const exercise = await findExerciseById(exerciseId);
+      setSelectedExercise(exercise || null);
+    } catch (err) {
+      setError(`Failed to load exercise: ${err}`);
+    }
   };
 
   // Handle workout set input changes
@@ -172,11 +211,6 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
       setIsSaving(false);
     }
   };
-
-  const categories = getExerciseCategories();
-  const exercisesInCategory = selectedCategory 
-    ? BARBELL_EXERCISES.filter(ex => ex.category === selectedCategory)
-    : [];
 
   if (isLoading) {
     return (
