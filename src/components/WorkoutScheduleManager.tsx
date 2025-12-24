@@ -1,8 +1,9 @@
-import { type FC, useState, useEffect } from 'react';
+import { type FC, useState, useEffect, useCallback } from 'react';
 import type { FiveThreeOneCycle, WorkoutSchedule, DefaultWorkoutTimes } from '../types';
 import { workoutScheduleStorage } from '../services/workoutScheduleStorage';
 import { userPreferencesStorage } from '../services/userPreferencesStorage';
 import { notificationService } from '../services/notificationService';
+import { generateUUID } from '../utils/idGenerator';
 import './WorkoutScheduleManager.css';
 
 interface WorkoutScheduleManagerProps {
@@ -19,10 +20,12 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
   const [selectedWorkout, setSelectedWorkout] = useState<string>('');
   const [enableNotification, setEnableNotification] = useState(true);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const [error, setError] = useState<string>('');
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setError('');
       await workoutScheduleStorage.initialize();
       
       // Load schedules
@@ -40,34 +43,36 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       setNotificationLeadTime(preferences.notificationLeadTime || 30);
     } catch (error) {
       console.error('Failed to load workout schedules:', error);
+      setError('Failed to load workout schedules. Please refresh the page.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [cycle]);
 
   useEffect(() => {
     loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cycle]);
+  }, [loadData]);
 
   const handleScheduleWorkout = async () => {
     if (!selectedDate || !selectedWorkout || !cycle) {
+      setError('Please select a workout and date before scheduling.');
       return;
     }
 
     try {
+      setError('');
       const workout = cycle.workouts.find(w => w.id === selectedWorkout);
       if (!workout) return;
 
       const newSchedule: WorkoutSchedule = {
-        id: `schedule-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+        id: generateUUID(),
         cycleId: cycle.id,
         workoutId: workout.id,
         scheduledDate: new Date(selectedDate),
         scheduledTime: selectedTime,
         isCompleted: false,
         notificationEnabled: enableNotification,
-        notificationTime: `${notificationLeadTime}min`,
+        notificationLeadMinutes: notificationLeadTime,
       };
 
       await workoutScheduleStorage.addSchedule(newSchedule);
@@ -76,12 +81,23 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       if (enableNotification && notificationService.getPermissionStatus().granted) {
         const scheduledDateTime = new Date(selectedDate);
         const [hours, minutes] = selectedTime.split(':').map(Number);
+        
+        // Validate time format
+        if (isNaN(hours) || isNaN(minutes)) {
+          setError('Invalid time format. Please use HH:mm format (e.g., 09:00).');
+          return;
+        }
+        
         scheduledDateTime.setHours(hours, minutes, 0, 0);
         
         // Schedule notification before workout time
         const notificationTime = new Date(scheduledDateTime.getTime() - notificationLeadTime * 60 * 1000);
         
-        if (notificationTime.getTime() > Date.now()) {
+        // Only schedule if notification time is in the future and within setTimeout limit (24 days)
+        const timeUntilNotification = notificationTime.getTime() - Date.now();
+        const MAX_TIMEOUT = 24 * 24 * 60 * 60 * 1000; // 24 days in ms
+        
+        if (timeUntilNotification > 0 && timeUntilNotification < MAX_TIMEOUT) {
           await notificationService.scheduleNotification({
             id: `workout-${newSchedule.id}`,
             title: 'Workout Reminder 💪',
@@ -101,6 +117,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       setShowScheduleForm(false);
     } catch (error) {
       console.error('Failed to schedule workout:', error);
+      setError('Unable to schedule your workout. Please try again and check your notification permissions if the problem continues.');
     }
   };
 

@@ -169,25 +169,29 @@ class WorkoutScheduleStorage {
   // Get schedules for a specific date
   async getSchedulesForDate(date: Date): Promise<WorkoutSchedule[]> {
     const schedules = await this.getAllSchedules();
-    const targetDate = new Date(date);
-    targetDate.setHours(0, 0, 0, 0);
+    const targetDateString = date.toDateString();
     
     return schedules.filter(s => {
-      const scheduleDate = new Date(s.scheduledDate);
-      scheduleDate.setHours(0, 0, 0, 0);
-      return scheduleDate.getTime() === targetDate.getTime();
+      // s.scheduledDate is already a Date (normalized in getAllSchedules)
+      return s.scheduledDate.toDateString() === targetDateString;
     });
   }
 
   // Mark a schedule as completed
-  async completeSchedule(id: string): Promise<void> {
+  async completeSchedule(id: string): Promise<boolean> {
     const schedule = await this.getSchedule(id);
     if (!schedule) {
-      throw new Error('Schedule not found');
+      return false;
     }
+
+    if (schedule.isCompleted) {
+      return true;
+    }
+
     schedule.isCompleted = true;
     schedule.completedDate = new Date();
     await this.updateSchedule(schedule);
+    return true;
   }
 
   // Delete a schedule
