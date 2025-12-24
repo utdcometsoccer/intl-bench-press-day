@@ -439,10 +439,6 @@
   outline-offset: 2px;
 }
 
-.removeButtonText {
-  display: inline;
-}
-
 .closeSection {
   border-top: 2px solid #e9ecef;
   padding-top: 20px;

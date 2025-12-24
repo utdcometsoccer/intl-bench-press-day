@@ -422,8 +422,8 @@ const PlateSetManager: React.FC<PlateSetManagerProps> = ({
                       type="button"
                       onClick={() => removePlate(index)}
                       className={styles.removeButton}
-                      aria-label={`Remove ${plate.weight} lb plate`}
-                      title={`Remove ${plate.weight} lb plate`}
+                      aria-label={`Remove plate weighing ${plate.weight}`}
+                      title={`Remove plate weighing ${plate.weight}`}
                     >
                       <span aria-hidden="true">✕</span>
                       <span className={styles.removeButtonText}>Remove</span>
