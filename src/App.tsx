@@ -252,6 +252,13 @@ function App() {
             Workout Logger
           </button>
           <button
+            onClick={() => handleTabClick('exercises')}
+            className={`tab-button ${activeTab === 'exercises' ? 'active' : ''}`}
+            aria-current={activeTab === 'exercises' ? 'page' : undefined}
+          >
+            Exercises
+          </button>
+          <button
             onClick={() => handleTabClick('plates')}
             className={`tab-button ${activeTab === 'plates' ? 'active' : ''}`}
             aria-current={activeTab === 'plates' ? 'page' : undefined}

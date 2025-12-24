@@ -40,24 +40,7 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
         onClick={() => setShowHelp(!showHelp)}
         aria-label={showHelp ? 'Hide voice commands help' : 'Show voice commands help'}
         aria-expanded={showHelp}
-        style={{
-          position: 'fixed',
-          bottom: '90px',
-          right: '20px',
-          width: '36px',
-          height: '36px',
-          borderRadius: '50%',
-          backgroundColor: 'var(--secondary-button-bg, #6c757d)',
-          color: 'white',
-          border: 'none',
-          fontSize: '16px',
-          cursor: 'pointer',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-          zIndex: 9998,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        title="Click for voice command help"
       >
         ❓
       </button>
@@ -95,21 +78,6 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
           className="voice-help-panel"
           role="dialog"
           aria-label="Voice Commands Help"
-          style={{
-            position: 'fixed',
-            bottom: '130px',
-            right: '20px',
-            maxWidth: '350px',
-            maxHeight: '400px',
-            overflowY: 'auto',
-            backgroundColor: 'var(--container-bg, white)',
-            color: 'var(--text-primary, #213547)',
-            padding: '16px',
-            borderRadius: '8px',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-            zIndex: 10001,
-            border: '1px solid var(--border-color, #e0e0e0)',
-          }}
         >
           <h3 style={{ marginTop: 0, marginBottom: '12px', fontSize: '16px' }}>
             🎤 Voice Commands

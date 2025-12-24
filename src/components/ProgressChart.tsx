@@ -225,7 +225,15 @@ const ProgressChart: React.FC = () => {
     return (
       <div className="progress-chart loading">
         <h2>Progress Chart</h2>
-        <p>No exercise records found. Start tracking your workouts to see your progress!</p>
+        <div className="info-message">
+          <h3>📊 Start Tracking Your Progress</h3>
+          <p>You haven't recorded any exercise data yet. Track your lifts to visualize your strength gains over time!</p>
+          <p><strong>Get started by:</strong></p>
+          <ul style={{ textAlign: 'left', margin: '10px auto', maxWidth: '400px' }}>
+            <li>Using the <strong>Exercise Tracker</strong> to log your one-rep maxes</li>
+            <li>Or completing workouts in the <strong>Workout Logger</strong></li>
+          </ul>
+        </div>
       </div>
     );
   }
