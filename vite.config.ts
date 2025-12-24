@@ -74,4 +74,20 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks
+          'react-vendor': ['react', 'react-dom'],
+          'recharts-vendor': ['recharts'],
+          'date-fns-vendor': ['date-fns'],
+          'applicationinsights-vendor': [
+            '@microsoft/applicationinsights-react-js',
+            '@microsoft/applicationinsights-web'
+          ]
+        }
+      }
+    }
+  }
 })

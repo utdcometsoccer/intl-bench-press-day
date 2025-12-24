@@ -1,22 +1,24 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
-import ExerciseOneRepMaxTracker from './components/ExerciseOneRepMaxTracker'
-import ProgressChart from './components/ProgressChart'
-import FiveThreeOnePlanner from './components/FiveThreeOnePlanner/index'
-import WorkoutLogger from './components/WorkoutLogger'
-import DataExport from './components/DataExport'
-import PlateCalculator from './components/PlateCalculator'
-import ExerciseManager from './components/ExerciseManager'
 import PWAInstallPrompt from './PWAInstallPrompt'
-import FirstTimeUserWizard from './components/FirstTimeUserWizard'
-import Dashboard from './components/Dashboard'
 import VoiceNavigationButton from './components/VoiceNavigationButton'
 import { useTheme } from './hooks/useTheme'
 import { userPreferencesStorage } from './services/userPreferencesStorage'
 import { AppInsightsErrorBoundary, ReactPlugin } from '@microsoft/applicationinsights-react-js';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { createBrowserHistory } from "history";
+
+// Lazy load components for code splitting
+const ExerciseOneRepMaxTracker = lazy(() => import('./components/ExerciseOneRepMaxTracker'))
+const ProgressChart = lazy(() => import('./components/ProgressChart'))
+const FiveThreeOnePlanner = lazy(() => import('./components/FiveThreeOnePlanner/index'))
+const WorkoutLogger = lazy(() => import('./components/WorkoutLogger'))
+const DataExport = lazy(() => import('./components/DataExport'))
+const PlateCalculator = lazy(() => import('./components/PlateCalculator'))
+const ExerciseManager = lazy(() => import('./components/ExerciseManager'))
+const FirstTimeUserWizard = lazy(() => import('./components/FirstTimeUserWizard'))
+const Dashboard = lazy(() => import('./components/Dashboard'))
 
 type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises';
 
@@ -31,6 +33,13 @@ const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[
   { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '6' },
   { id: 'export', label: 'Export', icon: '💾', shortcut: '7' },
 ]
+
+// Loading component for lazy-loaded components
+const LoadingFallback = () => (
+  <div className="app-loading" role="status" aria-live="polite">
+    <p>Loading...</p>
+  </div>
+)
 
 // Initialize Application Insights outside component to prevent re-instantiation
 const browserHistory = createBrowserHistory();
@@ -148,7 +157,9 @@ function App() {
   if (showFirstTimeWizard) {
     return (
       <>
-        <FirstTimeUserWizard onComplete={handleFirstTimeWizardComplete} />
+        <Suspense fallback={<LoadingFallback />}>
+          <FirstTimeUserWizard onComplete={handleFirstTimeWizardComplete} />
+        </Suspense>
         <PWAInstallPrompt />
       </>
     );
@@ -278,20 +289,22 @@ function App() {
 
         {/* Main Content Area */}
         <main role="main" id="main-content" className="main-content">
-          {activeTab === 'dashboard' && (
-            <Dashboard
-              onNavigateToPlanner={() => handleTabClick('planner')}
-              onNavigateToLogger={() => handleTabClick('logger')}
-              onNavigateToProgress={() => handleTabClick('progress')}
-            />
-          )}
-          {activeTab === 'tracker' && <ExerciseOneRepMaxTracker />}
-          {activeTab === 'progress' && <ProgressChart />}
-          {activeTab === 'planner' && <FiveThreeOnePlanner />}
-          {activeTab === 'logger' && <WorkoutLogger />}
-          {activeTab === 'exercises' && <ExerciseManager />}
-          {activeTab === 'plates' && <PlateCalculator />}
-          {activeTab === 'export' && <DataExport />}
+          <Suspense fallback={<LoadingFallback />}>
+            {activeTab === 'dashboard' && (
+              <Dashboard
+                onNavigateToPlanner={() => handleTabClick('planner')}
+                onNavigateToLogger={() => handleTabClick('logger')}
+                onNavigateToProgress={() => handleTabClick('progress')}
+              />
+            )}
+            {activeTab === 'tracker' && <ExerciseOneRepMaxTracker />}
+            {activeTab === 'progress' && <ProgressChart />}
+            {activeTab === 'planner' && <FiveThreeOnePlanner />}
+            {activeTab === 'logger' && <WorkoutLogger />}
+            {activeTab === 'exercises' && <ExerciseManager />}
+            {activeTab === 'plates' && <PlateCalculator />}
+            {activeTab === 'export' && <DataExport />}
+          </Suspense>
         </main>
 
         {/* Mobile Bottom Navigation */}
