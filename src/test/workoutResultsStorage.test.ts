@@ -138,7 +138,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = workoutResult.id
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: workoutResult.id } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: workoutResult.id } } as unknown as Event)
         }
       }, 0)
 
@@ -177,7 +177,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as unknown as Event)
         }
       }, 0)
 
@@ -212,7 +212,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as unknown as Event)
         }
       }, 0)
 
@@ -229,7 +229,7 @@ describe('WorkoutResultsStorage', () => {
       // Mock successful deletion
       setTimeout(() => {
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: undefined } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: undefined } } as unknown as Event)
         }
       }, 0)
 
@@ -267,7 +267,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockResults } } as unknown as Event)
         }
       }, 0)
 
@@ -347,7 +347,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockWorkoutResults
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockWorkoutResults } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockWorkoutResults } } as unknown as Event)
         }
       }, 0)
 
@@ -396,7 +396,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockIncompleteSessions
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockIncompleteSessions } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockIncompleteSessions } } as unknown as Event)
         }
       }, 0)
 
@@ -411,7 +411,7 @@ describe('WorkoutResultsStorage', () => {
 
       setTimeout(() => {
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: undefined } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: undefined } } as unknown as Event)
         }
       }, 0)
 
@@ -456,7 +456,7 @@ describe('WorkoutResultsStorage', () => {
       setTimeout(() => {
         mockRequest.result = mockIncompleteSessions
         if (mockRequest.onsuccess) {
-          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockIncompleteSessions } } as Event)
+          mockRequest.onsuccess.call(mockRequest as unknown as IDBRequest, { target: { result: mockIncompleteSessions } } as unknown as Event)
         }
       }, 0)
 
@@ -465,7 +465,7 @@ describe('WorkoutResultsStorage', () => {
       mockStore.delete.mockReturnValue(deleteRequest)
       setTimeout(() => {
         if (deleteRequest.onsuccess) {
-          deleteRequest.onsuccess.call(deleteRequest as unknown as IDBRequest, { target: { result: undefined } } as Event)
+          deleteRequest.onsuccess.call(deleteRequest as unknown as IDBRequest, { target: { result: undefined } } as unknown as Event)
         }
       }, 0)
 
