@@ -1,8 +1,10 @@
 // Common barbell exercises with their categories
 import type { Exercise } from './types';
+import { customExercisesStorage } from './services/customExercisesStorage';
 
 export { type Exercise } from './types';
 
+// Default built-in exercises
 export const BARBELL_EXERCISES: Exercise[] = [
   // Chest
   {
@@ -141,17 +143,51 @@ export const BARBELL_EXERCISES: Exercise[] = [
   }
 ];
 
-// Get exercises by category
-export const getExercisesByCategory = (category: string): Exercise[] => {
+// Initialize custom exercises storage
+let isInitialized = false;
+export const initializeExercises = async (): Promise<void> => {
+  if (!isInitialized) {
+    await customExercisesStorage.initialize();
+    isInitialized = true;
+  }
+};
+
+// Get all exercises (built-in + custom)
+export const getAllExercises = async (): Promise<Exercise[]> => {
+  await initializeExercises();
+  const customExercises = await customExercisesStorage.getAllExercises();
+  return [...BARBELL_EXERCISES, ...customExercises];
+};
+
+// Get exercises by category (built-in + custom)
+export const getExercisesByCategory = async (category: string): Promise<Exercise[]> => {
+  const allExercises = await getAllExercises();
+  return allExercises.filter(exercise => exercise.category === category);
+};
+
+// Synchronous version for backward compatibility (only returns built-in exercises)
+export const getExercisesByCategorySync = (category: string): Exercise[] => {
   return BARBELL_EXERCISES.filter(exercise => exercise.category === category);
 };
 
-// Get all unique categories
-export const getExerciseCategories = (): string[] => {
+// Get all unique categories (built-in + custom)
+export const getExerciseCategories = async (): Promise<string[]> => {
+  const allExercises = await getAllExercises();
+  return [...new Set(allExercises.map(exercise => exercise.category))];
+};
+
+// Synchronous version for backward compatibility (only returns built-in categories)
+export const getExerciseCategoriesSync = (): string[] => {
   return [...new Set(BARBELL_EXERCISES.map(exercise => exercise.category))];
 };
 
-// Find exercise by ID
-export const findExerciseById = (id: string): Exercise | undefined => {
+// Find exercise by ID (built-in + custom)
+export const findExerciseById = async (id: string): Promise<Exercise | undefined> => {
+  const allExercises = await getAllExercises();
+  return allExercises.find(exercise => exercise.id === id);
+};
+
+// Synchronous version for backward compatibility (only searches built-in exercises)
+export const findExerciseByIdSync = (id: string): Exercise | undefined => {
   return BARBELL_EXERCISES.find(exercise => exercise.id === id);
 };

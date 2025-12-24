@@ -12,7 +12,7 @@ import {
 import { format, parseISO, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
 import type { ExerciseRecord, ChartDataPoint, ExerciseStats } from '../types';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
-import { BARBELL_EXERCISES, getExerciseCategories } from '../exercises';
+import { getAllExercises, getExerciseCategories } from '../exercises';
 import ChartTooltip from './ChartTooltip';
 import chartColorsData from '../data/chartColors.json';
 
@@ -20,6 +20,7 @@ const ProgressChart: React.FC = () => {
   const [allRecords, setAllRecords] = useState<ExerciseRecord[]>([]);
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
   const [exerciseStats, setExerciseStats] = useState<ExerciseStats[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   
   // Filter state
   const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
@@ -35,7 +36,12 @@ const ProgressChart: React.FC = () => {
   const colors = useMemo(() => chartColorsData.progressChartColors, []);
 
   useEffect(() => {
-    loadAllRecords();
+    const initialize = async () => {
+      await loadAllRecords();
+      const cats = await getExerciseCategories();
+      setCategories(cats);
+    };
+    initialize();
   }, []);
 
   // Remove the incorrect useEffect dependency and add it after filterAndProcessData is defined
@@ -110,7 +116,7 @@ const ProgressChart: React.FC = () => {
     setExerciseStats(stats);
   }, [colors]);
 
-  const filterAndProcessData = useCallback(() => {
+  const filterAndProcessData = useCallback(async () => {
     let filteredRecords = allRecords;
 
     // Filter by selected exercises
@@ -122,7 +128,8 @@ const ProgressChart: React.FC = () => {
 
     // Filter by category
     if (selectedCategory) {
-      const exercisesInCategory = BARBELL_EXERCISES
+      const allExercises = await getAllExercises();
+      const exercisesInCategory = allExercises
         .filter(ex => ex.category === selectedCategory)
         .map(ex => ex.id);
       filteredRecords = filteredRecords.filter(record => 
@@ -189,7 +196,6 @@ const ProgressChart: React.FC = () => {
     setSelectedExercises([]);
   };
 
-  const categories = getExerciseCategories();
   const availableExercises = [...new Set(allRecords.map(r => ({ id: r.exerciseId, name: r.exerciseName })))]
     .sort((a, b) => a.name.localeCompare(b.name));
 
