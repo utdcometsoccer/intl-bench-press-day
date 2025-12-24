@@ -47,7 +47,7 @@ describe('ProgressChart', () => {
     
     // Wait for the loading to complete and no data message to appear
     await waitFor(() => {
-      expect(screen.getByText('No exercise records found. Start tracking your workouts to see your progress!')).toBeInTheDocument()
+      expect(screen.getByText('📊 Start Tracking Your Progress')).toBeInTheDocument()
     }, { timeout: 3000 })
   })
 
