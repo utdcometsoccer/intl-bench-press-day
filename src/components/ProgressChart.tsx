@@ -229,7 +229,7 @@ const ProgressChart: React.FC = () => {
           <h3>📊 Start Tracking Your Progress</h3>
           <p>You haven't recorded any exercise data yet. Track your lifts to visualize your strength gains over time!</p>
           <p><strong>Get started by:</strong></p>
-          <ul style={{ textAlign: 'left', margin: '10px auto', maxWidth: '400px' }}>
+          <ul className="info-message-list">
             <li>Using the <strong>Exercise Tracker</strong> to log your one-rep maxes</li>
             <li>Or completing workouts in the <strong>Workout Logger</strong></li>
           </ul>
