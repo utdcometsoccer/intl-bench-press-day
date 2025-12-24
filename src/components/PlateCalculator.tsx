@@ -46,6 +46,21 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
     };
   }, [handleEscapeKey]);
 
+  const calculatePlates = useCallback(() => {
+    const selectedPlateSet = plateSets.find(ps => ps.id === selectedPlateSetId);
+    
+    if (!selectedPlateSet || !targetWeight) {
+      setCurrentCalculation(null);
+      return;
+    }
+
+    const calculation = plateCalculatorStorage.calculatePlates(targetWeight, selectedPlateSet);
+    setCurrentCalculation(calculation);
+
+    // Mark plate set as used
+    plateCalculatorStorage.markPlateSetUsed(selectedPlateSetId);
+  }, [plateSets, selectedPlateSetId, targetWeight]);
+
   useEffect(() => {
     initializePlateCalculator();
   }, []);
@@ -54,11 +69,11 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
     if (targetWeight !== initialWeight) {
       setTargetWeight(initialWeight);
     }
-  }, [initialWeight]);
+  }, [initialWeight, targetWeight]);
 
   useEffect(() => {
     calculatePlates();
-  }, [targetWeight, selectedPlateSetId, plateSets]);
+  }, [calculatePlates]);
 
   useEffect(() => {
     if (onCalculationChange) {
@@ -101,21 +116,6 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const calculatePlates = () => {
-    const selectedPlateSet = plateSets.find(ps => ps.id === selectedPlateSetId);
-    
-    if (!selectedPlateSet || !targetWeight) {
-      setCurrentCalculation(null);
-      return;
-    }
-
-    const calculation = plateCalculatorStorage.calculatePlates(targetWeight, selectedPlateSet);
-    setCurrentCalculation(calculation);
-
-    // Mark plate set as used
-    plateCalculatorStorage.markPlateSetUsed(selectedPlateSetId);
   };
 
   const handleLocationToggle = async () => {

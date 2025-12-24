@@ -38,41 +38,6 @@ const WorkoutLogger: FC = () => {
   const [plateCalculatorWeight, setPlateCalculatorWeight] = useState<number>(135);
   const [currentCalculation, setCurrentCalculation] = useState<PlateCalculation | null>(null);
 
-  useEffect(() => {
-    initializeWorkoutLogger();
-  }, []);
-
-  useEffect(() => {
-    if (activeCycle && selectedWeek && selectedDay) {
-      loadCurrentWorkout();
-    }
-  }, [activeCycle, selectedWeek, selectedDay]);
-
-  useEffect(() => {
-    if (currentWorkout) {
-      loadPastResults();
-    }
-  }, [currentWorkout]);
-
-  const initializeWorkoutLogger = async () => {
-    try {
-      setIsLoading(true);
-      await fiveThreeOneStorage.initialize();
-      await workoutResultsStorage.initialize();
-      
-      const active = await fiveThreeOneStorage.getActiveCycle();
-      setActiveCycle(active);
-      
-      if (!active) {
-        setError('No active 5-3-1 cycle found. Please create a cycle first in the 5-3-1 Planner.');
-      }
-    } catch (err) {
-      setError(`Failed to initialize: ${err}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const loadCurrentWorkout = useCallback(() => {
     if (!activeCycle) return;
 
@@ -127,6 +92,41 @@ const WorkoutLogger: FC = () => {
       console.error('Failed to load past results:', err);
     }
   }, [currentWorkout]);
+
+  useEffect(() => {
+    initializeWorkoutLogger();
+  }, []);
+
+  useEffect(() => {
+    if (activeCycle && selectedWeek && selectedDay) {
+      loadCurrentWorkout();
+    }
+  }, [activeCycle, selectedWeek, selectedDay, loadCurrentWorkout]);
+
+  useEffect(() => {
+    if (currentWorkout) {
+      loadPastResults();
+    }
+  }, [currentWorkout, loadPastResults]);
+
+  const initializeWorkoutLogger = async () => {
+    try {
+      setIsLoading(true);
+      await fiveThreeOneStorage.initialize();
+      await workoutResultsStorage.initialize();
+      
+      const active = await fiveThreeOneStorage.getActiveCycle();
+      setActiveCycle(active);
+      
+      if (!active) {
+        setError('No active 5-3-1 cycle found. Please create a cycle first in the 5-3-1 Planner.');
+      }
+    } catch (err) {
+      setError(`Failed to initialize: ${err}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Plate calculator helpers
   const openPlateCalculator = (weight: number) => {
