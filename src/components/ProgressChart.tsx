@@ -128,13 +128,17 @@ const ProgressChart: React.FC = () => {
 
     // Filter by category
     if (selectedCategory) {
-      const allExercises = await getAllExercises();
-      const exercisesInCategory = allExercises
-        .filter(ex => ex.category === selectedCategory)
-        .map(ex => ex.id);
-      filteredRecords = filteredRecords.filter(record => 
-        exercisesInCategory.includes(record.exerciseId)
-      );
+      try {
+        const allExercises = await getAllExercises();
+        const exercisesInCategory = allExercises
+          .filter(ex => ex.category === selectedCategory)
+          .map(ex => ex.id);
+        filteredRecords = filteredRecords.filter(record => 
+          exercisesInCategory.includes(record.exerciseId)
+        );
+      } catch (err) {
+        console.error('Failed to filter by category:', err);
+      }
     }
 
     // Filter by date range

@@ -125,7 +125,7 @@ class CustomExercisesStorage {
 
   // Update an existing custom exercise
   async updateExercise(exercise: Exercise): Promise<void> {
-    // Same as saveExercise since we use put() which handles both insert and update
+    // Same as saveExercise since IndexedDB put() handles both insert and update
     return this.saveExercise(exercise);
   }
 

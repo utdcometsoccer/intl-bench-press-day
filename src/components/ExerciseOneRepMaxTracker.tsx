@@ -121,14 +121,15 @@ const ExerciseOneRepMaxTracker: React.FC = () => {
   // Handle exercise selection
   const handleExerciseChange = async (exerciseId: string) => {
     setSelectedExerciseId(exerciseId);
+    setResult(null);
+    setShowSuccess(false);
+    
     try {
       const exercise = await findExerciseById(exerciseId);
       setSelectedExercise(exercise || null);
     } catch (err) {
       setError(`Failed to load exercise: ${err}`);
     }
-    setResult(null);
-    setShowSuccess(false);
   };
 
   // Handle workout set input changes
