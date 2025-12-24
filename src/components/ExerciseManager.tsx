@@ -34,7 +34,8 @@ const ExerciseManager: React.FC = () => {
       setCustomExercises(exercises);
       setError('');
     } catch (err) {
-      setError(`Failed to load custom exercises: ${err}`);
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`Failed to load custom exercises: ${message}`);
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +131,8 @@ const ExerciseManager: React.FC = () => {
       // Clear success message after 3 seconds
       successTimeoutRef.current = setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError(`Failed to save exercise: ${err}`);
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`Failed to save exercise: ${message}`);
     }
   };
 
@@ -167,7 +169,8 @@ const ExerciseManager: React.FC = () => {
       // Clear success message after 3 seconds
       successTimeoutRef.current = setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError(`Failed to delete exercise: ${err}`);
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`Failed to delete exercise: ${message}`);
     }
   };
 
