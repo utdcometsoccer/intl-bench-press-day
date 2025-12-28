@@ -70,18 +70,22 @@ const TodaysWorkout: FC<TodaysWorkoutProps> = ({
         </div>
         
         <div className="workout-info">
-          <span className="info-item">
-            <span className="info-label">Week</span>
-            <span className="info-value">{week}</span>
-          </span>
-          <span className="info-item">
-            <span className="info-label">Day</span>
-            <span className="info-value">{day}</span>
-          </span>
-          <span className="info-item">
-            <span className="info-label">Type</span>
-            <span className="info-value">{weekDescriptions[week] || `Week ${week}`}</span>
-          </span>
+          {week !== undefined && (
+            <>
+              <span className="info-item">
+                <span className="info-label">Week</span>
+                <span className="info-value">{week}</span>
+              </span>
+              <span className="info-item">
+                <span className="info-label">Day</span>
+                <span className="info-value">{day}</span>
+              </span>
+              <span className="info-item">
+                <span className="info-label">Type</span>
+                <span className="info-value">{weekDescriptions[week] || `Week ${week}`}</span>
+              </span>
+            </>
+          )}
         </div>
 
         {workout && (

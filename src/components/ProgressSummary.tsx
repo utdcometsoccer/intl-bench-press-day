@@ -16,7 +16,7 @@ const ProgressSummary: FC<ProgressSummaryProps> = ({
   return (
     <div className="progress-summary">
       <div className="progress-header">
-        <h3>Cycle Progress</h3>
+        <h3>Progress</h3>
         <button
           className="view-full-button"
           onClick={onViewFullProgress}
@@ -51,7 +51,7 @@ const ProgressSummary: FC<ProgressSummaryProps> = ({
 
       {/* Week-by-week progress */}
       <div className="weeks-progress">
-        {weeksProgress.map(week => (
+        {weeksProgress && weeksProgress.map(week => (
           <div
             key={week.week}
             className={`week-progress ${week.week === currentWeek ? 'current' : ''} ${week.isComplete ? 'complete' : ''}`}
