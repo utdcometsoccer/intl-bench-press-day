@@ -203,9 +203,11 @@ describe('WorkoutSuggestionService', () => {
       const progress = getCycleProgress(convertCycleToPlan(cycle), results);
 
       expect(progress.weeksProgress).toBeDefined();
-      expect(progress.weeksProgress).toHaveLength(4);
-      expect(progress.weeksProgress![0].week).toBe(1);
-      expect(progress.weeksProgress![3].week).toBe(4);
+      if (progress.weeksProgress) {
+        expect(progress.weeksProgress).toHaveLength(4);
+        expect(progress.weeksProgress[0].week).toBe(1);
+        expect(progress.weeksProgress[3].week).toBe(4);
+      }
     });
   });
 

@@ -58,7 +58,6 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
     }
 
     try {
-      console.error('');
       const workout = cycle.workouts.find(w => w.id === selectedWorkout);
       if (!workout) return;
 
