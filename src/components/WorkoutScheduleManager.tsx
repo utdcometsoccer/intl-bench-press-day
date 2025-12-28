@@ -20,12 +20,10 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
   const [selectedWorkout, setSelectedWorkout] = useState<string>('');
   const [enableNotification, setEnableNotification] = useState(true);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
-  const [error, setError] = useState<string>('');
 
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
-      setError('');
       await workoutScheduleStorage.initialize();
       
       // Load schedules
@@ -43,7 +41,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       setNotificationLeadTime(preferences.notificationLeadTime || 30);
     } catch (error) {
       console.error('Failed to load workout schedules:', error);
-      setError('Failed to load workout schedules. Please refresh the page.');
+      console.error('Failed to load workout schedules. Please refresh the page.');
     } finally {
       setIsLoading(false);
     }
@@ -55,12 +53,12 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
 
   const handleScheduleWorkout = async () => {
     if (!selectedDate || !selectedWorkout || !cycle) {
-      setError('Please select a workout and date before scheduling.');
+      console.error('Please select a workout and date before scheduling.');
       return;
     }
 
     try {
-      setError('');
+      console.error('');
       const workout = cycle.workouts.find(w => w.id === selectedWorkout);
       if (!workout) return;
 
@@ -84,7 +82,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
         
         // Validate time format
         if (isNaN(hours) || isNaN(minutes)) {
-          setError('Invalid time format. Please use HH:mm format (e.g., 09:00).');
+          console.error('Invalid time format. Please use HH:mm format (e.g., 09:00).');
           return;
         }
         
@@ -117,7 +115,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       setShowScheduleForm(false);
     } catch (error) {
       console.error('Failed to schedule workout:', error);
-      setError('Unable to schedule your workout. Please try again and check your notification permissions if the problem continues.');
+      console.error('Unable to schedule your workout. Please try again and check your notification permissions if the problem continues.');
     }
   };
 
