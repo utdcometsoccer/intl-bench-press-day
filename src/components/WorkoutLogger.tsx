@@ -44,6 +44,44 @@ const WorkoutLogger: FC = () => {
   const [plateCalculatorWeight, setPlateCalculatorWeight] = useState<number>(135);
   const [currentCalculation, setCurrentCalculation] = useState<PlateCalculation | null>(null);
 
+  // Helper function to initialize workout state with planned values
+  const initializeWorkoutState = useCallback((workout: UnifiedWorkout) => {
+    // Initialize results arrays with planned values
+    const initialWarmupResults: WorkoutSetResult[] = (workout.warmupSets || []).map(set => ({
+      plannedReps: set.reps,
+      plannedWeight: set.weight,
+      actualReps: set.reps,
+      actualWeight: set.weight,
+      percentage: set.percentage || 0,
+      isAmrap: false
+    }));
+
+    const initialMainSetResults: WorkoutSetResult[] = workout.mainSets.map(set => ({
+      plannedReps: set.reps,
+      plannedWeight: set.weight,
+      actualReps: set.reps,
+      actualWeight: set.weight,
+      percentage: set.percentage || 0,
+      isAmrap: set.isAmrap || false
+    }));
+
+    setWarmupResults(initialWarmupResults);
+    setMainSetResults(initialMainSetResults);
+    
+    // Initialize assistance work
+    const initialAssistance: AssistanceExerciseResult[] = (workout.assistanceExercises || []).slice(0, 3).map(name => ({
+      exerciseName: name,
+      sets: [{ reps: 0, weight: 0 }]
+    }));
+    setAssistanceWork(initialAssistance);
+    
+    // Reset other fields
+    setWorkoutNotes('');
+    setOverallRpe(undefined);
+    setBodyWeight(undefined);
+    setStartTime(new Date());
+  }, []);
+
   const loadCurrentWorkout = useCallback(() => {
     if (!activePlan) return;
 
@@ -54,85 +92,19 @@ const WorkoutLogger: FC = () => {
       setCurrentWorkout(workout);
 
       if (workout) {
-        // Initialize results arrays with planned values
-        const initialWarmupResults: WorkoutSetResult[] = (workout.warmupSets || []).map(set => ({
-          plannedReps: set.reps,
-          plannedWeight: set.weight,
-          actualReps: set.reps,
-          actualWeight: set.weight,
-          percentage: set.percentage || 0,
-          isAmrap: false
-        }));
-
-        const initialMainSetResults: WorkoutSetResult[] = workout.mainSets.map(set => ({
-          plannedReps: set.reps,
-          plannedWeight: set.weight,
-          actualReps: set.reps,
-          actualWeight: set.weight,
-          percentage: set.percentage || 0,
-          isAmrap: set.isAmrap || false
-        }));
-
-        setWarmupResults(initialWarmupResults);
-        setMainSetResults(initialMainSetResults);
-        
-        // Initialize assistance work
-        const initialAssistance: AssistanceExerciseResult[] = (workout.assistanceExercises || []).slice(0, 3).map(name => ({
-          exerciseName: name,
-          sets: [{ reps: 0, weight: 0 }]
-        }));
-        setAssistanceWork(initialAssistance);
-        
-        // Reset other fields
-        setWorkoutNotes('');
-        setOverallRpe(undefined);
-        setBodyWeight(undefined);
-        setStartTime(new Date());
+        initializeWorkoutState(workout);
       }
     }
-  }, [activePlan, selectedWeek, selectedDay]);
+  }, [activePlan, selectedWeek, selectedDay, initializeWorkoutState]);
 
   // Handler for custom workout selection
   const handleCustomWorkoutChange = useCallback((workout: UnifiedWorkout | null) => {
     setCurrentWorkout(workout);
     
     if (workout) {
-      // Initialize results arrays with planned values
-      const initialWarmupResults: WorkoutSetResult[] = (workout.warmupSets || []).map(set => ({
-        plannedReps: set.reps,
-        plannedWeight: set.weight,
-        actualReps: set.reps,
-        actualWeight: set.weight,
-        percentage: set.percentage || 0,
-        isAmrap: false
-      }));
-
-      const initialMainSetResults: WorkoutSetResult[] = workout.mainSets.map(set => ({
-        plannedReps: set.reps,
-        plannedWeight: set.weight,
-        actualReps: set.reps,
-        actualWeight: set.weight,
-        percentage: set.percentage || 0,
-        isAmrap: set.isAmrap || false
-      }));
-
-      setWarmupResults(initialWarmupResults);
-      setMainSetResults(initialMainSetResults);
-      
-      // Initialize assistance work
-      const initialAssistance: AssistanceExerciseResult[] = (workout.assistanceExercises || []).slice(0, 3).map(name => ({
-        exerciseName: name,
-        sets: [{ reps: 0, weight: 0 }]
-      }));
-      setAssistanceWork(initialAssistance);
-      
-      // Reset other fields
-      setWorkoutNotes('');
-      setOverallRpe(undefined);
-      setBodyWeight(undefined);
-      setStartTime(new Date());
+      initializeWorkoutState(workout);
     }
-  }, []);
+  }, [initializeWorkoutState]);
 
   const loadPastResults = useCallback(async () => {
     if (!currentWorkout) return;
