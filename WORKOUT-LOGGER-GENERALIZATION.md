@@ -136,6 +136,6 @@ No database migration needed - the existing storage system works with both:
 6. `src/components/TodaysWorkout.tsx` - Conditional week/day display
 7. `src/components/ProgressSummary.tsx` - Optional week progress
 8. `src/components/QuickLog.tsx` - Accepts UnifiedWorkout
-9. `src/components/WorkoutScheduleManager.tsx` - Fixed lint error
+9. `src/components/WorkoutScheduleManager.tsx` - Removed unused error state variable and console.error calls
 10. `src/test/workoutPlanStorage.test.ts` - New test suite (created)
 11. `src/test/workoutSuggestionService.test.ts` - Updated for new interfaces

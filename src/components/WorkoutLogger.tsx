@@ -47,18 +47,55 @@ const WorkoutLogger: FC = () => {
   const loadCurrentWorkout = useCallback(() => {
     if (!activePlan) return;
 
-    let workout: UnifiedWorkout | null = null;
-    
-    // For 5-3-1 plans, use week and day
+    // Only auto-load for 5-3-1 plans
+    // Custom plans use manual selection via dropdown
     if (isFiveThreeOnePlan(activePlan)) {
-      workout = getWorkoutByWeekAndDay(activePlan, selectedWeek, selectedDay);
-    } else {
-      // For custom plans, just get the first workout or use a different selection method
-      workout = activePlan.workouts[0] || null;
-    }
-    
-    setCurrentWorkout(workout);
+      const workout = getWorkoutByWeekAndDay(activePlan, selectedWeek, selectedDay);
+      setCurrentWorkout(workout);
 
+      if (workout) {
+        // Initialize results arrays with planned values
+        const initialWarmupResults: WorkoutSetResult[] = (workout.warmupSets || []).map(set => ({
+          plannedReps: set.reps,
+          plannedWeight: set.weight,
+          actualReps: set.reps,
+          actualWeight: set.weight,
+          percentage: set.percentage || 0,
+          isAmrap: false
+        }));
+
+        const initialMainSetResults: WorkoutSetResult[] = workout.mainSets.map(set => ({
+          plannedReps: set.reps,
+          plannedWeight: set.weight,
+          actualReps: set.reps,
+          actualWeight: set.weight,
+          percentage: set.percentage || 0,
+          isAmrap: set.isAmrap || false
+        }));
+
+        setWarmupResults(initialWarmupResults);
+        setMainSetResults(initialMainSetResults);
+        
+        // Initialize assistance work
+        const initialAssistance: AssistanceExerciseResult[] = (workout.assistanceExercises || []).slice(0, 3).map(name => ({
+          exerciseName: name,
+          sets: [{ reps: 0, weight: 0 }]
+        }));
+        setAssistanceWork(initialAssistance);
+        
+        // Reset other fields
+        setWorkoutNotes('');
+        setOverallRpe(undefined);
+        setBodyWeight(undefined);
+        setStartTime(new Date());
+      }
+    }
+  }, [activePlan, selectedWeek, selectedDay]);
+
+  // Handler for custom workout selection
+  const handleCustomWorkoutChange = useCallback((workout: UnifiedWorkout | null) => {
+    setCurrentWorkout(workout);
+    
     if (workout) {
       // Initialize results arrays with planned values
       const initialWarmupResults: WorkoutSetResult[] = (workout.warmupSets || []).map(set => ({
@@ -95,7 +132,7 @@ const WorkoutLogger: FC = () => {
       setBodyWeight(undefined);
       setStartTime(new Date());
     }
-  }, [activePlan, selectedWeek, selectedDay]);
+  }, []);
 
   const loadPastResults = useCallback(async () => {
     if (!currentWorkout) return;
@@ -113,7 +150,8 @@ const WorkoutLogger: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (activePlan && selectedWeek && selectedDay) {
+    // Only auto-load workouts for 5-3-1 plans
+    if (activePlan && isFiveThreeOnePlan(activePlan) && selectedWeek && selectedDay) {
       loadCurrentWorkout();
     }
   }, [activePlan, selectedWeek, selectedDay, loadCurrentWorkout]);
@@ -326,10 +364,12 @@ const WorkoutLogger: FC = () => {
                 id="workout-select"
                 value={currentWorkout?.id || ''}
                 onChange={(e) => {
+                  if (!activePlan) return;
                   const workout = activePlan.workouts.find(w => w.id === e.target.value);
-                  setCurrentWorkout(workout || null);
+                  handleCustomWorkoutChange(workout || null);
                 }}
                 className="form-select"
+                aria-label="Select workout from custom plan"
               >
                 <option value="">Select a workout...</option>
                 {activePlan.workouts.map(workout => (
