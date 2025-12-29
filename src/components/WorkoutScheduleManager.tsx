@@ -20,10 +20,12 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
   const [selectedWorkout, setSelectedWorkout] = useState<string>('');
   const [enableNotification, setEnableNotification] = useState(true);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setError('');
       await workoutScheduleStorage.initialize();
       
       // Load schedules
@@ -41,7 +43,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       setNotificationLeadTime(preferences.notificationLeadTime || 30);
     } catch (error) {
       console.error('Failed to load workout schedules:', error);
-      console.error('Failed to load workout schedules. Please refresh the page.');
+      setError('Failed to load workout schedules. Please refresh the page.');
     } finally {
       setIsLoading(false);
     }
@@ -53,11 +55,12 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
 
   const handleScheduleWorkout = async () => {
     if (!selectedDate || !selectedWorkout || !cycle) {
-      console.error('Please select a workout and date before scheduling.');
+      setError('Please select a workout and date before scheduling.');
       return;
     }
 
     try {
+      setError('');
       const workout = cycle.workouts.find(w => w.id === selectedWorkout);
       if (!workout) return;
 
@@ -81,7 +84,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
         
         // Validate time format
         if (isNaN(hours) || isNaN(minutes)) {
-          console.error('Invalid time format. Please use HH:mm format (e.g., 09:00).');
+          setError('Invalid time format. Please use HH:mm format (e.g., 09:00).');
           return;
         }
         
@@ -114,7 +117,7 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
       setShowScheduleForm(false);
     } catch (error) {
       console.error('Failed to schedule workout:', error);
-      console.error('Unable to schedule your workout. Please try again and check your notification permissions if the problem continues.');
+      setError('Unable to schedule your workout. Please try again and check your notification permissions if the problem continues.');
     }
   };
 
@@ -183,6 +186,19 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
           </button>
         )}
       </div>
+
+      {error && (
+        <div className="error-message" role="alert" aria-live="assertive" style={{
+          padding: '1rem',
+          marginBottom: '1rem',
+          backgroundColor: 'var(--error-bg, #fee)',
+          border: '1px solid var(--error-border, #fcc)',
+          borderRadius: '4px',
+          color: 'var(--error-text, #c00)'
+        }}>
+          {error}
+        </div>
+      )}
 
       {showScheduleForm && cycle && (
         <div id="schedule-form" className="schedule-form" role="form" aria-label="Schedule workout form">
