@@ -1,12 +1,12 @@
 import { type FC, useState } from 'react';
-import type { FiveThreeOneCycle, FiveThreeOneWorkout } from '../types';
+import type { FiveThreeOneCycle, UnifiedWorkout } from '../types';
 import type { WorkoutResult, WorkoutSetResult } from '../types';
 import { workoutResultsStorage, calculateEstimated1RM } from '../services/workoutResultsStorage';
 import './QuickLog.css';
 
 interface QuickLogProps {
   cycle: FiveThreeOneCycle;
-  workout: FiveThreeOneWorkout;
+  workout: UnifiedWorkout;
   onComplete: () => void;
   onCancel: () => void;
 }
@@ -23,7 +23,7 @@ const QuickLog: FC<QuickLogProps> = ({
       plannedWeight: set.weight,
       actualReps: set.reps,
       actualWeight: set.weight,
-      percentage: set.percentage,
+      percentage: set.percentage || 0,
       isAmrap: set.isAmrap || false,
     }))
   );
@@ -51,8 +51,8 @@ const QuickLog: FC<QuickLogProps> = ({
         workoutId: workout.id,
         exerciseId: workout.exerciseId,
         exerciseName: workout.exerciseName,
-        week: workout.week,
-        day: workout.day,
+        week: workout.week || 0,
+        day: workout.day || 0,
         datePerformed: new Date(),
         warmupResults: [],
         mainSetResults: mainSetResults.filter(r => r.actualReps > 0),

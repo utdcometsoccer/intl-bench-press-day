@@ -1,17 +1,23 @@
 import { type FC, useState, useEffect, useCallback } from 'react';
-import type { FiveThreeOneCycle, FiveThreeOneWorkout } from '../services/fiveThreeOneStorage';
+import type { WorkoutPlan, UnifiedWorkout } from '../types';
 import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from '../services/workoutResultsStorage';
 import type { PlateCalculation } from '../types/plateCalculator';
 import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage, calculateEstimated1RM, calculateRPEDescription } from '../services/workoutResultsStorage';
+import { 
+  convertCycleToPlan, 
+  getWorkoutByWeekAndDay,
+  isFiveThreeOnePlan,
+  getWorkoutDisplayName 
+} from '../services/workoutPlanStorage';
 import PlateCalculator from './PlateCalculator';
 
 const WorkoutLogger: FC = () => {
-  // State for current workout
-  const [activeCycle, setActiveCycle] = useState<FiveThreeOneCycle | null>(null);
+  // State for current workout plan
+  const [activePlan, setActivePlan] = useState<WorkoutPlan | null>(null);
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
   const [selectedDay, setSelectedDay] = useState<number>(1);
-  const [currentWorkout, setCurrentWorkout] = useState<FiveThreeOneWorkout | null>(null);
+  const [currentWorkout, setCurrentWorkout] = useState<UnifiedWorkout | null>(null);
   const [workoutDate, setWorkoutDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
   // State for recording results
@@ -38,49 +44,67 @@ const WorkoutLogger: FC = () => {
   const [plateCalculatorWeight, setPlateCalculatorWeight] = useState<number>(135);
   const [currentCalculation, setCurrentCalculation] = useState<PlateCalculation | null>(null);
 
+  // Helper function to initialize workout state with planned values
+  const initializeWorkoutState = useCallback((workout: UnifiedWorkout) => {
+    // Initialize results arrays with planned values
+    const initialWarmupResults: WorkoutSetResult[] = (workout.warmupSets || []).map(set => ({
+      plannedReps: set.reps,
+      plannedWeight: set.weight,
+      actualReps: set.reps,
+      actualWeight: set.weight,
+      percentage: set.percentage || 0,
+      isAmrap: false
+    }));
+
+    const initialMainSetResults: WorkoutSetResult[] = workout.mainSets.map(set => ({
+      plannedReps: set.reps,
+      plannedWeight: set.weight,
+      actualReps: set.reps,
+      actualWeight: set.weight,
+      percentage: set.percentage || 0,
+      isAmrap: set.isAmrap || false
+    }));
+
+    setWarmupResults(initialWarmupResults);
+    setMainSetResults(initialMainSetResults);
+    
+    // Initialize assistance work
+    const initialAssistance: AssistanceExerciseResult[] = (workout.assistanceExercises || []).slice(0, 3).map(name => ({
+      exerciseName: name,
+      sets: [{ reps: 0, weight: 0 }]
+    }));
+    setAssistanceWork(initialAssistance);
+    
+    // Reset other fields
+    setWorkoutNotes('');
+    setOverallRpe(undefined);
+    setBodyWeight(undefined);
+    setStartTime(new Date());
+  }, []);
+
   const loadCurrentWorkout = useCallback(() => {
-    if (!activeCycle) return;
+    if (!activePlan) return;
 
-    const workout = activeCycle.workouts.find(w => w.week === selectedWeek && w.day === selectedDay);
-    setCurrentWorkout(workout || null);
+    // Only auto-load for 5-3-1 plans
+    // Custom plans use manual selection via dropdown
+    if (isFiveThreeOnePlan(activePlan)) {
+      const workout = getWorkoutByWeekAndDay(activePlan, selectedWeek, selectedDay);
+      setCurrentWorkout(workout);
 
-    if (workout) {
-      // Initialize results arrays with planned values
-      const initialWarmupResults: WorkoutSetResult[] = workout.warmupSets.map(set => ({
-        plannedReps: set.reps,
-        plannedWeight: set.weight,
-        actualReps: set.reps,
-        actualWeight: set.weight,
-        percentage: set.percentage,
-        isAmrap: false
-      }));
-
-      const initialMainSetResults: WorkoutSetResult[] = workout.mainSets.map(set => ({
-        plannedReps: set.reps,
-        plannedWeight: set.weight,
-        actualReps: set.reps,
-        actualWeight: set.weight,
-        percentage: set.percentage,
-        isAmrap: set.isAmrap || false
-      }));
-
-      setWarmupResults(initialWarmupResults);
-      setMainSetResults(initialMainSetResults);
-      
-      // Initialize assistance work
-      const initialAssistance: AssistanceExerciseResult[] = (workout.assistanceExercises || []).slice(0, 3).map(name => ({
-        exerciseName: name,
-        sets: [{ reps: 0, weight: 0 }]
-      }));
-      setAssistanceWork(initialAssistance);
-      
-      // Reset other fields
-      setWorkoutNotes('');
-      setOverallRpe(undefined);
-      setBodyWeight(undefined);
-      setStartTime(new Date());
+      if (workout) {
+        initializeWorkoutState(workout);
+      }
     }
-  }, [activeCycle, selectedWeek, selectedDay]);
+  }, [activePlan, selectedWeek, selectedDay, initializeWorkoutState]);
+
+  // Handler for custom workout selection
+  const handleCustomWorkoutChange = useCallback((workout: UnifiedWorkout | null) => {
+    setCurrentWorkout(workout);
+    
+    if (workout) {
+      initializeWorkoutState(workout);
+    }
+  }, [initializeWorkoutState]);
 
   const loadPastResults = useCallback(async () => {
     if (!currentWorkout) return;
@@ -98,10 +122,11 @@ const WorkoutLogger: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (activeCycle && selectedWeek && selectedDay) {
+    // Only auto-load workouts for 5-3-1 plans
+    if (activePlan && isFiveThreeOnePlan(activePlan) && selectedWeek && selectedDay) {
       loadCurrentWorkout();
     }
-  }, [activeCycle, selectedWeek, selectedDay, loadCurrentWorkout]);
+  }, [activePlan, selectedWeek, selectedDay, loadCurrentWorkout]);
 
   useEffect(() => {
     if (currentWorkout) {
@@ -115,11 +140,14 @@ const WorkoutLogger: FC = () => {
       await fiveThreeOneStorage.initialize();
       await workoutResultsStorage.initialize();
       
-      const active = await fiveThreeOneStorage.getActiveCycle();
-      setActiveCycle(active);
+      const activeCycle = await fiveThreeOneStorage.getActiveCycle();
       
-      if (!active) {
-        setError('No active 5-3-1 cycle found. Please create a cycle first in the 5-3-1 Planner.');
+      if (activeCycle) {
+        // Convert 5-3-1 cycle to unified plan
+        const plan = convertCycleToPlan(activeCycle);
+        setActivePlan(plan);
+      } else {
+        setError('No active workout plan found. Please create a cycle first in the 5-3-1 Planner.');
       }
     } catch (err) {
       setError(`Failed to initialize: ${err}`);
@@ -180,7 +208,7 @@ const WorkoutLogger: FC = () => {
   };
 
   const saveWorkoutResult = async () => {
-    if (!activeCycle || !currentWorkout) {
+    if (!activePlan || !currentWorkout) {
       setError('No workout selected');
       return;
     }
@@ -193,13 +221,13 @@ const WorkoutLogger: FC = () => {
 
       const workoutResult: WorkoutResult = {
         id: `result_${currentWorkout.id}_${Date.now()}`,
-        cycleId: activeCycle.id,
-        cycleName: activeCycle.name,
+        cycleId: activePlan.id,
+        cycleName: activePlan.name,
         workoutId: currentWorkout.id,
         exerciseId: currentWorkout.exerciseId,
         exerciseName: currentWorkout.exerciseName,
-        week: selectedWeek,
-        day: selectedDay,
+        week: currentWorkout.week || 0,
+        day: currentWorkout.day || 0,
         datePerformed: new Date(workoutDate),
         warmupResults: warmupResults.filter(r => r.actualReps > 0),
         mainSetResults: mainSetResults.filter(r => r.actualReps > 0),
@@ -238,20 +266,22 @@ const WorkoutLogger: FC = () => {
     );
   }
 
-  if (!activeCycle) {
+  if (!activePlan) {
     return (
       <div className="no-cycle-message">
         <h2>Workout Logger</h2>
-        <p>No active 5-3-1 cycle found. Please create and activate a cycle first in the 5-3-1 Planner.</p>
+        <p>No active workout plan found. Please create and activate a cycle first in the 5-3-1 Planner.</p>
       </div>
     );
   }
+
+  const is531Plan = isFiveThreeOnePlan(activePlan);
 
   return (
     <div className="workout-logger extra-large-component-container">
       <h2>Workout Logger</h2>
       <p className="active-cycle-info">
-        Active Cycle: <strong>{activeCycle.name}</strong>
+        Active Plan: <strong>{activePlan.name}</strong> ({is531Plan ? '5-3-1 Cycle' : 'Custom Plan'})
       </p>
 
       {/* Workout Selection */}
@@ -259,39 +289,69 @@ const WorkoutLogger: FC = () => {
         <h3>Select Workout</h3>
         
         <div className="filter-grid">
-          <div>
-            <label htmlFor="week-select" className="workout-selection-label">
-              Week:
-            </label>
-            <select
-              id="week-select"
-              value={selectedWeek}
-              onChange={(e) => setSelectedWeek(Number(e.target.value))}
-              className="week-select"
-            >
-              <option value={1}>Week 1 (5/5/5+)</option>
-              <option value={2}>Week 2 (3/3/3+)</option>
-              <option value={3}>Week 3 (5/3/1+)</option>
-              <option value={4}>Week 4 (Deload)</option>
-            </select>
-          </div>
+          {is531Plan && (
+            <>
+              <div>
+                <label htmlFor="week-select" className="workout-selection-label">
+                  Week:
+                </label>
+                <select
+                  id="week-select"
+                  value={selectedWeek}
+                  onChange={(e) => setSelectedWeek(Number(e.target.value))}
+                  className="week-select"
+                >
+                  <option value={1}>Week 1 (5/5/5+)</option>
+                  <option value={2}>Week 2 (3/3/3+)</option>
+                  <option value={3}>Week 3 (5/3/1+)</option>
+                  <option value={4}>Week 4 (Deload)</option>
+                </select>
+              </div>
 
-          <div>
-            <label htmlFor="day-select" className="form-label">
-              Day:
-            </label>
-            <select
-              id="day-select"
-              value={selectedDay}
-              onChange={(e) => setSelectedDay(Number(e.target.value))}
-              className="form-select"
-            >
-              <option value={1}>Day 1 - Squat</option>
-              <option value={2}>Day 2 - Bench Press</option>
-              <option value={3}>Day 3 - Deadlift</option>
-              <option value={4}>Day 4 - Overhead Press</option>
-            </select>
-          </div>
+              <div>
+                <label htmlFor="day-select" className="form-label">
+                  Day:
+                </label>
+                <select
+                  id="day-select"
+                  value={selectedDay}
+                  onChange={(e) => setSelectedDay(Number(e.target.value))}
+                  className="form-select"
+                >
+                  <option value={1}>Day 1 - Squat</option>
+                  <option value={2}>Day 2 - Bench Press</option>
+                  <option value={3}>Day 3 - Deadlift</option>
+                  <option value={4}>Day 4 - Overhead Press</option>
+                </select>
+              </div>
+            </>
+          )}
+
+          {!is531Plan && (
+            <div>
+              <label htmlFor="workout-select" className="form-label">
+                Workout:
+              </label>
+              <select
+                id="workout-select"
+                value={currentWorkout?.id || ''}
+                onChange={(e) => {
+                  if (!activePlan) return;
+                  const workout = activePlan.workouts.find(w => w.id === e.target.value);
+                  handleCustomWorkoutChange(workout || null);
+                }}
+                className="form-select"
+                aria-label="Select workout from custom plan"
+              >
+                <option value="">Select a workout...</option>
+                {activePlan.workouts.map(workout => (
+                  <option key={workout.id} value={workout.id}>
+                    {getWorkoutDisplayName(workout)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div>
             <label htmlFor="workout-date" className="form-label">
@@ -309,7 +369,7 @@ const WorkoutLogger: FC = () => {
 
         {currentWorkout && (
           <div className="current-workout-info">
-            <strong>{currentWorkout.exerciseName}</strong> - Week {selectedWeek}, Day {selectedDay}
+            <strong>{getWorkoutDisplayName(currentWorkout)}</strong>
           </div>
         )}
       </div>

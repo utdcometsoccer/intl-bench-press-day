@@ -7,6 +7,7 @@ import {
   getCycleProgress,
   getTodaysWorkouts,
 } from '../services/workoutSuggestionService';
+import { convertCycleToPlan } from '../services/workoutPlanStorage';
 
 // Helper to create a mock cycle
 const createMockCycle = (): FiveThreeOneCycle => ({
@@ -113,7 +114,7 @@ describe('WorkoutSuggestionService', () => {
       const cycle = createMockCycle();
       const results: WorkoutResult[] = [];
 
-      const suggestion = getNextWorkout(cycle, results);
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), results);
 
       expect(suggestion).not.toBeNull();
       expect(suggestion?.week).toBe(1);
@@ -125,7 +126,7 @@ describe('WorkoutSuggestionService', () => {
       const cycle = createMockCycle();
       const results = createMockResults([{ week: 1, day: 1 }]);
 
-      const suggestion = getNextWorkout(cycle, results);
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), results);
 
       expect(suggestion).not.toBeNull();
       expect(suggestion?.week).toBe(1);
@@ -141,7 +142,7 @@ describe('WorkoutSuggestionService', () => {
         { week: 1, day: 4 },
       ]);
 
-      const suggestion = getNextWorkout(cycle, results);
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), results);
 
       expect(suggestion).toBeNull();
     });
@@ -152,7 +153,7 @@ describe('WorkoutSuggestionService', () => {
       const cycle = createMockCycle();
       const results = createMockResults([{ week: 1, day: 1 }]);
 
-      const suggestions = getAllWorkoutSuggestions(cycle, results);
+      const suggestions = getAllWorkoutSuggestions(convertCycleToPlan(cycle), results);
 
       expect(suggestions).toHaveLength(4);
       expect(suggestions[0].recommendation).toBe('completed');
@@ -164,7 +165,7 @@ describe('WorkoutSuggestionService', () => {
         ...createMockCycle(),
         workouts: [],
       };
-      const suggestions = getAllWorkoutSuggestions(cycleWithNoWorkouts, []);
+      const suggestions = getAllWorkoutSuggestions(convertCycleToPlan(cycleWithNoWorkouts), []);
       expect(suggestions).toHaveLength(0);
     });
   });
@@ -174,7 +175,7 @@ describe('WorkoutSuggestionService', () => {
       const cycle = createMockCycle();
       const results: WorkoutResult[] = [];
 
-      const progress = getCycleProgress(cycle, results);
+      const progress = getCycleProgress(convertCycleToPlan(cycle), results);
 
       expect(progress.completedWorkouts).toBe(0);
       expect(progress.totalWorkouts).toBe(4);
@@ -189,7 +190,7 @@ describe('WorkoutSuggestionService', () => {
         { week: 1, day: 2 },
       ]);
 
-      const progress = getCycleProgress(cycle, results);
+      const progress = getCycleProgress(convertCycleToPlan(cycle), results);
 
       expect(progress.completedWorkouts).toBe(2);
       expect(progress.percentComplete).toBe(50);
@@ -199,11 +200,14 @@ describe('WorkoutSuggestionService', () => {
       const cycle = createMockCycle();
       const results: WorkoutResult[] = [];
 
-      const progress = getCycleProgress(cycle, results);
+      const progress = getCycleProgress(convertCycleToPlan(cycle), results);
 
-      expect(progress.weeksProgress).toHaveLength(4);
-      expect(progress.weeksProgress[0].week).toBe(1);
-      expect(progress.weeksProgress[3].week).toBe(4);
+      expect(progress.weeksProgress).toBeDefined();
+      if (progress.weeksProgress) {
+        expect(progress.weeksProgress).toHaveLength(4);
+        expect(progress.weeksProgress[0].week).toBe(1);
+        expect(progress.weeksProgress[3].week).toBe(4);
+      }
     });
   });
 
@@ -212,7 +216,7 @@ describe('WorkoutSuggestionService', () => {
       const cycle = createMockCycle();
       const results: WorkoutResult[] = [];
 
-      const todaysWorkouts = getTodaysWorkouts(cycle, results);
+      const todaysWorkouts = getTodaysWorkouts(convertCycleToPlan(cycle), results);
 
       expect(todaysWorkouts.length).toBeGreaterThan(0);
       expect(todaysWorkouts[0].isNextWorkout).toBe(true);

@@ -4,6 +4,7 @@ import { workoutResultsStorage } from '../services/workoutResultsStorage';
 import type { FiveThreeOneCycle } from '../types';
 import type { WorkoutResult } from '../types';
 import { getNextWorkout, getCycleProgress, type WorkoutSuggestion, type CycleProgress } from '../services/workoutSuggestionService';
+import { convertCycleToPlan } from '../services/workoutPlanStorage';
 import TodaysWorkout from './TodaysWorkout';
 import QuickLog from './QuickLog';
 import ProgressSummary from './ProgressSummary';
@@ -43,10 +44,11 @@ const Dashboard: FC<DashboardProps> = ({
         const results = await workoutResultsStorage.getWorkoutResultsByCycle(cycle.id);
         setWorkoutResults(results);
         
-        const suggestion = getNextWorkout(cycle, results);
+        const plan = convertCycleToPlan(cycle);
+        const suggestion = getNextWorkout(plan, results);
         setNextWorkout(suggestion);
         
-        const progress = getCycleProgress(cycle, results);
+        const progress = getCycleProgress(plan, results);
         setCycleProgress(progress);
       }
     } catch (error) {

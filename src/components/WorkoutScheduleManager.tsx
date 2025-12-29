@@ -187,6 +187,19 @@ const WorkoutScheduleManager: FC<WorkoutScheduleManagerProps> = ({ cycle }) => {
         )}
       </div>
 
+      {error && (
+        <div className="error-message" role="alert" aria-live="assertive" style={{
+          padding: '1rem',
+          marginBottom: '1rem',
+          backgroundColor: 'var(--error-bg, #fee)',
+          border: '1px solid var(--error-border, #fcc)',
+          borderRadius: '4px',
+          color: 'var(--error-text, #c00)'
+        }}>
+          {error}
+        </div>
+      )}
+
       {showScheduleForm && cycle && (
         <div id="schedule-form" className="schedule-form" role="form" aria-label="Schedule workout form">
           <div className="form-row">

@@ -310,3 +310,47 @@ export interface DefaultWorkoutTimes {
   /** Default Sunday workout time in 24-hour "HH:mm" format */
   day7?: string;
 }
+
+// ============================================================================
+// UNIFIED WORKOUT PLAN TYPES
+// ============================================================================
+
+/**
+ * Unified workout structure that abstracts both 5-3-1 and custom workouts.
+ * This allows the WorkoutLogger and other components to work with any workout type.
+ */
+export interface UnifiedWorkout {
+  id: string;
+  exerciseId: string;
+  exerciseName: string;
+  mainSets: {
+    reps: number;
+    weight: number;
+    percentage?: number;
+    isAmrap?: boolean;
+  }[];
+  warmupSets?: {
+    reps: number;
+    weight: number;
+    percentage?: number;
+  }[];
+  assistanceExercises?: string[];
+  week?: number; // Optional for non-cycle workouts
+  day?: number; // Optional for non-cycle workouts
+  notes?: string;
+}
+
+/**
+ * Represents a workout plan that can be either a 5-3-1 cycle or a custom plan.
+ * This abstracts the common properties needed for workout logging and scheduling.
+ */
+export interface WorkoutPlan {
+  id: string;
+  name: string;
+  type: '531' | 'custom';
+  startDate?: Date;
+  createdDate: Date;
+  workouts: UnifiedWorkout[];
+  notes?: string;
+  isActive: boolean;
+}
