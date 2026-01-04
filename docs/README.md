@@ -41,6 +41,7 @@ Product planning, roadmaps, and audit reports:
 User guides and how-to documentation:
 
 - **[Auto-Save Guide](guides/AUTO_SAVE_GUIDE.md)** - Implementation guide for auto-save workout sessions with configurable intervals
+- **[Calendar Sync User Guide](guides/CALENDAR-SYNC-USER-GUIDE.md)** - Simple guide for exporting workouts to your calendar app
 
 ### 🏗️ Architecture
 
@@ -97,11 +98,11 @@ Documentation should be updated when:
 
 ### Current Statistics
 
-- **Total Documentation Files**: 12
+- **Total Documentation Files**: 13
 - **Feature Guides**: 5
 - **Accessibility Reports**: 2
 - **Planning Documents**: 4
-- **User Guides**: 1
+- **User Guides**: 2
 - **Architecture Docs**: 0
 
 ### Coverage Areas
