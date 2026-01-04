@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { progressPhotosStorage } from '../services/progressPhotosStorage';
+import { simulateIDBSuccess, simulateIDBUpgradeNeeded } from './setup';
 
 describe('ProgressPhotosStorage', () => {
   const mockPhotoData = {
@@ -15,8 +16,14 @@ describe('ProgressPhotosStorage', () => {
   };
 
   beforeEach(async () => {
-    // Clear all photos before each test
-    await progressPhotosStorage.clearAllPhotos();
+    vi.clearAllMocks();
+    // Clear all photos before each test (this also initializes the DB)
+    const clearPromise = progressPhotosStorage.clearAllPhotos();
+    // First simulate DB initialization
+    simulateIDBUpgradeNeeded();
+    // Then simulate the clear operation
+    setTimeout(() => simulateIDBSuccess(), 10);
+    await clearPromise;
   });
 
   afterEach(() => {
@@ -25,7 +32,9 @@ describe('ProgressPhotosStorage', () => {
 
   describe('savePhoto', () => {
     it('should save a progress photo', async () => {
-      const photo = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const photo = await savePromise;
 
       expect(photo).toBeDefined();
       expect(photo.id).toBeDefined();
@@ -39,8 +48,13 @@ describe('ProgressPhotosStorage', () => {
     });
 
     it('should generate unique IDs for each photo', async () => {
-      const photo1 = await progressPhotosStorage.savePhoto(mockPhotoData);
-      const photo2 = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const promise1 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const photo1 = await promise1;
+      
+      const promise2 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const photo2 = await promise2;
 
       expect(photo1.id).not.toBe(photo2.id);
     });
@@ -51,7 +65,9 @@ describe('ProgressPhotosStorage', () => {
         dateTaken: new Date('2025-01-02'),
       };
 
-      const photo = await progressPhotosStorage.savePhoto(minimalPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(minimalPhotoData);
+      simulateIDBSuccess();
+      const photo = await savePromise;
 
       expect(photo).toBeDefined();
       expect(photo.id).toBeDefined();
@@ -63,38 +79,68 @@ describe('ProgressPhotosStorage', () => {
 
   describe('getAllPhotos', () => {
     it('should return empty array when no photos exist', async () => {
-      const photos = await progressPhotosStorage.getAllPhotos();
+      const promise = progressPhotosStorage.getAllPhotos();
+      simulateIDBSuccess([]);
+      const photos = await promise;
       expect(photos).toEqual([]);
     });
 
     it('should return all saved photos', async () => {
-      await progressPhotosStorage.savePhoto(mockPhotoData);
-      await progressPhotosStorage.savePhoto({
+      const savePromise1 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-02'),
       });
+      simulateIDBSuccess();
+      await savePromise2;
 
-      const photos = await progressPhotosStorage.getAllPhotos();
+      const getAllPromise = progressPhotosStorage.getAllPhotos();
+      simulateIDBSuccess([
+        { ...mockPhotoData, id: '1', createdAt: new Date(), updatedAt: new Date() },
+        { ...mockPhotoData, dateTaken: new Date('2025-01-02'), id: '2', createdAt: new Date(), updatedAt: new Date() }
+      ]);
+      const photos = await getAllPromise;
 
       expect(photos).toHaveLength(2);
       expect(photos[0].dateTaken).toBeInstanceOf(Date);
     });
 
     it('should return photos sorted by date taken (newest first)', async () => {
-      const photo1 = await progressPhotosStorage.savePhoto({
+      const photo1Data = {
         ...mockPhotoData,
         dateTaken: new Date('2025-01-01'),
-      });
-      const photo2 = await progressPhotosStorage.savePhoto({
+      };
+      const photo2Data = {
         ...mockPhotoData,
         dateTaken: new Date('2025-01-03'),
-      });
-      const photo3 = await progressPhotosStorage.savePhoto({
+      };
+      const photo3Data = {
         ...mockPhotoData,
         dateTaken: new Date('2025-01-02'),
-      });
+      };
+      
+      const savePromise1 = progressPhotosStorage.savePhoto(photo1Data);
+      simulateIDBSuccess();
+      const photo1 = await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto(photo2Data);
+      simulateIDBSuccess();
+      const photo2 = await savePromise2;
+      
+      const savePromise3 = progressPhotosStorage.savePhoto(photo3Data);
+      simulateIDBSuccess();
+      const photo3 = await savePromise3;
 
-      const photos = await progressPhotosStorage.getAllPhotos();
+      const getAllPromise = progressPhotosStorage.getAllPhotos();
+      simulateIDBSuccess([
+        { ...photo1Data, id: photo1.id, createdAt: photo1.createdAt, updatedAt: photo1.updatedAt },
+        { ...photo2Data, id: photo2.id, createdAt: photo2.createdAt, updatedAt: photo2.updatedAt },
+        { ...photo3Data, id: photo3.id, createdAt: photo3.createdAt, updatedAt: photo3.updatedAt }
+      ]);
+      const photos = await getAllPromise;
 
       expect(photos).toHaveLength(3);
       expect(photos[0].id).toBe(photo2.id); // Newest (Jan 3)
@@ -105,8 +151,13 @@ describe('ProgressPhotosStorage', () => {
 
   describe('getPhoto', () => {
     it('should return a specific photo by ID', async () => {
-      const savedPhoto = await progressPhotosStorage.savePhoto(mockPhotoData);
-      const retrievedPhoto = await progressPhotosStorage.getPhoto(savedPhoto.id);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const savedPhoto = await savePromise;
+      
+      const getPromise = progressPhotosStorage.getPhoto(savedPhoto.id);
+      simulateIDBSuccess({ ...mockPhotoData, id: savedPhoto.id, createdAt: savedPhoto.createdAt, updatedAt: savedPhoto.updatedAt });
+      const retrievedPhoto = await getPromise;
 
       expect(retrievedPhoto).toBeDefined();
       expect(retrievedPhoto?.id).toBe(savedPhoto.id);
@@ -115,19 +166,30 @@ describe('ProgressPhotosStorage', () => {
     });
 
     it('should return null for non-existent photo', async () => {
-      const photo = await progressPhotosStorage.getPhoto('non-existent-id');
+      const promise = progressPhotosStorage.getPhoto('non-existent-id');
+      simulateIDBSuccess(undefined);
+      const photo = await promise;
       expect(photo).toBeNull();
     });
   });
 
   describe('updatePhoto', () => {
     it('should update photo notes', async () => {
-      const savedPhoto = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const savedPhoto = await savePromise;
       const updatedNotes = 'Updated progress notes';
 
-      const updatedPhoto = await progressPhotosStorage.updatePhoto(savedPhoto.id, {
+      const updatePromise = progressPhotosStorage.updatePhoto(savedPhoto.id, {
         notes: updatedNotes,
       });
+      
+      // First simulate getting the existing photo
+      setTimeout(() => simulateIDBSuccess({ ...mockPhotoData, id: savedPhoto.id, createdAt: savedPhoto.createdAt, updatedAt: savedPhoto.updatedAt }), 0);
+      // Then simulate successful update
+      setTimeout(() => simulateIDBSuccess(), 10);
+      
+      const updatedPhoto = await updatePromise;
 
       expect(updatedPhoto.notes).toBe(updatedNotes);
       expect(updatedPhoto.imageData).toBe(mockPhotoData.imageData);
@@ -135,18 +197,29 @@ describe('ProgressPhotosStorage', () => {
     });
 
     it('should update body weight', async () => {
-      const savedPhoto = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const savedPhoto = await savePromise;
       const newWeight = 175;
 
-      const updatedPhoto = await progressPhotosStorage.updatePhoto(savedPhoto.id, {
+      const updatePromise = progressPhotosStorage.updatePhoto(savedPhoto.id, {
         bodyWeight: newWeight,
       });
+      
+      // First simulate getting the existing photo
+      setTimeout(() => simulateIDBSuccess({ ...mockPhotoData, id: savedPhoto.id, createdAt: savedPhoto.createdAt, updatedAt: savedPhoto.updatedAt }), 0);
+      // Then simulate successful update
+      setTimeout(() => simulateIDBSuccess(), 10);
+      
+      const updatedPhoto = await updatePromise;
 
       expect(updatedPhoto.bodyWeight).toBe(newWeight);
     });
 
     it('should update measurements', async () => {
-      const savedPhoto = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const savedPhoto = await savePromise;
       const newMeasurements = {
         chest: 44,
         waist: 30,
@@ -154,26 +227,43 @@ describe('ProgressPhotosStorage', () => {
         thighs: 24,
       };
 
-      const updatedPhoto = await progressPhotosStorage.updatePhoto(savedPhoto.id, {
+      const updatePromise = progressPhotosStorage.updatePhoto(savedPhoto.id, {
         measurements: newMeasurements,
       });
+      
+      // First simulate getting the existing photo
+      setTimeout(() => simulateIDBSuccess({ ...mockPhotoData, id: savedPhoto.id, createdAt: savedPhoto.createdAt, updatedAt: savedPhoto.updatedAt }), 0);
+      // Then simulate successful update
+      setTimeout(() => simulateIDBSuccess(), 10);
+      
+      const updatedPhoto = await updatePromise;
 
       expect(updatedPhoto.measurements).toEqual(newMeasurements);
     });
 
     it('should throw error when updating non-existent photo', async () => {
-      await expect(
-        progressPhotosStorage.updatePhoto('non-existent-id', { notes: 'test' })
-      ).rejects.toThrow('Progress photo not found');
+      const updatePromise = progressPhotosStorage.updatePhoto('non-existent-id', { notes: 'test' });
+      simulateIDBSuccess(undefined);
+      
+      await expect(updatePromise).rejects.toThrow('Progress photo not found');
     });
 
     it('should preserve createdAt when updating', async () => {
-      const savedPhoto = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const savedPhoto = await savePromise;
       const originalCreatedAt = savedPhoto.createdAt;
 
-      const updatedPhoto = await progressPhotosStorage.updatePhoto(savedPhoto.id, {
+      const updatePromise = progressPhotosStorage.updatePhoto(savedPhoto.id, {
         notes: 'Updated',
       });
+      
+      // First simulate getting the existing photo
+      setTimeout(() => simulateIDBSuccess({ ...mockPhotoData, id: savedPhoto.id, createdAt: savedPhoto.createdAt, updatedAt: savedPhoto.updatedAt }), 0);
+      // Then simulate successful update
+      setTimeout(() => simulateIDBSuccess(), 10);
+      
+      const updatedPhoto = await updatePromise;
 
       expect(updatedPhoto.createdAt).toEqual(originalCreatedAt);
     });
@@ -181,24 +271,40 @@ describe('ProgressPhotosStorage', () => {
 
   describe('deletePhoto', () => {
     it('should delete a photo', async () => {
-      const savedPhoto = await progressPhotosStorage.savePhoto(mockPhotoData);
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const savedPhoto = await savePromise;
 
-      await progressPhotosStorage.deletePhoto(savedPhoto.id);
+      const deletePromise = progressPhotosStorage.deletePhoto(savedPhoto.id);
+      simulateIDBSuccess();
+      await deletePromise;
 
-      const retrievedPhoto = await progressPhotosStorage.getPhoto(savedPhoto.id);
+      const getPromise = progressPhotosStorage.getPhoto(savedPhoto.id);
+      simulateIDBSuccess(undefined);
+      const retrievedPhoto = await getPromise;
       expect(retrievedPhoto).toBeNull();
     });
 
     it('should not affect other photos when deleting one', async () => {
-      const photo1 = await progressPhotosStorage.savePhoto(mockPhotoData);
-      const photo2 = await progressPhotosStorage.savePhoto({
+      const savePromise1 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const photo1 = await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-02'),
       });
+      simulateIDBSuccess();
+      const photo2 = await savePromise2;
 
-      await progressPhotosStorage.deletePhoto(photo1.id);
+      const deletePromise = progressPhotosStorage.deletePhoto(photo1.id);
+      simulateIDBSuccess();
+      await deletePromise;
 
-      const allPhotos = await progressPhotosStorage.getAllPhotos();
+      const getAllPromise = progressPhotosStorage.getAllPhotos();
+      simulateIDBSuccess([{ ...mockPhotoData, dateTaken: new Date('2025-01-02'), id: photo2.id, createdAt: photo2.createdAt, updatedAt: photo2.updatedAt }]);
+      const allPhotos = await getAllPromise;
+      
       expect(allPhotos).toHaveLength(1);
       expect(allPhotos[0].id).toBe(photo2.id);
     });
@@ -206,56 +312,79 @@ describe('ProgressPhotosStorage', () => {
 
   describe('getPhotosByDateRange', () => {
     it('should return photos within date range', async () => {
-      await progressPhotosStorage.savePhoto({
-        ...mockPhotoData,
-        dateTaken: new Date('2025-01-01'),
-      });
-      await progressPhotosStorage.savePhoto({
-        ...mockPhotoData,
-        dateTaken: new Date('2025-01-15'),
-      });
-      await progressPhotosStorage.savePhoto({
-        ...mockPhotoData,
-        dateTaken: new Date('2025-01-31'),
-      });
+      const photo1Data = { ...mockPhotoData, dateTaken: new Date('2025-01-01') };
+      const photo2Data = { ...mockPhotoData, dateTaken: new Date('2025-01-15') };
+      const photo3Data = { ...mockPhotoData, dateTaken: new Date('2025-01-31') };
+      
+      const savePromise1 = progressPhotosStorage.savePhoto(photo1Data);
+      simulateIDBSuccess();
+      await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto(photo2Data);
+      simulateIDBSuccess();
+      const photo2 = await savePromise2;
+      
+      const savePromise3 = progressPhotosStorage.savePhoto(photo3Data);
+      simulateIDBSuccess();
+      await savePromise3;
 
-      const photos = await progressPhotosStorage.getPhotosByDateRange(
+      const getAllPromise = progressPhotosStorage.getPhotosByDateRange(
         new Date('2025-01-10'),
         new Date('2025-01-20')
       );
+      // getAllPhotos is called internally
+      setTimeout(() => simulateIDBSuccess([
+        { ...photo1Data, id: '1', createdAt: new Date(), updatedAt: new Date() },
+        { ...photo2Data, id: photo2.id, createdAt: photo2.createdAt, updatedAt: photo2.updatedAt },
+        { ...photo3Data, id: '3', createdAt: new Date(), updatedAt: new Date() }
+      ]), 0);
+      const photos = await getAllPromise;
 
       expect(photos).toHaveLength(1);
       expect(photos[0].dateTaken).toEqual(new Date('2025-01-15'));
     });
 
     it('should return empty array when no photos in range', async () => {
-      await progressPhotosStorage.savePhoto({
+      const savePromise = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-01'),
       });
+      simulateIDBSuccess();
+      await savePromise;
 
-      const photos = await progressPhotosStorage.getPhotosByDateRange(
+      const getByRangePromise = progressPhotosStorage.getPhotosByDateRange(
         new Date('2025-02-01'),
         new Date('2025-02-28')
       );
+      // getAllPhotos is called internally
+      setTimeout(() => simulateIDBSuccess([{ ...mockPhotoData, dateTaken: new Date('2025-01-01'), id: '1', createdAt: new Date(), updatedAt: new Date() }]), 0);
+      const photos = await getByRangePromise;
 
       expect(photos).toEqual([]);
     });
 
     it('should include photos on boundary dates', async () => {
-      await progressPhotosStorage.savePhoto({
-        ...mockPhotoData,
-        dateTaken: new Date('2025-01-01'),
-      });
-      await progressPhotosStorage.savePhoto({
-        ...mockPhotoData,
-        dateTaken: new Date('2025-01-31'),
-      });
+      const photo1Data = { ...mockPhotoData, dateTaken: new Date('2025-01-01') };
+      const photo2Data = { ...mockPhotoData, dateTaken: new Date('2025-01-31') };
+      
+      const savePromise1 = progressPhotosStorage.savePhoto(photo1Data);
+      simulateIDBSuccess();
+      await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto(photo2Data);
+      simulateIDBSuccess();
+      await savePromise2;
 
-      const photos = await progressPhotosStorage.getPhotosByDateRange(
+      const getByRangePromise = progressPhotosStorage.getPhotosByDateRange(
         new Date('2025-01-01'),
         new Date('2025-01-31')
       );
+      // getAllPhotos is called internally
+      setTimeout(() => simulateIDBSuccess([
+        { ...photo1Data, id: '1', createdAt: new Date(), updatedAt: new Date() },
+        { ...photo2Data, id: '2', createdAt: new Date(), updatedAt: new Date() }
+      ]), 0);
+      const photos = await getByRangePromise;
 
       expect(photos).toHaveLength(2);
     });
@@ -263,61 +392,100 @@ describe('ProgressPhotosStorage', () => {
 
   describe('getPhotoCount', () => {
     it('should return 0 when no photos exist', async () => {
-      const count = await progressPhotosStorage.getPhotoCount();
+      const promise = progressPhotosStorage.getPhotoCount();
+      simulateIDBSuccess(0);
+      const count = await promise;
       expect(count).toBe(0);
     });
 
     it('should return correct count of photos', async () => {
-      await progressPhotosStorage.savePhoto(mockPhotoData);
-      await progressPhotosStorage.savePhoto({
+      const savePromise1 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-02'),
       });
-      await progressPhotosStorage.savePhoto({
+      simulateIDBSuccess();
+      await savePromise2;
+      
+      const savePromise3 = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-03'),
       });
+      simulateIDBSuccess();
+      await savePromise3;
 
-      const count = await progressPhotosStorage.getPhotoCount();
+      const countPromise = progressPhotosStorage.getPhotoCount();
+      simulateIDBSuccess(3);
+      const count = await countPromise;
       expect(count).toBe(3);
     });
 
     it('should decrease count after deletion', async () => {
-      const photo = await progressPhotosStorage.savePhoto(mockPhotoData);
-      await progressPhotosStorage.savePhoto({
+      const savePromise1 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      const photo = await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-02'),
       });
+      simulateIDBSuccess();
+      await savePromise2;
 
-      let count = await progressPhotosStorage.getPhotoCount();
+      const countPromise1 = progressPhotosStorage.getPhotoCount();
+      simulateIDBSuccess(2);
+      let count = await countPromise1;
       expect(count).toBe(2);
 
-      await progressPhotosStorage.deletePhoto(photo.id);
+      const deletePromise = progressPhotosStorage.deletePhoto(photo.id);
+      simulateIDBSuccess();
+      await deletePromise;
 
-      count = await progressPhotosStorage.getPhotoCount();
+      const countPromise2 = progressPhotosStorage.getPhotoCount();
+      simulateIDBSuccess(1);
+      count = await countPromise2;
       expect(count).toBe(1);
     });
   });
 
   describe('clearAllPhotos', () => {
     it('should clear all photos', async () => {
-      await progressPhotosStorage.savePhoto(mockPhotoData);
-      await progressPhotosStorage.savePhoto({
+      const savePromise1 = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      await savePromise1;
+      
+      const savePromise2 = progressPhotosStorage.savePhoto({
         ...mockPhotoData,
         dateTaken: new Date('2025-01-02'),
       });
+      simulateIDBSuccess();
+      await savePromise2;
 
-      await progressPhotosStorage.clearAllPhotos();
+      const clearPromise = progressPhotosStorage.clearAllPhotos();
+      simulateIDBSuccess();
+      await clearPromise;
 
-      const photos = await progressPhotosStorage.getAllPhotos();
+      const getAllPromise = progressPhotosStorage.getAllPhotos();
+      simulateIDBSuccess([]);
+      const photos = await getAllPromise;
       expect(photos).toEqual([]);
     });
 
     it('should reset photo count to 0', async () => {
-      await progressPhotosStorage.savePhoto(mockPhotoData);
-      await progressPhotosStorage.clearAllPhotos();
+      const savePromise = progressPhotosStorage.savePhoto(mockPhotoData);
+      simulateIDBSuccess();
+      await savePromise;
+      
+      const clearPromise = progressPhotosStorage.clearAllPhotos();
+      simulateIDBSuccess();
+      await clearPromise;
 
-      const count = await progressPhotosStorage.getPhotoCount();
+      const countPromise = progressPhotosStorage.getPhotoCount();
+      simulateIDBSuccess(0);
+      const count = await countPromise;
       expect(count).toBe(0);
     });
   });
