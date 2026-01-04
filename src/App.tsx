@@ -66,7 +66,10 @@ if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
   }
 }
 function App() {
-  const [activeTab, setActiveTab] = useState<TabType>('tracker')
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    // Get default view from user preferences, fallback to 'dashboard'
+    return userPreferencesStorage.getDefaultView();
+  })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [showFirstTimeWizard, setShowFirstTimeWizard] = useState(false)
   const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)

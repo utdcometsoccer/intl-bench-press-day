@@ -14,6 +14,7 @@ export interface UserPreferences {
   autoSaveInterval: number; // Auto-save interval in seconds (default: 30)
   defaultWorkoutTimes?: DefaultWorkoutTimes; // Default workout times for each day of the week
   notificationLeadTime?: number; // Minutes before workout to send notification (default: 30)
+  defaultView?: 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom'; // Default tab to show on app start
   createdAt: string;
   updatedAt: string;
 }
@@ -34,6 +35,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
     day5: '09:00', // Friday
   },
   notificationLeadTime: 30, // 30 minutes before workout
+  defaultView: 'dashboard', // Default to dashboard view
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -139,6 +141,19 @@ class UserPreferencesStorage {
     const preferences = this.getPreferences();
     preferences.notificationLeadTime = minutes;
     this.savePreferences(preferences);
+  }
+
+  // Update default view preference
+  setDefaultView(view: 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom'): void {
+    const preferences = this.getPreferences();
+    preferences.defaultView = view;
+    this.savePreferences(preferences);
+  }
+
+  // Get default view preference
+  getDefaultView(): 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom' {
+    const preferences = this.getPreferences();
+    return preferences.defaultView || 'dashboard';
   }
 
   // Reset to first-time user state (for testing)

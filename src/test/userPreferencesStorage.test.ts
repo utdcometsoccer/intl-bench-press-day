@@ -166,6 +166,42 @@ describe('UserPreferencesStorage', () => {
     });
   });
 
+  describe('default view', () => {
+    it('should return dashboard as default view for new users', () => {
+      const defaultView = userPreferencesStorage.getDefaultView();
+      expect(defaultView).toBe('dashboard');
+    });
+
+    it('should set and get custom default view', () => {
+      userPreferencesStorage.setDefaultView('tracker');
+      const defaultView = userPreferencesStorage.getDefaultView();
+      expect(defaultView).toBe('tracker');
+    });
+
+    it('should persist default view preference', () => {
+      userPreferencesStorage.setDefaultView('progress');
+      
+      // Get preferences to verify it was saved
+      const preferences = userPreferencesStorage.getPreferences();
+      expect(preferences.defaultView).toBe('progress');
+    });
+
+    it('should support all valid tab types as default view', () => {
+      const validTabs = ['dashboard', 'tracker', 'progress', 'planner', 'logger', 'plates', 'export', 'exercises', 'custom'] as const;
+      
+      validTabs.forEach(tab => {
+        userPreferencesStorage.setDefaultView(tab);
+        const defaultView = userPreferencesStorage.getDefaultView();
+        expect(defaultView).toBe(tab);
+      });
+    });
+
+    it('should have dashboard as default in preferences object', () => {
+      const preferences = userPreferencesStorage.getPreferences();
+      expect(preferences.defaultView).toBe('dashboard');
+    });
+  });
+
   describe('UserPreferencesStorage class', () => {
     it('should create instance', () => {
       const storage = new UserPreferencesStorage();
