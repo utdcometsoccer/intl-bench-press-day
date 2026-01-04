@@ -183,10 +183,10 @@ describe('calendarExportService', () => {
         href: '',
         download: '',
         click: vi.fn()
-      };
-      const createElementSpy = vi.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
-      const appendChildSpy = vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockLink as any);
-      const removeChildSpy = vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink as any);
+      } as unknown as HTMLAnchorElement;
+      const createElementSpy = vi.spyOn(document, 'createElement').mockReturnValue(mockLink);
+      const appendChildSpy = vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockLink);
+      const removeChildSpy = vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink);
 
       const content = 'BEGIN:VCALENDAR\nEND:VCALENDAR';
       downloadICSFile(content, 'test.ics');
@@ -209,10 +209,10 @@ describe('calendarExportService', () => {
         href: '',
         download: '',
         click: vi.fn()
-      };
-      vi.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
-      vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockLink as any);
-      vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink as any);
+      } as unknown as HTMLAnchorElement;
+      vi.spyOn(document, 'createElement').mockReturnValue(mockLink);
+      vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockLink);
+      vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink);
 
       const content = 'BEGIN:VCALENDAR\nEND:VCALENDAR';
       downloadICSFile(content);
@@ -295,10 +295,10 @@ describe('calendarExportService', () => {
         href: '',
         download: '',
         click: vi.fn()
-      };
-      vi.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
-      vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockLink as any);
-      vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink as any);
+      } as unknown as HTMLAnchorElement;
+      vi.spyOn(document, 'createElement').mockReturnValue(mockLink);
+      vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockLink);
+      vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink);
 
       const result = exportToCalendar({
         format: 'ics',
@@ -354,7 +354,7 @@ describe('calendarExportService', () => {
     it('should throw error for unsupported format', () => {
       expect(() => {
         exportToCalendar({
-          format: 'invalid' as any,
+          format: 'invalid' as 'ics' | 'google' | 'outlook',
           schedules: [mockSchedule],
           cycle: mockCycle
         });
