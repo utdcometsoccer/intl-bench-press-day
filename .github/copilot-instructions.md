@@ -87,6 +87,32 @@ This project requires **Section 508 compliance** and **WCAG 2.1 AA** standards:
 - Mock IndexedDB operations using the existing mock setup
 - Target the existing pattern of comprehensive test coverage
 
+## Documentation Guidelines
+
+### Documentation Structure
+
+All project documentation must be organized in the `docs/` folder, except for:
+- `README.md` - Main project overview and getting started guide
+- `CONTRIBUTING.md` - Contribution guidelines (if it exists)
+- `LICENSE.md` or `LICENSE` - Project license (if it exists)
+
+### Documentation Organization
+
+Documentation in the `docs/` folder should be organized into logical subdirectories:
+- `docs/features/` - Feature-specific documentation and implementation guides
+- `docs/architecture/` - Technical architecture and design decisions
+- `docs/accessibility/` - Accessibility compliance reports and improvements
+- `docs/planning/` - Product roadmaps, TODO lists, and audit reports
+- `docs/guides/` - User guides and how-to documentation
+
+### When Contributing Documentation
+
+- Place all new documentation in the appropriate `docs/` subdirectory
+- Update the `docs/README.md` index when adding new documentation files
+- Keep documentation up-to-date with code changes
+- Follow the existing documentation format and style
+- Include code examples and usage instructions where appropriate
+
 ## Pull Request Guidelines
 
 - Ensure all tests pass (`npm run test:run`)
@@ -94,4 +120,4 @@ This project requires **Section 508 compliance** and **WCAG 2.1 AA** standards:
 - Ensure build succeeds (`npm run build`)
 - Include accessibility testing for UI changes
 - Add tests for new features
-- Update documentation if needed
+- Update documentation if needed (in the `docs/` folder)

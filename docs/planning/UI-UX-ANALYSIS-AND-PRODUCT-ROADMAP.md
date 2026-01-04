@@ -67,7 +67,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 | Storage | IndexedDB | Native |
 
 ### Test Coverage
-- **176 passing tests** across 18 test files
+- **351 passing tests** across 31 test files
 - Comprehensive coverage of storage systems, components, and business logic
 
 ---
