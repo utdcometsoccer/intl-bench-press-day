@@ -19,6 +19,8 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
   const [isRequesting, setIsRequesting] = useState(false);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
   const [autoSaveInterval, setAutoSaveInterval] = useState(30);
+  const [preferredRestTime, setPreferredRestTime] = useState(90);
+  const [autoStartRestTimer, setAutoStartRestTimer] = useState(false);
 
   useEffect(() => {
     // Check if notifications are supported
@@ -32,6 +34,8 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
     setNotificationsEnabled(preferences.notificationsEnabled);
     setAutoSaveEnabled(preferences.autoSaveEnabled);
     setAutoSaveInterval(preferences.autoSaveInterval);
+    setPreferredRestTime(preferences.preferredRestTime);
+    setAutoStartRestTimer(preferences.autoStartRestTimer);
   }, []);
 
   const handleEnableNotifications = async () => {
@@ -90,6 +94,18 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
     userPreferencesStorage.setAutoSaveInterval(newInterval);
   };
 
+  const handlePreferredRestTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newRestTime = parseInt(event.target.value, 10);
+    setPreferredRestTime(newRestTime);
+    userPreferencesStorage.setPreferredRestTime(newRestTime);
+  };
+
+  const handleToggleAutoStartRestTimer = () => {
+    const newValue = !autoStartRestTimer;
+    setAutoStartRestTimer(newValue);
+    userPreferencesStorage.setAutoStartRestTimer(newValue);
+  };
+
   const renderAutoSaveSettings = () => (
     <div className="notification-settings auto-save-settings">
       <div className="notification-header">
@@ -140,6 +156,57 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
     </div>
   );
 
+  const renderRestTimerSettings = () => (
+    <div className="notification-settings rest-timer-settings">
+      <div className="notification-header">
+        <span className="icon" aria-hidden="true">⏱️</span>
+        <h4>Rest Timer</h4>
+      </div>
+
+      <div className="notification-content">
+        <div className="notification-enabled-content">
+          <div className="rest-timer-preference">
+            <label htmlFor="rest-timer-duration">
+              Preferred rest time:
+              <select
+                id="rest-timer-duration"
+                value={preferredRestTime}
+                onChange={handlePreferredRestTimeChange}
+                className="interval-select"
+              >
+                <option value={30}>30 seconds</option>
+                <option value={60}>1 minute</option>
+                <option value={90}>90 seconds</option>
+                <option value={120}>2 minutes</option>
+                <option value={180}>3 minutes</option>
+                <option value={300}>5 minutes</option>
+              </select>
+            </label>
+          </div>
+
+          <label className="notification-toggle">
+            <input
+              type="checkbox"
+              checked={autoStartRestTimer}
+              onChange={handleToggleAutoStartRestTimer}
+              aria-label="Auto-start rest timer after completing a set"
+            />
+            <span className="toggle-slider"></span>
+            <span className="toggle-text">
+              Auto-start timer after sets
+            </span>
+          </label>
+
+          {autoStartRestTimer && (
+            <p className="notification-info">
+              The rest timer will automatically start after you complete each set during your workout.
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   if (!isSupported) {
     return inline ? null : (
       <div className="notification-settings">
@@ -148,6 +215,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
           <p>Notifications are not supported in this browser.</p>
         </div>
         {showAutoSave && renderAutoSaveSettings()}
+        {renderRestTimerSettings()}
       </div>
     );
   }
@@ -166,6 +234,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
           </div>
         </div>
         {showAutoSave && renderAutoSaveSettings()}
+        {renderRestTimerSettings()}
       </div>
     );
   }
@@ -232,6 +301,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({ inline = false, s
         </div>
       </div>
       {showAutoSave && renderAutoSaveSettings()}
+      {renderRestTimerSettings()}
     </>
   );
 };
