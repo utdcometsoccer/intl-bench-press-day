@@ -23,8 +23,13 @@ const mockAudioContext = {
   close: vi.fn(),
 };
 
-(window as any).AudioContext = vi.fn(() => mockAudioContext);
-(window as any).webkitAudioContext = vi.fn(() => mockAudioContext);
+interface WindowWithWebkitAudio extends Window {
+  webkitAudioContext: typeof AudioContext;
+  AudioContext: typeof AudioContext;
+}
+
+(window as unknown as WindowWithWebkitAudio).AudioContext = vi.fn(() => mockAudioContext) as unknown as typeof AudioContext;
+(window as unknown as WindowWithWebkitAudio).webkitAudioContext = vi.fn(() => mockAudioContext) as unknown as typeof AudioContext;
 
 // Mock navigator.vibrate
 Object.defineProperty(navigator, 'vibrate', {

@@ -26,6 +26,7 @@ vi.mock('../services/userPreferencesStorage', () => ({
 const createMockPreferences = (overrides = {}) => ({
   autoSaveEnabled: true,
   autoSaveInterval: 30,
+  autoStartRestTimer: false,
   isFirstTimeUser: false,
   profileCompleted: true,
   onboardingCompleted: true,

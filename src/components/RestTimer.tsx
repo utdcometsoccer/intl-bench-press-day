@@ -43,7 +43,7 @@ const RestTimer: FC<RestTimerProps> = ({
   const playBeep = () => {
     try {
       // Create a simple beep sound using Web Audio API
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
       
@@ -81,7 +81,7 @@ const RestTimer: FC<RestTimerProps> = ({
   // Initialize audio element
   useEffect(() => {
     // Create audio context for beep sound
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
     
     // Store a reference to play beep sound
     audioRef.current = new Audio();

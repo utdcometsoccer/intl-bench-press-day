@@ -6,6 +6,7 @@ import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage, calculateEstimated1RM, calculateRPEDescription } from '../services/workoutResultsStorage';
 import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
 import { oneRepMaxStorage } from '../services/oneRepMaxStorage';
+import { userPreferencesStorage } from '../services/userPreferencesStorage';
 import { findExerciseById } from '../exercises';
 import { 
   convertCycleToPlan, 
@@ -14,6 +15,7 @@ import {
   getWorkoutDisplayName 
 } from '../services/workoutPlanStorage';
 import PlateCalculator from './PlateCalculator';
+import RestTimer from './RestTimer';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
 const WorkoutLogger: FC = () => {
@@ -52,6 +54,10 @@ const WorkoutLogger: FC = () => {
   const [show1RMDialog, setShow1RMDialog] = useState<boolean>(false);
   const [pendingAmrapSet, setPendingAmrapSet] = useState<{ weight: number; reps: number; estimated1RM: number } | null>(null);
   const [isSaving1RM, setIsSaving1RM] = useState<boolean>(false);
+
+  // Rest timer state
+  const [showRestTimer, setShowRestTimer] = useState<boolean>(false);
+  const [restTimerDuration, setRestTimerDuration] = useState<number>(90);
 
   // Focus trap for 1RM dialog
   const dialogRef = useFocusTrap<HTMLDivElement>(show1RMDialog);
@@ -165,6 +171,10 @@ const WorkoutLogger: FC = () => {
       setIsLoading(true);
       await fiveThreeOneStorage.initialize();
       await workoutResultsStorage.initialize();
+      
+      // Load user preferences for rest timer
+      const preferences = userPreferencesStorage.getPreferences();
+      setRestTimerDuration(preferences.preferredRestTime);
       
       const activeCycle = await fiveThreeOneStorage.getActiveCycle();
       
@@ -367,6 +377,20 @@ const WorkoutLogger: FC = () => {
   const decline1RMSave = () => {
     setShow1RMDialog(false);
     setPendingAmrapSet(null);
+  };
+
+  const startRestTimer = () => {
+    const preferences = userPreferencesStorage.getPreferences();
+    setRestTimerDuration(preferences.preferredRestTime);
+    setShowRestTimer(true);
+  };
+
+  const handleRestTimerComplete = () => {
+    setShowRestTimer(false);
+  };
+
+  const handleRestTimerDismiss = () => {
+    setShowRestTimer(false);
   };
 
   const getEstimated1RM = (weight: number, reps: number): number => {
@@ -637,10 +661,31 @@ const WorkoutLogger: FC = () => {
                       aria-label={`Main set ${index + 1} notes`}
                     />
                   </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={startRestTimer}
+                      className="start-rest-timer-button"
+                      aria-label="Start rest timer"
+                    >
+                      ⏱️ Rest
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Rest Timer */}
+          {showRestTimer && (
+            <RestTimer
+              initialTime={restTimerDuration}
+              onComplete={handleRestTimerComplete}
+              onDismiss={handleRestTimerDismiss}
+              autoStart={userPreferencesStorage.getPreferences().autoStartRestTimer}
+              show={showRestTimer}
+            />
+          )}
 
           {/* Assistance Work */}
           <div className="assistance-section">
