@@ -3,6 +3,7 @@ import type { FiveThreeOneCycle, WorkoutSchedule } from '../types';
 import type { WorkoutResult } from '../types';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, getDay } from 'date-fns';
 import { workoutScheduleStorage } from '../services/workoutScheduleStorage';
+import CalendarExport from './CalendarExport';
 import './CalendarView.css';
 
 // Calendar constants
@@ -27,6 +28,7 @@ interface CalendarViewProps {
 const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [schedules, setSchedules] = useState<WorkoutSchedule[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   const loadSchedules = async () => {
     try {
@@ -115,13 +117,23 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
         <h3 className="calendar-title">
           {format(currentMonth, 'MMMM yyyy')}
         </h3>
-        <button
-          className="calendar-nav-button"
-          onClick={handleNextMonth}
-          aria-label="Next month"
-        >
-          →
-        </button>
+        <div className="calendar-header-actions">
+          <button
+            className="calendar-export-btn"
+            onClick={() => setShowExportModal(true)}
+            aria-label="Export workout schedule to calendar"
+            title="Export to Calendar"
+          >
+            📅 Export
+          </button>
+          <button
+            className="calendar-nav-button"
+            onClick={handleNextMonth}
+            aria-label="Next month"
+          >
+            →
+          </button>
+        </div>
       </div>
 
       <div className="calendar-grid">
@@ -204,6 +216,14 @@ const CalendarView: FC<CalendarViewProps> = ({ cycle, results }) => {
           <span>Today</span>
         </div>
       </div>
+
+      {showExportModal && (
+        <CalendarExport
+          cycle={cycle}
+          schedules={schedules}
+          onClose={() => setShowExportModal(false)}
+        />
+      )}
     </div>
   );
 };

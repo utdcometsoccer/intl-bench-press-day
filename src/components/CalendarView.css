@@ -16,6 +16,37 @@
   margin-bottom: var(--spacing-md);
 }
 
+.calendar-header-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.calendar-export-btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  background-color: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.calendar-export-btn:hover,
+.calendar-export-btn:focus {
+  background-color: var(--primary-hover, #0056b3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  outline: 2px solid var(--focus-color, #007bff);
+  outline-offset: 2px;
+}
+
+.calendar-export-btn:active {
+  transform: translateY(0);
+}
+
 .calendar-nav-button {
   padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-size-lg);

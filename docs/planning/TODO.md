@@ -476,12 +476,14 @@
   - [ ] Implement monthly/weekly/daily view toggle
   - [ ] Add workout scheduling (plan future workouts)
   - [ ] Add rest day marking
-  - [ ] Add export to Google Calendar
-  - [ ] Add iCal export
+  - [x] Add export to Google Calendar
+  - [x] Add iCal export
+  - [x] Add Outlook Calendar export
+  - [x] Add downloadable ICS files
   - [ ] Improve mobile calendar view
-  - [ ] Write calendar tests
-  - **Effort:** 5 days
-  - **Tests:** 15+ tests
+  - [x] Write calendar tests (45 tests added)
+  - **Effort:** 5 days (2 days completed)
+  - **Tests:** 15+ tests (45 tests completed)
 
 - [ ] **Personal Records Board**
   - [ ] Create PRBoard component
