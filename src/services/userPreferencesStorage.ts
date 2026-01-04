@@ -10,6 +10,7 @@ export interface UserPreferences {
   lastVisitDate: string | null;
   notificationsEnabled: boolean;
   preferredRestTime: number; // in seconds
+  autoStartRestTimer: boolean; // Auto-start rest timer after completing a set
   autoSaveEnabled: boolean; // Auto-save workout sessions
   autoSaveInterval: number; // Auto-save interval in seconds (default: 30)
   defaultWorkoutTimes?: DefaultWorkoutTimes; // Default workout times for each day of the week
@@ -25,6 +26,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   lastVisitDate: null,
   notificationsEnabled: false,
   preferredRestTime: 90,
+  autoStartRestTimer: false,
   autoSaveEnabled: true,
   autoSaveInterval: 30,
   defaultWorkoutTimes: {
@@ -110,6 +112,13 @@ class UserPreferencesStorage {
   setPreferredRestTime(seconds: number): void {
     const preferences = this.getPreferences();
     preferences.preferredRestTime = seconds;
+    this.savePreferences(preferences);
+  }
+
+  // Update auto-start rest timer preference
+  setAutoStartRestTimer(enabled: boolean): void {
+    const preferences = this.getPreferences();
+    preferences.autoStartRestTimer = enabled;
     this.savePreferences(preferences);
   }
 
