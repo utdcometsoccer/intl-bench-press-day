@@ -117,7 +117,7 @@ src/
 │   ├── plateCalculator.ts              # Plate calculator type definitions
 │   ├── googleFit.ts                    # Google Fit API types
 │   └── index.ts                        # Core type definitions
-├── test/                               # Comprehensive test suite (251 tests)
+├── test/                               # Comprehensive test suite (351 tests)
 ├── PWAInstallPrompt.tsx                # Progressive Web App install prompt
 ├── exercises.ts                        # Exercise database
 └── main.tsx                            # Application entry point with PWA setup
@@ -125,7 +125,7 @@ src/
 
 ## 🧪 Testing Infrastructure
 
-This project features a robust testing suite with **251 passing tests** covering all functionality:
+This project features a robust testing suite with **351 passing tests** covering all functionality:
 
 ### Test Coverage
 - **Storage Systems**: Database operations, CRUD functionality, error handling
@@ -146,8 +146,8 @@ This project features a robust testing suite with **251 passing tests** covering
 - **User Event**: Realistic user interaction simulation
 
 ### Test Statistics
-- ✅ **251 tests passing** (100% success rate)
-- ✅ **23 test files** completely passing
+- ✅ **351 tests passing** (100% success rate)
+- ✅ **31 test files** completely passing
 - ✅ **Complete coverage** of all functionality including accessibility
 - ✅ **Zero test failures** - fully stable test suite
 - 🚀 **Continuous Integration** with GitHub Actions
@@ -188,7 +188,7 @@ npm run build            # Build for production with PWA generation
 npm run preview          # Preview production build locally
 
 # Testing
-npm run test             # Run tests in watch mode (251 tests)
+npm run test             # Run tests in watch mode (351 tests)
 npm run test:run         # Run all tests once
 npm run test:ui          # Run tests with interactive UI
 
@@ -349,11 +349,23 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 
 We welcome contributions! Here's how to get started:
 
+### Contributing Guide
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
+
+### Documentation
+
+All project documentation is organized in the `docs/` folder. See the [Documentation Index](docs/README.md) for a complete guide to available documentation including:
+- Feature implementation guides
+- Accessibility compliance reports  
+- Product roadmaps and planning
+- User guides and tutorials
+
 ### Development Setup
 1. **Fork and Clone**: Fork the repository and clone your fork
 2. **Install Dependencies**: `npm install`
 3. **Start Development**: `npm run dev`
-4. **Run Tests**: `npm test` (ensure all 251 tests pass)
+4. **Run Tests**: `npm test` (ensure all 351 tests pass)
 5. **Build Validation**: `npm run build` to ensure production readiness
 
 ### Contribution Guidelines
@@ -409,7 +421,7 @@ This project is open source and available under the **MIT License**.
 ### Getting Help
 - **📋 Issues**: [Report bugs or request features](https://github.com/utdcometsoccer/intl-bench-press-day/issues)
 - **📖 Documentation**: Comprehensive inline code documentation and README
-- **🧪 Testing**: Run `npm test` to verify functionality and see all 251 tests
+- **🧪 Testing**: Run `npm test` to verify functionality and see all 351 tests
 - **🔧 Development**: Use `npm run dev` for local development with hot reload
 
 ### Training Resources
@@ -420,4 +432,4 @@ This project is open source and available under the **MIT License**.
 
 ---
 
-**Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready • 251 Tests Strong**
+**Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready • 351 Tests Strong**
