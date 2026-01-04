@@ -1,15 +1,20 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as useVoiceNavModule from '../hooks/useVoiceNavigation';
 import VoiceNavigationButton from '../components/VoiceNavigationButton';
 
 vi.mock('../hooks/useVoiceNavigation', () => ({
-  useVoiceNavigation: vi.fn((onNavigate?: (tab: string) => void) => ({
+  useVoiceNavigation: vi.fn(() => ({
     isListening: false,
     isSupported: true,
     feedback: 'Go to dashboard',
     error: null,
+    lastCommand: null,
     toggleListening: vi.fn(),
+    startListening: vi.fn(),
+    stopListening: vi.fn(),
+    registerHandler: vi.fn(() => vi.fn()),
+    availableCommands: [],
   })),
   VOICE_COMMANDS: [],
 }));
@@ -23,7 +28,12 @@ describe('VoiceNavigationButton', () => {
       isSupported: true,
       feedback: 'Go to dashboard',
       error: null,
+      lastCommand: null,
       toggleListening: vi.fn(),
+      startListening: vi.fn(),
+      stopListening: vi.fn(),
+      registerHandler: vi.fn(() => vi.fn()),
+      availableCommands: [],
     });
   });
 
@@ -42,7 +52,12 @@ describe('VoiceNavigationButton', () => {
       isSupported: true,
       feedback: null,
       error: 'Microphone access denied',
+      lastCommand: null,
       toggleListening: vi.fn(),
+      startListening: vi.fn(),
+      stopListening: vi.fn(),
+      registerHandler: vi.fn(() => vi.fn()),
+      availableCommands: [],
     });
 
     render(<VoiceNavigationButton onNavigate={() => {}} />);
@@ -59,7 +74,12 @@ describe('VoiceNavigationButton', () => {
       isSupported: false,
       feedback: null,
       error: null,
+      lastCommand: null,
       toggleListening: vi.fn(),
+      startListening: vi.fn(),
+      stopListening: vi.fn(),
+      registerHandler: vi.fn(() => vi.fn()),
+      availableCommands: [],
     });
 
     const { container } = render(<VoiceNavigationButton onNavigate={() => {}} />);
@@ -74,7 +94,12 @@ describe('VoiceNavigationButton', () => {
       isSupported: true,
       feedback: null,
       error: null,
+      lastCommand: null,
       toggleListening: toggleSpy,
+      startListening: vi.fn(),
+      stopListening: vi.fn(),
+      registerHandler: vi.fn(() => vi.fn()),
+      availableCommands: [],
     });
 
     render(<VoiceNavigationButton onNavigate={() => {}} />);
@@ -88,6 +113,12 @@ describe('VoiceNavigationButton', () => {
     render(<VoiceNavigationButton onNavigate={() => {}} />);
     const helpButton = screen.getByRole('button', { name: /voice commands help/i });
     expect(helpButton).toHaveAttribute('aria-controls', 'voice-help-panel');
+
+    // Dialog should not be visible initially
+    expect(screen.queryByRole('dialog')).toBeNull();
+
+    // Click help button to open dialog
+    fireEvent.click(helpButton);
 
     // Ensure dialog is present when open
     let dialog = screen.getByRole('dialog');
@@ -114,7 +145,12 @@ describe('VoiceNavigationButton', () => {
       isSupported: true,
       feedback: null,
       error: null,
+      lastCommand: null,
       toggleListening: vi.fn(),
+      startListening: vi.fn(),
+      stopListening: vi.fn(),
+      registerHandler: vi.fn(() => vi.fn()),
+      availableCommands: [],
     });
 
     render(<VoiceNavigationButton onNavigate={() => {}} />);
