@@ -1,9 +1,12 @@
-import { type FC, useState, useEffect, useCallback } from 'react';
-import type { WorkoutPlan, UnifiedWorkout } from '../types';
+import { type FC, useState, useEffect, useCallback, useRef } from 'react';
+import type { WorkoutPlan, UnifiedWorkout, WorkoutSet } from '../types';
 import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from '../services/workoutResultsStorage';
 import type { PlateCalculation } from '../types/plateCalculator';
 import { fiveThreeOneStorage } from '../services/fiveThreeOneStorage';
 import { workoutResultsStorage, calculateEstimated1RM, calculateRPEDescription } from '../services/workoutResultsStorage';
+import { exerciseRecordsStorage } from '../services/exerciseRecordsStorage';
+import { oneRepMaxStorage } from '../services/oneRepMaxStorage';
+import { findExerciseById } from '../exercises';
 import { 
   convertCycleToPlan, 
   getWorkoutByWeekAndDay,
@@ -11,6 +14,7 @@ import {
   getWorkoutDisplayName 
 } from '../services/workoutPlanStorage';
 import PlateCalculator from './PlateCalculator';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 const WorkoutLogger: FC = () => {
   // State for current workout plan
@@ -43,6 +47,18 @@ const WorkoutLogger: FC = () => {
   const [showPlateCalculator, setShowPlateCalculator] = useState<boolean>(false);
   const [plateCalculatorWeight, setPlateCalculatorWeight] = useState<number>(135);
   const [currentCalculation, setCurrentCalculation] = useState<PlateCalculation | null>(null);
+
+  // 1RM save dialog state
+  const [show1RMDialog, setShow1RMDialog] = useState<boolean>(false);
+  const [pendingAmrapSet, setPendingAmrapSet] = useState<{ weight: number; reps: number; estimated1RM: number } | null>(null);
+  const [isSaving1RM, setIsSaving1RM] = useState<boolean>(false);
+
+  // Focus trap for 1RM dialog
+  const dialogRef = useFocusTrap<HTMLDivElement>(show1RMDialog);
+
+  // Refs for timeout cleanup
+  const workoutSuccessTimeoutRef = useRef<number | null>(null);
+  const oneRMSuccessTimeoutRef = useRef<number | null>(null);
 
   // Helper function to initialize workout state with planned values
   const initializeWorkoutState = useCallback((workout: UnifiedWorkout) => {
@@ -119,6 +135,16 @@ const WorkoutLogger: FC = () => {
 
   useEffect(() => {
     initializeWorkoutLogger();
+    
+    // Cleanup timeouts on unmount
+    return () => {
+      if (workoutSuccessTimeoutRef.current !== null) {
+        clearTimeout(workoutSuccessTimeoutRef.current);
+      }
+      if (oneRMSuccessTimeoutRef.current !== null) {
+        clearTimeout(oneRMSuccessTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -240,17 +266,107 @@ const WorkoutLogger: FC = () => {
 
       await workoutResultsStorage.saveWorkoutResult(workoutResult);
       
+      // Clear any existing timeout before setting a new one
+      if (workoutSuccessTimeoutRef.current !== null) {
+        clearTimeout(workoutSuccessTimeoutRef.current);
+      }
+      
       setSuccess('Workout saved successfully!');
-      setTimeout(() => setSuccess(''), 3000);
+      workoutSuccessTimeoutRef.current = window.setTimeout(() => {
+        setSuccess('');
+        workoutSuccessTimeoutRef.current = null;
+      }, 3000);
 
       // Reload past results
       await loadPastResults();
+      
+      // Check for AMRAP sets to offer 1RM recording (use the set with highest estimated 1RM)
+      const amrapSets = mainSetResults.filter(
+        set => set.isAmrap && set.actualReps > 0 && set.actualWeight > 0
+      );
+      
+      if (amrapSets.length > 0) {
+        // Find the AMRAP set with the highest estimated 1RM
+        const bestAmrapSet = amrapSets.reduce((best, current) => {
+          const bestEstimated1RM = calculateEstimated1RM(best.actualWeight, best.actualReps);
+          const currentEstimated1RM = calculateEstimated1RM(current.actualWeight, current.actualReps);
+          return currentEstimated1RM > bestEstimated1RM ? current : best;
+        }, amrapSets[0]);
+        
+        const estimated1RM = calculateEstimated1RM(bestAmrapSet.actualWeight, bestAmrapSet.actualReps);
+        setPendingAmrapSet({
+          weight: bestAmrapSet.actualWeight,
+          reps: bestAmrapSet.actualReps,
+          estimated1RM
+        });
+        setShow1RMDialog(true);
+      }
       
     } catch (err) {
       setError(`Failed to save workout: ${err}`);
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const save1RMRecord = async () => {
+    if (!currentWorkout || !pendingAmrapSet) {
+      return;
+    }
+
+    try {
+      setIsSaving1RM(true);
+      setError('');
+
+      // Initialize storage if needed
+      await exerciseRecordsStorage.initialize();
+      await oneRepMaxStorage.initialize();
+
+      // Find the exercise
+      const exercise = await findExerciseById(currentWorkout.exerciseId);
+      if (!exercise) {
+        throw new Error(`Exercise not found: ${currentWorkout.exerciseId} (${currentWorkout.exerciseName})`);
+      }
+
+      // Create workout set
+      const workoutSet: WorkoutSet = {
+        Repetions: pendingAmrapSet.reps,
+        Weight: pendingAmrapSet.weight
+      };
+
+      // Save the record using Epley formula (default)
+      await exerciseRecordsStorage.saveRecord(
+        exercise,
+        workoutSet,
+        pendingAmrapSet.estimated1RM,
+        'Epley',
+        'epley',
+        `AMRAP set from ${currentWorkout.exerciseName} workout`
+      );
+
+      // Clear any existing timeout before setting a new one
+      if (oneRMSuccessTimeoutRef.current !== null) {
+        clearTimeout(oneRMSuccessTimeoutRef.current);
+      }
+
+      setSuccess('1RM record saved successfully!');
+      oneRMSuccessTimeoutRef.current = window.setTimeout(() => {
+        setSuccess('');
+        oneRMSuccessTimeoutRef.current = null;
+      }, 3000);
+      setShow1RMDialog(false);
+      setPendingAmrapSet(null);
+      
+    } catch (err) {
+      setError(`Failed to save 1RM record: ${err}`);
+    } finally {
+      setIsSaving1RM(false);
+    }
+  };
+
+  const decline1RMSave = () => {
+    setShow1RMDialog(false);
+    setPendingAmrapSet(null);
   };
 
   const getEstimated1RM = (weight: number, reps: number): number => {
@@ -752,6 +868,52 @@ const WorkoutLogger: FC = () => {
                   <p><strong>Difference from target:</strong> {(currentCalculation.totalWeight - plateCalculatorWeight).toFixed(1)} lbs</p>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 1RM Save Dialog */}
+      {show1RMDialog && pendingAmrapSet && (
+        <div className="plate-calculator-modal" onClick={decline1RMSave} role="dialog" aria-labelledby="save-1rm-title" aria-modal="true">
+          <div className="plate-calculator-content" onClick={e => e.stopPropagation()} ref={dialogRef}>
+            <div className="plate-calculator-header">
+              <h3 id="save-1rm-title">Save 1RM Record?</h3>
+              <button
+                onClick={decline1RMSave}
+                className="close-button"
+                aria-label="Close 1RM save dialog"
+                disabled={isSaving1RM}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="plate-calculator-body">
+              <p>You completed an AMRAP set! Would you like to save this as a 1RM record?</p>
+              <div className="amrap-1rm-details">
+                <p><strong>Weight:</strong> {pendingAmrapSet.weight} lbs</p>
+                <p><strong>Reps:</strong> {pendingAmrapSet.reps}</p>
+                <p><strong>Estimated 1RM:</strong> {pendingAmrapSet.estimated1RM.toFixed(1)} lbs</p>
+                <p className="formula-note">(Calculated using Epley formula)</p>
+              </div>
+              <div className="dialog-actions">
+                <button
+                  onClick={save1RMRecord}
+                  className="save-button"
+                  disabled={isSaving1RM}
+                  aria-label="Save 1RM record"
+                >
+                  {isSaving1RM ? 'Saving...' : 'Save 1RM Record'}
+                </button>
+                <button
+                  onClick={decline1RMSave}
+                  className="cancel-button"
+                  disabled={isSaving1RM}
+                  aria-label="Skip saving 1RM record"
+                >
+                  Skip
+                </button>
+              </div>
             </div>
           </div>
         </div>
