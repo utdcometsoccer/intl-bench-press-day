@@ -35,7 +35,7 @@
   - [x] Optional metadata (body weight, measurements, notes)
   - [x] Section 508 accessibility compliance
   - [x] Comprehensive test coverage (20+ tests)
-  - [x] Created PROGRESS-PHOTOS.md documentation
+  - [x] Created docs/PROGRESS-PHOTOS.md documentation
   - [x] Updated PRODUCT-ROADMAP.md
   - [x] Updated TODO.md
   - **Status:** Production Ready

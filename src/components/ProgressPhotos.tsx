@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { progressPhotosStorage, type ProgressPhoto } from '../services/progressPhotosStorage';
 import ErrorMessage from './ErrorMessage';
 import SuccessMessage from './SuccessMessage';
 import LoadingState from './LoadingState';
 import ShareModal from './ShareModal';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import styles from './ProgressPhotos.module.css';
 
 export function ProgressPhotos() {
@@ -20,18 +21,47 @@ export function ProgressPhotos() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
+
+  // Focus trap refs for modals
+  const uploadModalRef = useFocusTrap<HTMLDivElement>(showUploadModal);
+  const cameraModalRef = useFocusTrap<HTMLDivElement>(showCameraModal);
+  const detailModalRef = useFocusTrap<HTMLDivElement>(selectedPhoto !== null);
 
   useEffect(() => {
     loadPhotos();
 
-    // Cleanup camera stream on unmount
+    // Cleanup camera stream and timeouts on unmount
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
       }
+      // Cleanup all timeouts
+      const timeouts = timeoutRefs.current;
+      timeouts.forEach(clearTimeout);
     };
-  }, [stream]);
+  }, []);
+
+  // Handle escape key to close modals
+  const handleEscapeKey = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      if (showCameraModal) {
+        stopCamera();
+      } else if (showUploadModal) {
+        setShowUploadModal(false);
+      } else if (selectedPhoto) {
+        setSelectedPhoto(null);
+      }
+    }
+  }, [showCameraModal, showUploadModal, selectedPhoto]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [handleEscapeKey]);
 
   const loadPhotos = async () => {
     try {
@@ -75,7 +105,7 @@ export function ProgressPhotos() {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: 1280, height: 720 },
       });
-      setStream(mediaStream);
+      streamRef.current = mediaStream;
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
@@ -105,9 +135,9 @@ export function ProgressPhotos() {
   };
 
   const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setStream(null);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
     }
     setShowCameraModal(false);
   };
@@ -124,7 +154,8 @@ export function ProgressPhotos() {
       await loadPhotos();
 
       // Clear success message after 3 seconds
-      setTimeout(() => setSuccess(null), 3000);
+      const timeoutId = setTimeout(() => setSuccess(null), 3000);
+      timeoutRefs.current.push(timeoutId);
     } catch (err) {
       setError('Failed to save photo. Please try again.');
       console.error('Error saving photo:', err);
@@ -143,7 +174,8 @@ export function ProgressPhotos() {
       setSelectedPhoto(null);
       await loadPhotos();
 
-      setTimeout(() => setSuccess(null), 3000);
+      const timeoutId = setTimeout(() => setSuccess(null), 3000);
+      timeoutRefs.current.push(timeoutId);
     } catch (err) {
       setError('Failed to delete photo. Please try again.');
       console.error('Error deleting photo:', err);
@@ -158,7 +190,8 @@ export function ProgressPhotos() {
     if (!comparisonPhotos[0]) {
       setComparisonPhotos([photo, null]);
       setSuccess('Select a second photo to compare.');
-      setTimeout(() => setSuccess(null), 3000);
+      const timeoutId = setTimeout(() => setSuccess(null), 3000);
+      timeoutRefs.current.push(timeoutId);
     } else if (!comparisonPhotos[1]) {
       setComparisonPhotos([comparisonPhotos[0], photo]);
       setComparisonMode(true);
@@ -304,8 +337,17 @@ export function ProgressPhotos() {
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div className={styles.modal} role="dialog" aria-labelledby="upload-modal-title">
-          <div className={styles.modalContent}>
+        <div 
+          className={styles.modal} 
+          role="dialog" 
+          aria-labelledby="upload-modal-title"
+          onClick={() => setShowUploadModal(false)}
+        >
+          <div 
+            className={styles.modalContent}
+            ref={uploadModalRef}
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 id="upload-modal-title">Upload Progress Photo</h3>
             <input
               ref={fileInputRef}
@@ -329,8 +371,17 @@ export function ProgressPhotos() {
 
       {/* Camera Modal */}
       {showCameraModal && (
-        <div className={styles.modal} role="dialog" aria-labelledby="camera-modal-title">
-          <div className={styles.modalContent}>
+        <div 
+          className={styles.modal} 
+          role="dialog" 
+          aria-labelledby="camera-modal-title"
+          onClick={stopCamera}
+        >
+          <div 
+            className={styles.modalContent}
+            ref={cameraModalRef}
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 id="camera-modal-title">Take Progress Photo</h3>
             <video
               ref={videoRef}
@@ -361,8 +412,17 @@ export function ProgressPhotos() {
 
       {/* Photo Detail Modal */}
       {selectedPhoto && (
-        <div className={styles.modal} role="dialog" aria-labelledby="photo-detail-title">
-          <div className={styles.modalContent}>
+        <div 
+          className={styles.modal} 
+          role="dialog" 
+          aria-labelledby="photo-detail-title"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div 
+            className={styles.modalContent}
+            ref={detailModalRef}
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 id="photo-detail-title">
               Photo from {selectedPhoto.dateTaken.toLocaleDateString()}
             </h3>

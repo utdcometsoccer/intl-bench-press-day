@@ -74,14 +74,14 @@ class SocialSharingService {
   }
 
   // Share to Facebook (photo parameter for consistency, though not used in URL-based sharing)
-  shareToFacebook(options: ShareOptions = {}): void {
+  shareToFacebook(_photo: ProgressPhoto, options: ShareOptions = {}): void {
     const url = options.url || window.location.href;
     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     window.open(facebookUrl, '_blank', 'width=550,height=420');
   }
 
   // Share to LinkedIn
-  shareToLinkedIn(options: ShareOptions = {}): void {
+  shareToLinkedIn(_photo: ProgressPhoto, options: ShareOptions = {}): void {
     const url = options.url || window.location.href;
     const title = options.title || 'My Fitness Progress';
     const summary = options.text || 'Check out my fitness journey!';
@@ -91,7 +91,7 @@ class SocialSharingService {
   }
 
   // Share to WhatsApp
-  shareToWhatsApp(options: ShareOptions = {}): void {
+  shareToWhatsApp(_photo: ProgressPhoto, options: ShareOptions = {}): void {
     const text = options.text || 'Check out my fitness progress!';
     const url = options.url || window.location.href;
     const message = `${text} ${url}`;
@@ -101,7 +101,7 @@ class SocialSharingService {
   }
 
   // Share to Reddit
-  shareToReddit(options: ShareOptions = {}): void {
+  shareToReddit(_photo: ProgressPhoto, options: ShareOptions = {}): void {
     const url = options.url || window.location.href;
     const title = options.title || 'My Fitness Progress';
 

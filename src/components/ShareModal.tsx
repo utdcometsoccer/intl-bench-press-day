@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { socialSharingService } from '../services/socialSharingService';
 import type { ProgressPhoto } from '../services/progressPhotosStorage';
 import SuccessMessage from './SuccessMessage';
 import ErrorMessage from './ErrorMessage';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import styles from './ShareModal.module.css';
 
 interface ShareModalProps {
@@ -13,6 +14,32 @@ interface ShareModalProps {
 function ShareModal({ photo, onClose }: ShareModalProps) {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
+
+  // Focus trap for modal
+  const modalRef = useFocusTrap<HTMLDivElement>(true);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      const timeouts = timeoutRefs.current;
+      timeouts.forEach(clearTimeout);
+    };
+  }, []);
+
+  // Handle escape key to close modal
+  const handleEscapeKey = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [handleEscapeKey]);
 
   const handleWebShare = async () => {
     const shared = await socialSharingService.shareWithWebShare(photo, {
@@ -22,13 +49,15 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
 
     if (shared) {
       setSuccess('Photo shared successfully!');
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setSuccess(null);
         onClose();
       }, 2000);
+      timeoutRefs.current.push(timeoutId);
     } else {
       setError('Web Share not available on this device.');
-      setTimeout(() => setError(null), 3000);
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
     }
   };
 
@@ -37,10 +66,12 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
 
     if (copied) {
       setSuccess('Photo copied to clipboard!');
-      setTimeout(() => setSuccess(null), 2000);
+      const timeoutId = setTimeout(() => setSuccess(null), 2000);
+      timeoutRefs.current.push(timeoutId);
     } else {
       setError('Failed to copy to clipboard. Please try downloading instead.');
-      setTimeout(() => setError(null), 3000);
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
     }
   };
 
@@ -52,24 +83,24 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
   };
 
   const handleFacebookShare = () => {
-    socialSharingService.shareToFacebook();
+    socialSharingService.shareToFacebook(photo);
   };
 
   const handleLinkedInShare = () => {
-    socialSharingService.shareToLinkedIn({
+    socialSharingService.shareToLinkedIn(photo, {
       title: 'Fitness Progress Update',
       text: `Tracking my fitness journey - progress photo from ${photo.dateTaken.toLocaleDateString()}`,
     });
   };
 
   const handleWhatsAppShare = () => {
-    socialSharingService.shareToWhatsApp({
+    socialSharingService.shareToWhatsApp(photo, {
       text: `Check out my fitness progress from ${photo.dateTaken.toLocaleDateString()}!`,
     });
   };
 
   const handleRedditShare = () => {
-    socialSharingService.shareToReddit({
+    socialSharingService.shareToReddit(photo, {
       title: `Fitness Progress Update - ${photo.dateTaken.toLocaleDateString()}`,
     });
   };
@@ -77,7 +108,8 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
   const handleDownload = () => {
     socialSharingService.downloadPhoto(photo);
     setSuccess('Photo downloaded!');
-    setTimeout(() => setSuccess(null), 2000);
+    const timeoutId = setTimeout(() => setSuccess(null), 2000);
+    timeoutRefs.current.push(timeoutId);
   };
 
   return (
@@ -86,8 +118,13 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
       role="dialog"
       aria-labelledby="share-modal-title"
       aria-modal="true"
+      onClick={onClose}
     >
-      <div className={styles.modal}>
+      <div 
+        className={styles.modal}
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+      >
         <header className={styles.header}>
           <h2 id="share-modal-title">Share Progress Photo</h2>
           <button

@@ -511,7 +511,7 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 - `progressPhotosStorage` service with IndexedDB
 - `socialSharingService` for platform sharing
 - Comprehensive test coverage (20+ tests)
-- Feature documentation: `PROGRESS-PHOTOS.md`
+- Feature documentation: `docs/PROGRESS-PHOTOS.md`
 
 **Status:** ✅ COMPLETED
 
