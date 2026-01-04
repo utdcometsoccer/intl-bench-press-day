@@ -37,13 +37,32 @@ const RestTimer: FC<RestTimerProps> = ({
   const [showCustomInput, setShowCustomInput] = useState(false);
   
   const intervalRef = useRef<number | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const hasCompletedRef = useRef(false);
+
+  // Initialize audio context once
+  useEffect(() => {
+    try {
+      audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    } catch (error) {
+      console.warn('Could not create AudioContext:', error);
+    }
+    
+    return () => {
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
 
   const playBeep = () => {
     try {
-      // Create a simple beep sound using Web Audio API
-      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const audioContext = audioContextRef.current;
+      if (!audioContext) {
+        console.warn('AudioContext not available');
+        return;
+      }
+
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
       
@@ -77,19 +96,6 @@ const RestTimer: FC<RestTimerProps> = ({
       onComplete();
     }
   }, [onComplete]);
-
-  // Initialize audio element
-  useEffect(() => {
-    // Create audio context for beep sound
-    const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-    
-    // Store a reference to play beep sound
-    audioRef.current = new Audio();
-    
-    return () => {
-      audioContext.close();
-    };
-  }, []);
 
   // Timer countdown logic
   useEffect(() => {
