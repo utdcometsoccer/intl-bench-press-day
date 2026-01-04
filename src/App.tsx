@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
+import type { TabType } from './types'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
 import PWAInstallPrompt from './PWAInstallPrompt'
@@ -20,8 +21,6 @@ const ExerciseManager = lazy(() => import('./components/ExerciseManager'))
 const FirstTimeUserWizard = lazy(() => import('./components/FirstTimeUserWizard'))
 const Dashboard = lazy(() => import('./components/Dashboard'))
 const CustomWorkoutBuilder = lazy(() => import('./components/CustomWorkoutBuilder'))
-
-type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom';
 
 
 // Tab configuration for navigation items

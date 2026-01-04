@@ -1,7 +1,7 @@
 // User Preferences Storage Service
 // Tracks user status (first-time vs returning) and preferences
 
-import type { DefaultWorkoutTimes } from '../types';
+import type { DefaultWorkoutTimes, TabType } from '../types';
 
 export interface UserPreferences {
   isFirstTimeUser: boolean;
@@ -14,7 +14,7 @@ export interface UserPreferences {
   autoSaveInterval: number; // Auto-save interval in seconds (default: 30)
   defaultWorkoutTimes?: DefaultWorkoutTimes; // Default workout times for each day of the week
   notificationLeadTime?: number; // Minutes before workout to send notification (default: 30)
-  defaultView?: 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom'; // Default tab to show on app start
+  defaultView?: TabType; // Default tab to show on app start
   createdAt: string;
   updatedAt: string;
 }
@@ -144,14 +144,14 @@ class UserPreferencesStorage {
   }
 
   // Update default view preference
-  setDefaultView(view: 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom'): void {
+  setDefaultView(view: TabType): void {
     const preferences = this.getPreferences();
     preferences.defaultView = view;
     this.savePreferences(preferences);
   }
 
   // Get default view preference
-  getDefaultView(): 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom' {
+  getDefaultView(): TabType {
     const preferences = this.getPreferences();
     return preferences.defaultView || 'dashboard';
   }

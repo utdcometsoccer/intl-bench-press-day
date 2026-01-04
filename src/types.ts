@@ -354,3 +354,12 @@ export interface WorkoutPlan {
   notes?: string;
   isActive: boolean;
 }
+
+// ============================================================================
+// UI NAVIGATION TYPES
+// ============================================================================
+
+/**
+ * Available tab types for navigation in the application.
+ */
+export type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom';
