@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect, useCallback } from 'react';
+import { type FC, useState, useEffect, useCallback, useRef } from 'react';
 import type { WorkoutPlan, UnifiedWorkout, WorkoutSet } from '../types';
 import type { WorkoutResult, WorkoutSetResult, AssistanceExerciseResult } from '../services/workoutResultsStorage';
 import type { PlateCalculation } from '../types/plateCalculator';
@@ -14,6 +14,7 @@ import {
   getWorkoutDisplayName 
 } from '../services/workoutPlanStorage';
 import PlateCalculator from './PlateCalculator';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 const WorkoutLogger: FC = () => {
   // State for current workout plan
@@ -51,6 +52,13 @@ const WorkoutLogger: FC = () => {
   const [show1RMDialog, setShow1RMDialog] = useState<boolean>(false);
   const [pendingAmrapSet, setPendingAmrapSet] = useState<{ weight: number; reps: number; estimated1RM: number } | null>(null);
   const [isSaving1RM, setIsSaving1RM] = useState<boolean>(false);
+
+  // Focus trap for 1RM dialog
+  const dialogRef = useFocusTrap<HTMLDivElement>(show1RMDialog);
+
+  // Refs for timeout cleanup
+  const workoutSuccessTimeoutRef = useRef<number | null>(null);
+  const oneRMSuccessTimeoutRef = useRef<number | null>(null);
 
   // Helper function to initialize workout state with planned values
   const initializeWorkoutState = useCallback((workout: UnifiedWorkout) => {
@@ -127,6 +135,16 @@ const WorkoutLogger: FC = () => {
 
   useEffect(() => {
     initializeWorkoutLogger();
+    
+    // Cleanup timeouts on unmount
+    return () => {
+      if (workoutSuccessTimeoutRef.current !== null) {
+        clearTimeout(workoutSuccessTimeoutRef.current);
+      }
+      if (oneRMSuccessTimeoutRef.current !== null) {
+        clearTimeout(oneRMSuccessTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -248,19 +266,37 @@ const WorkoutLogger: FC = () => {
 
       await workoutResultsStorage.saveWorkoutResult(workoutResult);
       
+      // Clear any existing timeout before setting a new one
+      if (workoutSuccessTimeoutRef.current !== null) {
+        clearTimeout(workoutSuccessTimeoutRef.current);
+      }
+      
       setSuccess('Workout saved successfully!');
-      setTimeout(() => setSuccess(''), 3000);
+      workoutSuccessTimeoutRef.current = window.setTimeout(() => {
+        setSuccess('');
+        workoutSuccessTimeoutRef.current = null;
+      }, 3000);
 
       // Reload past results
       await loadPastResults();
       
-      // Check if there's an AMRAP set to offer 1RM recording
-      const amrapSet = mainSetResults.find(set => set.isAmrap && set.actualReps > 0 && set.actualWeight > 0);
-      if (amrapSet) {
-        const estimated1RM = calculateEstimated1RM(amrapSet.actualWeight, amrapSet.actualReps);
+      // Check for AMRAP sets to offer 1RM recording (use the set with highest estimated 1RM)
+      const amrapSets = mainSetResults.filter(
+        set => set.isAmrap && set.actualReps > 0 && set.actualWeight > 0
+      );
+      
+      if (amrapSets.length > 0) {
+        // Find the AMRAP set with the highest estimated 1RM
+        const bestAmrapSet = amrapSets.reduce((best, current) => {
+          const bestEstimated1RM = calculateEstimated1RM(best.actualWeight, best.actualReps);
+          const currentEstimated1RM = calculateEstimated1RM(current.actualWeight, current.actualReps);
+          return currentEstimated1RM > bestEstimated1RM ? current : best;
+        }, amrapSets[0]);
+        
+        const estimated1RM = calculateEstimated1RM(bestAmrapSet.actualWeight, bestAmrapSet.actualReps);
         setPendingAmrapSet({
-          weight: amrapSet.actualWeight,
-          reps: amrapSet.actualReps,
+          weight: bestAmrapSet.actualWeight,
+          reps: bestAmrapSet.actualReps,
           estimated1RM
         });
         setShow1RMDialog(true);
@@ -289,7 +325,7 @@ const WorkoutLogger: FC = () => {
       // Find the exercise
       const exercise = await findExerciseById(currentWorkout.exerciseId);
       if (!exercise) {
-        throw new Error('Exercise not found');
+        throw new Error(`Exercise not found: ${currentWorkout.exerciseId} (${currentWorkout.exerciseName})`);
       }
 
       // Create workout set
@@ -308,8 +344,16 @@ const WorkoutLogger: FC = () => {
         `AMRAP set from ${currentWorkout.exerciseName} workout`
       );
 
+      // Clear any existing timeout before setting a new one
+      if (oneRMSuccessTimeoutRef.current !== null) {
+        clearTimeout(oneRMSuccessTimeoutRef.current);
+      }
+
       setSuccess('1RM record saved successfully!');
-      setTimeout(() => setSuccess(''), 3000);
+      oneRMSuccessTimeoutRef.current = window.setTimeout(() => {
+        setSuccess('');
+        oneRMSuccessTimeoutRef.current = null;
+      }, 3000);
       setShow1RMDialog(false);
       setPendingAmrapSet(null);
       
@@ -832,7 +876,7 @@ const WorkoutLogger: FC = () => {
       {/* 1RM Save Dialog */}
       {show1RMDialog && pendingAmrapSet && (
         <div className="plate-calculator-modal" onClick={decline1RMSave} role="dialog" aria-labelledby="save-1rm-title" aria-modal="true">
-          <div className="plate-calculator-content" onClick={e => e.stopPropagation()}>
+          <div className="plate-calculator-content" onClick={e => e.stopPropagation()} ref={dialogRef}>
             <div className="plate-calculator-header">
               <h3 id="save-1rm-title">Save 1RM Record?</h3>
               <button

@@ -65,7 +65,9 @@ The 1RM save dialog displays:
 ### Keyboard Navigation
 - Dialog can be closed with Skip button or X button
 - Tab navigation works through all interactive elements
-- Focus trap within modal (when implemented)
+- Focus is trapped within the modal (cannot tab outside)
+- Focus automatically moves to first focusable element when dialog opens
+- Focus returns to previously focused element when dialog closes
 
 ### Screen Reader Support
 - `role="dialog"` on modal container
@@ -75,6 +77,7 @@ The 1RM save dialog displays:
 
 ### Visual Indicators
 - Green border on details section highlights positive action
+- Blue focus outlines on all interactive elements for keyboard navigation
 - Disabled state for buttons during save operation
 - Clear visual hierarchy
 
@@ -89,11 +92,17 @@ The 1RM save dialog displays:
 - `oneRepMaxStorage`: Initializes storage system
 - `findExerciseById`: Retrieves exercise details
 - `calculateEstimated1RM`: Epley formula calculation
+- `useFocusTrap`: Traps focus within modal for accessibility
 
 ### State Management
 - `show1RMDialog`: Controls dialog visibility
 - `pendingAmrapSet`: Stores AMRAP set data (weight, reps, estimated1RM)
 - `isSaving1RM`: Tracks save operation progress
+- `dialogRef`: Ref for focus trap functionality
+- `workoutSuccessTimeoutRef` & `oneRMSuccessTimeoutRef`: Timeout cleanup refs
+
+### Multiple AMRAP Sets
+If a workout has multiple AMRAP sets, the system automatically selects the one with the highest estimated 1RM to offer for recording. This ensures users don't miss their best performance.
 
 ## Code Quality
 
@@ -101,6 +110,7 @@ The 1RM save dialog displays:
 - All 351 existing tests pass
 - No regressions introduced
 - Lint and build verification successful
+- Note: New tests for this feature should be added in a future PR
 
 ### Security
 - CodeQL scan: 0 vulnerabilities found
