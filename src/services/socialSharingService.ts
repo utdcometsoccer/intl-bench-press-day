@@ -145,8 +145,18 @@ class SocialSharingService {
         // Draw image
         ctx.drawImage(img, padding, padding, img.width, img.height);
 
-        // Draw text overlay
-        ctx.fillStyle = '#333333';
+        // Draw semi-transparent background for text area to improve legibility
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.fillRect(0, img.height + padding, canvas.width, textHeight + padding);
+
+        // Add text shadow for better legibility
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 2;
+
+        // Draw text overlay with high contrast
+        ctx.fillStyle = '#000000';
         ctx.font = 'bold 24px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(
@@ -163,6 +173,12 @@ class SocialSharingService {
             img.height + padding + 70
           );
         }
+
+        // Reset shadow for any future drawing
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
 
         // Convert to data URL
         resolve(canvas.toDataURL('image/jpeg', 0.9));
