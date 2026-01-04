@@ -96,10 +96,10 @@ describe('calendarExportService', () => {
     it('should properly format dates', () => {
       const ics = generateICSEvent(mockSchedule, mockWorkout);
 
-      // Should contain properly formatted dates (YYYYMMDDTHHMMSS)
-      expect(ics).toMatch(/DTSTART:\d{8}T\d{6}/);
-      expect(ics).toMatch(/DTEND:\d{8}T\d{6}/);
-      expect(ics).toMatch(/DTSTAMP:\d{8}T\d{6}/);
+      // Should contain properly formatted UTC dates (YYYYMMDDTHHMMSSZ)
+      expect(ics).toMatch(/DTSTART:\d{8}T\d{6}Z/);
+      expect(ics).toMatch(/DTEND:\d{8}T\d{6}Z/);
+      expect(ics).toMatch(/DTSTAMP:\d{8}T\d{6}Z/);
     });
 
     it('should generate unique UID', () => {

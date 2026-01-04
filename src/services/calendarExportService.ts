@@ -21,17 +21,18 @@ function generateUID(scheduleId: string): string {
 }
 
 /**
- * Format a date for iCalendar format (YYYYMMDDTHHMMSS)
+ * Format a date for iCalendar format in UTC (YYYYMMDDTHHMMSSZ)
+ * Uses UTC to avoid timezone ambiguity per RFC 5545
  */
 function formatICalDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
   
-  return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+  return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
 }
 
 /**
@@ -53,6 +54,31 @@ function escapeICalText(text: string): string {
     .replace(/;/g, '\\;')
     .replace(/,/g, '\\,')
     .replace(/\n/g, '\\n');
+}
+
+/**
+ * Fold long lines according to RFC 5545 (max 75 octets per line)
+ * Lines are broken and continued with a space prefix
+ */
+function foldLine(line: string): string {
+  if (line.length <= 75) {
+    return line;
+  }
+  
+  const result: string[] = [];
+  let currentPos = 0;
+  
+  // First line can be 75 characters
+  result.push(line.substring(0, 75));
+  currentPos = 75;
+  
+  // Continuation lines can be 74 characters (accounting for leading space)
+  while (currentPos < line.length) {
+    result.push(' ' + line.substring(currentPos, currentPos + 74));
+    currentPos += 74;
+  }
+  
+  return result.join('\r\n');
 }
 
 /**
@@ -113,12 +139,12 @@ export function generateICSEvent(
   const lines = [
     'BEGIN:VEVENT',
     `UID:${generateUID(schedule.id)}`,
-    `DTSTAMP:${formatICalDate(now)}`,
-    `DTSTART:${formatICalDate(startDate)}`,
-    `DTEND:${formatICalDate(endDate)}`,
-    `SUMMARY:${escapeICalText(summary)}`,
-    `DESCRIPTION:${escapeICalText(description)}`,
-    `LOCATION:${escapeICalText(location)}`,
+    foldLine(`DTSTAMP:${formatICalDate(now)}`),
+    foldLine(`DTSTART:${formatICalDate(startDate)}`),
+    foldLine(`DTEND:${formatICalDate(endDate)}`),
+    foldLine(`SUMMARY:${escapeICalText(summary)}`),
+    foldLine(`DESCRIPTION:${escapeICalText(description)}`),
+    foldLine(`LOCATION:${escapeICalText(location)}`),
     'STATUS:CONFIRMED',
     'SEQUENCE:0',
     'END:VEVENT'
@@ -141,7 +167,6 @@ export function generateICSFile(
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'X-WR-CALNAME:Workout Schedule',
-    'X-WR-TIMEZONE:UTC',
     'X-WR-CALDESC:5/3/1 Workout Schedule'
   ];
 

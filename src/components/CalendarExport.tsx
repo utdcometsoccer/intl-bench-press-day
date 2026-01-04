@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react';
+import { type FC, useState, useEffect, useRef } from 'react';
 import type { FiveThreeOneCycle, WorkoutSchedule } from '../types';
 import { exportToCalendar, generateGoogleCalendarURL, generateOutlookCalendarURL } from '../services/calendarExportService';
 import './CalendarExport.css';
@@ -12,6 +12,25 @@ interface CalendarExportProps {
 const CalendarExport: FC<CalendarExportProps> = ({ cycle, schedules, onClose }) => {
   const [exportStatus, setExportStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Focus management: save previous focus and set focus on modal
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    
+    // Focus the modal on mount
+    if (modalRef.current) {
+      modalRef.current.focus();
+    }
+
+    // Restore focus on unmount
+    return () => {
+      if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, []);
 
   const handleExport = (format: 'ics' | 'google' | 'outlook') => {
     try {
@@ -53,11 +72,14 @@ const CalendarExport: FC<CalendarExportProps> = ({ cycle, schedules, onClose }) 
   return (
     <div className="calendar-export-overlay" onClick={onClose}>
       <div 
+        ref={modalRef}
         className="calendar-export-modal" 
         onClick={(e) => e.stopPropagation()}
         role="dialog"
+        aria-modal="true"
         aria-labelledby="calendar-export-title"
         aria-describedby="calendar-export-description"
+        tabIndex={-1}
       >
         <div className="calendar-export-header">
           <h2 id="calendar-export-title">Export Workout Calendar</h2>
