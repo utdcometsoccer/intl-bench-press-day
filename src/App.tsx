@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
+import type { TabType } from './types'
 import logo from './assets/IBPD-FINAL.png'
 import './App.css'
 import PWAInstallPrompt from './PWAInstallPrompt'
@@ -21,8 +22,6 @@ const FirstTimeUserWizard = lazy(() => import('./components/FirstTimeUserWizard'
 const Dashboard = lazy(() => import('./components/Dashboard'))
 const CustomWorkoutBuilder = lazy(() => import('./components/CustomWorkoutBuilder'))
 const ProgressPhotos = lazy(() => import('./components/ProgressPhotos'))
-
-type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom' | 'photos';
 
 
 // Tab configuration for navigation items
@@ -68,7 +67,10 @@ if (import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING) {
   }
 }
 function App() {
-  const [activeTab, setActiveTab] = useState<TabType>('tracker')
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    // Get default view from user preferences, fallback to 'dashboard'
+    return userPreferencesStorage.getDefaultView();
+  })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [showFirstTimeWizard, setShowFirstTimeWizard] = useState(false)
   const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)

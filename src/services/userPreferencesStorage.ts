@@ -1,7 +1,7 @@
 // User Preferences Storage Service
 // Tracks user status (first-time vs returning) and preferences
 
-import type { DefaultWorkoutTimes } from '../types';
+import type { DefaultWorkoutTimes, TabType } from '../types';
 
 export interface UserPreferences {
   isFirstTimeUser: boolean;
@@ -15,6 +15,7 @@ export interface UserPreferences {
   autoSaveInterval: number; // Auto-save interval in seconds (default: 30)
   defaultWorkoutTimes?: DefaultWorkoutTimes; // Default workout times for each day of the week
   notificationLeadTime?: number; // Minutes before workout to send notification (default: 30)
+  defaultView?: TabType; // Default tab to show on app start
   createdAt: string;
   updatedAt: string;
 }
@@ -36,6 +37,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
     day5: '09:00', // Friday
   },
   notificationLeadTime: 30, // 30 minutes before workout
+  defaultView: 'dashboard', // Default to dashboard view
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -148,6 +150,19 @@ class UserPreferencesStorage {
     const preferences = this.getPreferences();
     preferences.notificationLeadTime = minutes;
     this.savePreferences(preferences);
+  }
+
+  // Update default view preference
+  setDefaultView(view: TabType): void {
+    const preferences = this.getPreferences();
+    preferences.defaultView = view;
+    this.savePreferences(preferences);
+  }
+
+  // Get default view preference
+  getDefaultView(): TabType {
+    const preferences = this.getPreferences();
+    return preferences.defaultView || 'dashboard';
   }
 
   // Reset to first-time user state (for testing)

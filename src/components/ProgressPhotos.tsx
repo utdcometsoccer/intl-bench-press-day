@@ -390,7 +390,7 @@ export function ProgressPhotos() {
               className={styles.video}
               aria-label="Camera preview"
             />
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            <canvas ref={canvasRef} className={styles.hiddenCanvas} />
             <div className={styles.modalActions}>
               <button
                 onClick={capturePhoto}
