@@ -58,6 +58,7 @@ const WorkoutLogger: FC = () => {
   // Rest timer state
   const [showRestTimer, setShowRestTimer] = useState<boolean>(false);
   const [restTimerDuration, setRestTimerDuration] = useState<number>(90);
+  const [autoStartRestTimer, setAutoStartRestTimer] = useState<boolean>(false);
 
   // Focus trap for 1RM dialog
   const dialogRef = useFocusTrap<HTMLDivElement>(show1RMDialog);
@@ -175,6 +176,7 @@ const WorkoutLogger: FC = () => {
       // Load user preferences for rest timer
       const preferences = userPreferencesStorage.getPreferences();
       setRestTimerDuration(preferences.preferredRestTime);
+      setAutoStartRestTimer(preferences.autoStartRestTimer);
       
       const activeCycle = await fiveThreeOneStorage.getActiveCycle();
       
@@ -380,8 +382,6 @@ const WorkoutLogger: FC = () => {
   };
 
   const startRestTimer = () => {
-    const preferences = userPreferencesStorage.getPreferences();
-    setRestTimerDuration(preferences.preferredRestTime);
     setShowRestTimer(true);
   };
 
@@ -682,7 +682,7 @@ const WorkoutLogger: FC = () => {
               initialTime={restTimerDuration}
               onComplete={handleRestTimerComplete}
               onDismiss={handleRestTimerDismiss}
-              autoStart={userPreferencesStorage.getPreferences().autoStartRestTimer}
+              autoStart={autoStartRestTimer}
               show={showRestTimer}
             />
           )}

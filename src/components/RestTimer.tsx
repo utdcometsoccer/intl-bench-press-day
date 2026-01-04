@@ -55,7 +55,7 @@ const RestTimer: FC<RestTimerProps> = ({
     };
   }, []);
 
-  const playBeep = () => {
+  const playBeep = useCallback(() => {
     try {
       const audioContext = audioContextRef.current;
       if (!audioContext) {
@@ -80,7 +80,7 @@ const RestTimer: FC<RestTimerProps> = ({
     } catch (error) {
       console.warn('Could not play audio notification:', error);
     }
-  };
+  }, []);
 
   const handleTimerComplete = useCallback(() => {
     // Play audio notification
@@ -95,7 +95,7 @@ const RestTimer: FC<RestTimerProps> = ({
     if (onComplete) {
       onComplete();
     }
-  }, [onComplete]);
+  }, [onComplete, playBeep]);
 
   // Timer countdown logic
   useEffect(() => {
