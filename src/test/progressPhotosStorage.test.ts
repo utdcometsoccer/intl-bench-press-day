@@ -17,14 +17,12 @@ describe('ProgressPhotosStorage', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    // Initialize the database
-    const initPromise = (progressPhotosStorage as any).initDB();
-    simulateIDBUpgradeNeeded();
-    await initPromise;
-    
-    // Clear all photos before each test
+    // Clear all photos before each test (this also initializes the DB)
     const clearPromise = progressPhotosStorage.clearAllPhotos();
-    simulateIDBSuccess();
+    // First simulate DB initialization
+    simulateIDBUpgradeNeeded();
+    // Then simulate the clear operation
+    setTimeout(() => simulateIDBSuccess(), 10);
     await clearPromise;
   });
 
