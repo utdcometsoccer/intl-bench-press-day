@@ -1,4 +1,5 @@
 import { useVoiceNavigation, VOICE_COMMANDS } from '../hooks/useVoiceNavigation';
+import VoiceFeedback from './VoiceFeedback';
 import { useState } from 'react';
 
 interface VoiceNavigationButtonProps {
@@ -25,6 +26,7 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
     <>
       {/* Voice Navigation Button */}
       <button
+        type="button"
         className={`voice-nav-button ${isListening ? 'listening' : ''}`}
         onClick={toggleListening}
         aria-label={isListening ? 'Stop voice commands' : 'Start voice commands'}
@@ -36,29 +38,19 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
 
       {/* Help Button */}
       <button
+        type="button"
         className="voice-help-button"
         onClick={() => setShowHelp(!showHelp)}
         aria-label={showHelp ? 'Hide voice commands help' : 'Show voice commands help'}
         aria-expanded={showHelp}
+        aria-controls="voice-help-panel"
         title="Click for voice command help"
       >
         ❓
       </button>
 
       {/* Feedback Message */}
-      {(feedback || error) && (
-        <div
-          className="voice-feedback"
-          role={error ? 'alert' : 'status'}
-          aria-live="polite"
-        >
-          {error ? (
-            <span style={{ color: '#dc3545' }}>{error}</span>
-          ) : (
-            <span className="command-text">{feedback}</span>
-          )}
-        </div>
-      )}
+      <VoiceFeedback feedback={feedback} error={error} />
 
       {/* Listening Indicator */}
       {isListening && (
@@ -75,11 +67,13 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
       {/* Help Panel */}
       {showHelp && (
         <div
+          id="voice-help-panel"
           className="voice-help-panel"
           role="dialog"
-          aria-label="Voice Commands Help"
+          aria-modal="true"
+          aria-labelledby="voice-help-title"
         >
-          <h3>
+          <h3 id="voice-help-title">
             🎤 Voice Commands
           </h3>
           <p>
@@ -110,8 +104,10 @@ const VoiceNavigationButton = ({ onNavigate }: VoiceNavigationButtonProps) => {
             </ul>
           </div>
           <button
+            type="button"
             onClick={() => setShowHelp(false)}
             className="voice-help-close-button"
+            aria-label="Close voice commands help"
           >
             Close
           </button>

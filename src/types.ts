@@ -362,4 +362,4 @@ export interface WorkoutPlan {
 /**
  * Available tab types for navigation in the application.
  */
-export type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom';
+export type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom' | 'photos';

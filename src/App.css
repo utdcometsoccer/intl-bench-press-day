@@ -206,6 +206,11 @@
   color: var(--error-text);
 }
 
+/* Voice navigation error text color */
+.voice-error {
+  color: var(--error-text);
+}
+
 .info-message {
   padding: 15px;
   background-color: var(--info-bg);
