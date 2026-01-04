@@ -21,6 +21,8 @@ const mockIDBObjectStore = {
   get: vi.fn(() => mockIDBRequest),
   getAll: vi.fn(() => mockIDBRequest),
   delete: vi.fn(() => mockIDBRequest),
+  clear: vi.fn(() => mockIDBRequest),
+  count: vi.fn(() => mockIDBRequest),
   createIndex: vi.fn(),
   index: vi.fn(() => ({
     getAll: vi.fn(() => mockIDBRequest)

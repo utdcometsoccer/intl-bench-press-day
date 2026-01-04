@@ -18,6 +18,7 @@ Feature-specific documentation and implementation guides:
 - **[PWA Implementation](features/PWA-IMPLEMENTATION.md)** - Progressive Web Application setup, service workers, and offline functionality
 - **[AMRAP 1RM Recording](features/AMRAP-1RM-FEATURE.md)** - Automatic one-rep-max recording from AMRAP sets in workout logger
 - **[Workout Logger Generalization](features/WORKOUT-LOGGER-GENERALIZATION.md)** - Implementation of unified workout system supporting multiple programs
+- **[Calendar Synchronization](features/CALENDAR-SYNC.md)** - Export workout schedules to Google Calendar, Outlook, Apple Calendar, and ICS files
 
 ### ♿ Accessibility
 
@@ -40,6 +41,7 @@ Product planning, roadmaps, and audit reports:
 User guides and how-to documentation:
 
 - **[Auto-Save Guide](guides/AUTO_SAVE_GUIDE.md)** - Implementation guide for auto-save workout sessions with configurable intervals
+- **[Calendar Sync User Guide](guides/CALENDAR-SYNC-USER-GUIDE.md)** - Simple guide for exporting workouts to your calendar app
 
 ### 🏗️ Architecture
 
@@ -96,11 +98,11 @@ Documentation should be updated when:
 
 ### Current Statistics
 
-- **Total Documentation Files**: 11
-- **Feature Guides**: 4
+- **Total Documentation Files**: 13
+- **Feature Guides**: 5
 - **Accessibility Reports**: 2
 - **Planning Documents**: 4
-- **User Guides**: 1
+- **User Guides**: 2
 - **Architecture Docs**: 0
 
 ### Coverage Areas
