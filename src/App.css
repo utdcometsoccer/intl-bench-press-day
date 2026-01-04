@@ -80,11 +80,20 @@
   --container-border: #ccc;
   --form-section-bg: #f8f9fa;
   --border-color: #dee2e6;
+  --background-secondary: #f8f9fa;
+  --card-background: #ffffff;
 
   /* Text Colors */
   --text-primary: #213547;
   --text-secondary: #6c757d;
   --text-muted: #666;
+
+  /* Component Colors */
+  --primary-color: #007bff;
+  --primary-color-dark: #0056b3;
+  --secondary-color: #6c757d;
+  --secondary-color-dark: #5a6268;
+  --focus-color: #007bff;
 
   /* Tab Navigation */
   --tab-border-color: #dee2e6;
@@ -120,6 +129,8 @@
   --container-border: #444;
   --form-section-bg: #2a2a2a;
   --border-color: #444;
+  --background-secondary: #2a2a2a;
+  --card-background: #1e1e1e;
 
   /* Text Colors - Improved contrast ratios for WCAG compliance */
   --text-primary: rgba(255, 255, 255, 0.87);
@@ -127,6 +138,13 @@
   /* Increased from #adb5bd for better contrast */
   --text-muted: #b0b0b0;
   /* Increased from #999 for better contrast */
+
+  /* Component Colors - Dark Mode */
+  --primary-color: #0d6efd;
+  --primary-color-dark: #0a58ca;
+  --secondary-color: #6c757d;
+  --secondary-color-dark: #565e64;
+  --focus-color: #0d6efd;
 
   /* Tab Navigation */
   --tab-border-color: #444;
