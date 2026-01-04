@@ -3,7 +3,7 @@ import { progressPhotosStorage, type ProgressPhoto } from '../services/progressP
 import ErrorMessage from './ErrorMessage';
 import SuccessMessage from './SuccessMessage';
 import LoadingState from './LoadingState';
-import { ShareModal } from './ShareModal';
+import ShareModal from './ShareModal';
 import styles from './ProgressPhotos.module.css';
 
 export function ProgressPhotos() {
@@ -422,3 +422,5 @@ export function ProgressPhotos() {
     </div>
   );
 }
+
+export default ProgressPhotos;

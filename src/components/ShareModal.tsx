@@ -10,7 +10,7 @@ interface ShareModalProps {
   onClose: () => void;
 }
 
-export function ShareModal({ photo, onClose }: ShareModalProps) {
+function ShareModal({ photo, onClose }: ShareModalProps) {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -198,3 +198,5 @@ export function ShareModal({ photo, onClose }: ShareModalProps) {
     </div>
   );
 }
+
+export default ShareModal;

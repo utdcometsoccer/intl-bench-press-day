@@ -20,8 +20,9 @@ const ExerciseManager = lazy(() => import('./components/ExerciseManager'))
 const FirstTimeUserWizard = lazy(() => import('./components/FirstTimeUserWizard'))
 const Dashboard = lazy(() => import('./components/Dashboard'))
 const CustomWorkoutBuilder = lazy(() => import('./components/CustomWorkoutBuilder'))
+const ProgressPhotos = lazy(() => import('./components/ProgressPhotos'))
 
-type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom';
+type TabType = 'dashboard' | 'tracker' | 'progress' | 'planner' | 'logger' | 'plates' | 'export' | 'exercises' | 'custom' | 'photos';
 
 
 // Tab configuration for navigation items
@@ -31,9 +32,10 @@ const tabConfig: { id: TabType; label: string; icon: string; shortcut: string }[
   { id: 'planner', label: 'Planner', icon: '📋', shortcut: '3' },
   { id: 'logger', label: 'Logger', icon: '📝', shortcut: '4' },
   { id: 'custom', label: 'Custom', icon: '✏️', shortcut: '5' },
-  { id: 'exercises', label: 'Exercises', icon: '📚', shortcut: '6' },
-  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '7' },
-  { id: 'export', label: 'Export', icon: '💾', shortcut: '8' },
+  { id: 'photos', label: 'Photos', icon: '📸', shortcut: '6' },
+  { id: 'exercises', label: 'Exercises', icon: '📚', shortcut: '7' },
+  { id: 'plates', label: 'Plates', icon: '🏋️', shortcut: '8' },
+  { id: 'export', label: 'Export', icon: '💾', shortcut: '9' },
 ]
 
 // Loading component for lazy-loaded components
@@ -311,6 +313,7 @@ function App() {
             {activeTab === 'planner' && <FiveThreeOnePlanner />}
             {activeTab === 'logger' && <WorkoutLogger />}
             {activeTab === 'custom' && <CustomWorkoutBuilder />}
+            {activeTab === 'photos' && <ProgressPhotos />}
             {activeTab === 'exercises' && <ExerciseManager />}
             {activeTab === 'plates' && <PlateCalculator />}
             {activeTab === 'export' && <DataExport />}
