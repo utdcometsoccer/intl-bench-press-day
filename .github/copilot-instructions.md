@@ -56,6 +56,7 @@ npm run test:run
 - Use functional components with hooks
 - Follow React hooks rules (no hooks in conditionals, loops, or nested functions)
 - Use CSS Modules for component-scoped styling
+- **Never use inline styles** - always use CSS Modules or external stylesheets
 - Keep components small and focused
 
 ### File Organization
@@ -112,9 +113,16 @@ Documentation in the `docs/` folder should be organized into logical subdirector
 - Keep documentation up-to-date with code changes
 - Follow the existing documentation format and style
 - Include code examples and usage instructions where appropriate
+- **Lint all Markdown files before committing** - ensure documentation follows proper formatting standards
 
 ## Pull Request Guidelines
 
+Before committing any changes:
+- **Lint all code** - Run `npm run lint` and fix all errors before committing
+- **Run all unit tests** - Run `npm run test:run` and ensure all tests pass before committing
+- **Lint Markdown documentation** - Ensure all documentation follows proper formatting standards
+
+Before submitting a pull request:
 - Ensure all tests pass (`npm run test:run`)
 - Ensure linting passes (`npm run lint`)
 - Ensure build succeeds (`npm run build`)
