@@ -4,7 +4,7 @@
 **Version:** 1.0  
 **Last Updated:** January 4, 2026
 
----
+ ---
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@
 9. [Troubleshooting](#troubleshooting)
 10. [Future Enhancements](#future-enhancements)
 
----
+ ---
 
 ## Overview
 
@@ -32,7 +32,7 @@ The Calendar Synchronization feature allows users to export their workout schedu
 
 The feature supports multiple export formats to ensure compatibility with all major calendar platforms including Google Calendar, Outlook Calendar, and Apple Calendar.
 
----
+ ---
 
 ## Features
 
@@ -56,6 +56,7 @@ The feature supports multiple export formats to ensure compatibility with all ma
 ### ✅ Comprehensive Workout Details
 
 Each calendar event includes:
+
 - **Exercise name** (e.g., "Squat - Week 1 Day 1")
 - **Workout details** including:
   - Main sets with reps, percentages, and weights
@@ -75,12 +76,12 @@ Each calendar event includes:
 - Keyboard accessible
 - Screen reader compatible
 
----
+ ---
 
 ## Supported Calendar Platforms
 
 | Platform | Support Method | Details |
-|----------|----------------|---------|
+| ---------- | ---------------- | --------- |
 | **Google Calendar** | Direct URL | Opens add event page in Google Calendar |
 | **Outlook Calendar** | Direct URL | Opens add event page in Outlook Calendar |
 | **Apple Calendar** | ICS Download | Import downloaded ICS file |
@@ -88,7 +89,7 @@ Each calendar event includes:
 | **Thunderbird** | ICS Download | Import downloaded ICS file |
 | **Any iCalendar app** | ICS Download | Universal iCalendar format |
 
----
+ ---
 
 ## How to Use
 
@@ -129,7 +130,7 @@ Each calendar event includes:
 4. Click "Save" in Outlook Calendar
 5. Repeat for each workout (Outlook Calendar adds one event at a time)
 
----
+ ---
 
 ## Technical Implementation
 
@@ -177,18 +178,19 @@ exportToCalendar(options: CalendarExportOptions): string | void
 #### Text Escaping
 
 Special characters are properly escaped for iCalendar format:
+
 - `;` → `\;`
 - `,` → `\,`
 - `\` → `\\`
 - newlines → `\n`
 
----
+ ---
 
 ## ICS File Format
 
 ### File Structure
 
-```
+```ics
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//International Bench Press Day//Workout Calendar//EN
@@ -223,7 +225,7 @@ END:VCALENDAR
 - **LOCATION**: Training location (cycle name)
 - **STATUS**: Always "CONFIRMED"
 
----
+ ---
 
 ## Testing
 
@@ -266,13 +268,13 @@ npm test calendarExportService.test.ts
 npm test CalendarExport.test.tsx
 ```
 
----
+ ---
 
 ## Accessibility
 
 The Calendar Export feature is fully accessible and compliant with Section 508 and WCAG 2.1 AA standards:
 
-### Features
+### Accessibility Features
 
 - **ARIA Labels**: All buttons and interactive elements have descriptive ARIA labels
 - **Role Attributes**: Proper semantic roles (dialog, status, alert)
@@ -291,11 +293,12 @@ The Calendar Export feature is fully accessible and compliant with Section 508 a
 ### Screen Reader Support
 
 Tested with:
+
 - ✅ NVDA (Windows)
 - ✅ JAWS (Windows)
 - ✅ VoiceOver (macOS/iOS)
 
----
+ ---
 
 ## Troubleshooting
 
@@ -303,7 +306,8 @@ Tested with:
 
 **Symptom**: Error message "No scheduled workouts to export"
 
-**Solution**: 
+**Solution**:
+
 1. Ensure you have an active 5/3/1 cycle
 2. Schedule workouts using the Workout Schedule Manager
 3. Verify scheduled workouts appear in the calendar view
@@ -313,6 +317,7 @@ Tested with:
 **Symptom**: Downloaded ICS file doesn't open in calendar app
 
 **Solution**:
+
 1. Ensure you have a calendar app installed (Apple Calendar, Outlook, etc.)
 2. Try right-clicking the file and selecting "Open With" → [Your Calendar App]
 3. Check file extension is `.ics`
@@ -322,6 +327,7 @@ Tested with:
 **Symptom**: Clicking Google or Outlook buttons doesn't open calendar
 
 **Solution**:
+
 1. Ensure pop-ups are not blocked in your browser
 2. Check if you're logged into Google/Outlook account
 3. Try using ICS download instead
@@ -332,7 +338,7 @@ Tested with:
 
 **Solution**: This is normal for ICS format. Most calendar apps will display them correctly once imported. If not, this may be a limitation of your calendar app.
 
----
+ ---
 
 ## Future Enhancements
 
@@ -354,7 +360,7 @@ Tested with:
 - Calendar subscription (webcal://) for live updates
 - Training partner sharing via calendar invites
 
----
+ ---
 
 ## API Reference
 
@@ -365,6 +371,7 @@ Tested with:
 Main export function that handles all formats.
 
 **Parameters:**
+
 ```typescript
 interface CalendarExportOptions {
   format: 'ics' | 'google' | 'outlook';
@@ -375,10 +382,12 @@ interface CalendarExportOptions {
 ```
 
 **Returns:**
+
 - `void` for ICS downloads (triggers file download)
 - `string` (URL) for Google/Outlook calendar links
 
 **Example:**
+
 ```typescript
 import { exportToCalendar } from '../services/calendarExportService';
 
@@ -399,7 +408,7 @@ const url = exportToCalendar({
 window.open(url, '_blank');
 ```
 
----
+ ---
 
 ## Developer Notes
 
@@ -408,6 +417,7 @@ window.open(url, '_blank');
 To add support for a new calendar platform:
 
 1. Create a new URL generator function in `calendarExportService.ts`:
+
 ```typescript
 export function generateNewPlatformURL(
   schedule: WorkoutSchedule,
@@ -418,22 +428,23 @@ export function generateNewPlatformURL(
 }
 ```
 
-2. Add the new format to `CalendarExportOptions`:
+1. Add the new format to `CalendarExportOptions`:
+
 ```typescript
 format: 'ics' | 'google' | 'outlook' | 'newplatform';
 ```
 
-3. Update the `exportToCalendar` function to handle the new format
+1. Update the `exportToCalendar` function to handle the new format
 
-4. Add a new button to `CalendarExport.tsx`
+2. Add a new button to `CalendarExport.tsx`
 
-5. Write tests for the new functionality
+3. Write tests for the new functionality
 
 ### Modifying Event Properties
 
 To change what information is included in calendar events, modify the `generateWorkoutDescription` function in `calendarExportService.ts`.
 
----
+ ---
 
 ## Version History
 
@@ -444,7 +455,7 @@ To change what information is included in calendar events, modify the `generateW
   - Full accessibility compliance
   - Comprehensive test coverage (45 tests)
 
----
+ ---
 
 ## Related Documentation
 
@@ -453,7 +464,7 @@ To change what information is included in calendar events, modify the `generateW
 - [Workout Schedule Manager Documentation](WORKOUT-SCHEDULE-MANAGER.md) (if available)
 - [5/3/1 Program Documentation](FIVE-THREE-ONE-PROGRAM.md) (if available)
 
----
+ ---
 
 ## Support
 
@@ -467,7 +478,7 @@ For issues, questions, or feature requests related to calendar synchronization:
    - Browser and OS information
    - Calendar app being used
 
----
+ ---
 
 **Last Updated:** January 4, 2026  
 **Maintained By:** Project Contributors

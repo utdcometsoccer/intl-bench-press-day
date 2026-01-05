@@ -1,6 +1,7 @@
 # Workout Logger Generalization - Implementation Summary
 
 ## Overview
+
 The workout logger has been successfully generalized to support multiple workout programs beyond the 5-3-1 methodology. The system now works with both structured 5-3-1 cycles and custom workout plans.
 
 ## Key Changes
@@ -8,14 +9,18 @@ The workout logger has been successfully generalized to support multiple workout
 ### 1. New Type Definitions (`src/types.ts`)
 
 #### UnifiedWorkout
+
 A generalized workout structure that can represent both 5-3-1 and custom workouts:
+
 - Main sets and warmup sets with optional percentage tracking
 - Optional week/day fields for cycle-based programs
 - Support for AMRAP (As Many Reps As Possible) sets
 - Assistance exercise suggestions
 
 #### WorkoutPlan
+
 An abstraction that represents any workout plan:
+
 - `type`: '531' or 'custom' to distinguish plan types
 - `workouts`: Array of UnifiedWorkout objects
 - `isActive`: Tracks which plan is currently being followed
@@ -26,12 +31,14 @@ An abstraction that represents any workout plan:
 Provides conversion and utility functions for working with unified workout plans:
 
 **Conversion Functions:**
+
 - `convertCycleToPlan()`: Converts 5-3-1 cycles to unified format
 - `convertFiveThreeOneWorkoutToUnified()`: Converts individual 5-3-1 workouts
 - `convertCustomWorkoutToUnified()`: Converts custom workouts
 - `convertCustomWorkoutsToPlan()`: Creates a workout plan from custom workouts
 
 **Utility Functions:**
+
 - `getWorkoutFromPlan()`: Retrieves workout by ID
 - `getWorkoutByWeekAndDay()`: Retrieves workout by week/day (5-3-1 specific)
 - `isFiveThreeOnePlan()`: Type checking
@@ -42,6 +49,7 @@ Provides conversion and utility functions for working with unified workout plans
 ### 3. Updated Components
 
 #### WorkoutLogger (`src/components/WorkoutLogger.tsx`)
+
 - Now accepts WorkoutPlan instead of FiveThreeOneCycle
 - Conditional UI rendering based on plan type:
   - For 5-3-1: Shows week and day selectors
@@ -49,12 +57,14 @@ Provides conversion and utility functions for working with unified workout plans
 - Uses unified workout structure for logging
 
 #### WorkoutSuggestionService (`src/services/workoutSuggestionService.ts`)
+
 - Updated to work with WorkoutPlan instead of FiveThreeOneCycle
 - Handles suggestions for both cycle-based and linear custom plans
 - `WorkoutSuggestion` interface updated with optional week/day fields
 - `CycleProgress` interface updated with optional weeksProgress
 
 #### Supporting Components
+
 - **Dashboard**: Converts cycles to plans before passing to suggestion service
 - **TodaysWorkout**: Conditionally displays week/day info for 5-3-1 workouts
 - **ProgressSummary**: Handles optional week progress for custom plans
@@ -63,16 +73,19 @@ Provides conversion and utility functions for working with unified workout plans
 ### 4. Test Coverage
 
 New test file: `src/test/workoutPlanStorage.test.ts`
+
 - 16 comprehensive tests covering all conversion and utility functions
 - Tests for both 5-3-1 and custom workout scenarios
 
 Existing tests updated:
+
 - `workoutSuggestionService.test.ts`: Updated to use convertCycleToPlan
 - All 351 tests passing
 
 ## Usage Examples
 
 ### Using with 5-3-1 Cycles
+
 ```typescript
 const cycle = await fiveThreeOneStorage.getActiveCycle();
 const plan = convertCycleToPlan(cycle);
@@ -81,6 +94,7 @@ const nextWorkout = getNextWorkout(plan, results);
 ```
 
 ### Using with Custom Workouts
+
 ```typescript
 const customWorkouts = [/* array of CustomWorkout objects */];
 const plan = convertCustomWorkoutsToPlan(customWorkouts, 'My Plan');
@@ -89,7 +103,9 @@ const nextWorkout = getNextWorkout(plan, results);
 ```
 
 ### Logging a Workout
+
 The WorkoutLogger component now automatically:
+
 1. Detects the plan type (5-3-1 or custom)
 2. Shows appropriate workout selection UI
 3. Initializes set tracking with planned values
@@ -105,6 +121,7 @@ The WorkoutLogger component now automatically:
 ## Future Enhancements
 
 The generalized architecture now supports:
+
 1. Additional workout methodologies (e.g., Starting Strength, Westside)
 2. Template-based workout plans
 3. Coach-assigned custom programs
@@ -122,6 +139,7 @@ The generalized architecture now supports:
 ## Migration Notes
 
 No database migration needed - the existing storage system works with both:
+
 - `FiveThreeOneCycle` objects are converted to `WorkoutPlan` at runtime
 - `WorkoutResult` objects already use generic IDs that work with any plan type
 - Custom workout results use `week: 0, day: 0` when not part of a cycle

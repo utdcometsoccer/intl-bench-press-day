@@ -18,10 +18,12 @@ This document describes the auto-save functionality for workout sessions impleme
 **File**: `src/services/userPreferencesStorage.ts`
 
 Extended `UserPreferences` interface to include:
+
 - `autoSaveEnabled: boolean` - Enable/disable auto-save (default: `true`)
 - `autoSaveInterval: number` - Auto-save interval in seconds (default: `30`)
 
 New methods:
+
 - `setAutoSaveEnabled(enabled: boolean)` - Update auto-save preference
 - `setAutoSaveInterval(seconds: number)` - Update auto-save interval
 
@@ -30,6 +32,7 @@ New methods:
 **File**: `src/services/workoutResultsStorage.ts`
 
 New methods:
+
 - `getIncompleteWorkoutSessions()` - Get all incomplete workout sessions
 - `deleteWorkoutSession(id: string)` - Delete a specific session
 - `cleanupOldIncompleteSessions(maxAgeHours: number)` - Cleanup old incomplete sessions
@@ -40,7 +43,7 @@ New methods:
 
 Custom React hook for auto-saving workout sessions.
 
-#### Usage Example:
+#### Usage Example
 
 ```typescript
 import { useAutoSave, useSessionCleanup } from '../hooks/useAutoSave';
@@ -80,7 +83,7 @@ function WorkoutComponent() {
 }
 ```
 
-#### Hook Options:
+#### Hook Options
 
 ```typescript
 interface UseAutoSaveOptions {
@@ -91,7 +94,7 @@ interface UseAutoSaveOptions {
 }
 ```
 
-#### Hook Return Value:
+#### Hook Return Value
 
 ```typescript
 {
@@ -111,7 +114,7 @@ Extended the NotificationSettings component to include auto-save preferences:
 - Dropdown to select save interval (15s, 30s, 1m, 2m, 5m)
 - Information about the 3-hour cleanup policy
 
-#### Component Props:
+#### Component Props
 
 ```typescript
 interface NotificationSettingsProps {
@@ -148,7 +151,7 @@ interface NotificationSettingsProps {
 
 All features are comprehensively tested:
 
-### Test Files:
+### Test Files
 
 1. **`src/test/useAutoSave.test.tsx`** (15 tests)
    - Auto-save initialization
@@ -170,7 +173,7 @@ All features are comprehensively tested:
    - Session deletion
    - Old session cleanup logic
 
-### Running Tests:
+### Running Tests
 
 ```bash
 npm test                    # Watch mode
@@ -188,19 +191,19 @@ npm run test:run src/test/useAutoSave.test.tsx  # Run specific test
 
 ## Configuration Examples
 
-### Shorter interval for testing:
+### Shorter interval for testing
 
 ```typescript
 const { manualSave } = useAutoSave(session, { interval: 5 }); // Save every 5 seconds
 ```
 
-### Disable auto-save for specific component:
+### Disable auto-save for specific component
 
 ```typescript
 const { manualSave } = useAutoSave(session, { enabled: false });
 ```
 
-### Custom cleanup age:
+### Custom cleanup age
 
 ```typescript
 useSessionCleanup(1); // Cleanup sessions older than 1 hour

@@ -15,7 +15,9 @@ The Smart Workout Suggestions feature provides intelligent workout recommendatio
 ## Features
 
 ### 1. Intelligent Next Workout Detection
+
 The system automatically identifies the next workout based on:
+
 - User's active 5/3/1 training cycle
 - Completed workout history
 - Week and day progression
@@ -24,7 +26,9 @@ The system automatically identifies the next workout based on:
 **Implementation:** `workoutSuggestionService.ts` - `getNextWorkout()`
 
 ### 2. Today's Workout Dashboard Card
+
 A prominent card on the Dashboard displays:
+
 - Next workout exercise name
 - Week and day information (for 5/3/1 plans)
 - Week type description (5/5/5+ Week, 3/3/3+ Week, etc.)
@@ -35,7 +39,9 @@ A prominent card on the Dashboard displays:
 **Implementation:** `TodaysWorkout.tsx` component
 
 ### 3. Workout Status Badges
+
 Visual indicators showing workout timing:
+
 - **🎯 Today** - Workout is due today
 - **⚠️ Overdue** - Workout is more than 3 days overdue
 - **📅 Next Up** - Upcoming workout
@@ -43,14 +49,18 @@ Visual indicators showing workout timing:
 **Logic:** Based on `daysUntilDue` calculation from cycle start date
 
 ### 4. Quick-Start Actions
+
 Two action buttons for convenient workout logging:
+
 - **Quick Log** - Opens modal for fast workout logging
 - **Full Logger** - Navigates to complete workout logger
 
 **Integration:** QuickLog modal with pre-populated workout data
 
 ### 5. Notification Support
+
 Function to determine if notifications should be sent:
+
 - Only notifies for due/overdue workouts
 - Respects user notification preferences
 - Filters out completed workouts
@@ -101,12 +111,14 @@ interface CycleProgress {
 ### Component Integration
 
 **Dashboard.tsx** (Container)
+
 - Loads active cycle and workout results
 - Calculates next workout suggestion
 - Passes suggestion to TodaysWorkout component
 - Manages QuickLog modal state
 
 **TodaysWorkout.tsx** (Presentation)
+
 - Displays workout suggestion with visual styling
 - Shows appropriate badge based on recommendation
 - Renders workout details and sets preview
@@ -117,6 +129,7 @@ interface CycleProgress {
 ## Test Coverage
 
 ### Service Tests (18 tests)
+
 **File:** `src/test/workoutSuggestionService.test.ts`
 
 - ✅ Get next workout when no workouts completed
@@ -139,6 +152,7 @@ interface CycleProgress {
 - ✅ Return week progress for all weeks
 
 ### Component Tests (12 tests)
+
 **File:** `src/test/TodaysWorkout.test.tsx`
 
 - ✅ Render workout suggestion
@@ -155,6 +169,7 @@ interface CycleProgress {
 - ✅ Handle workout without week/day info (custom)
 
 ### Integration Tests (11 tests)
+
 **File:** `src/test/Dashboard.test.tsx`
 
 - ✅ Render loading state initially
@@ -223,20 +238,24 @@ const suggestion = getNextWorkout(customPlan, []);
 ## Accessibility
 
 ### ARIA Labels
+
 - All buttons have descriptive `aria-label` attributes
 - Example: `aria-label="Start Bench Press workout"`
 
 ### Keyboard Navigation
+
 - All interactive elements are keyboard accessible
 - Tab order is logical and intuitive
 - Focus indicators visible
 
 ### Screen Reader Support
+
 - Semantic HTML structure
 - Clear text labels for all content
 - Status badges have text content
 
 ### Visual Indicators
+
 - High contrast badges for different statuses
 - Color is not the only indicator (emoji + text)
 - Clear typography hierarchy
@@ -274,6 +293,7 @@ if (daysUntilDue < -3) {
 ```
 
 **Assumptions:**
+
 - 7 days per week
 - 2 days rest between workouts (configurable)
 - 3-day grace period before marking overdue
@@ -325,6 +345,7 @@ if (daysUntilDue < -3) {
 ## Success Metrics
 
 ### Quantitative
+
 - ✅ 544 total tests passing (32 new tests for this feature)
 - ✅ 100% of service functions covered
 - ✅ 100% of component interactions tested
@@ -332,6 +353,7 @@ if (daysUntilDue < -3) {
 - ✅ Zero security vulnerabilities (CodeQL)
 
 ### Qualitative
+
 - ✅ Intuitive user interface
 - ✅ Clear visual feedback
 - ✅ Accessible to all users
@@ -346,6 +368,7 @@ if (daysUntilDue < -3) {
 **Feature:** Smart Workout Suggestions
 
 ### What's New
+
 - Automatic next workout detection
 - Today's Workout dashboard card
 - Visual workout status badges
@@ -353,6 +376,7 @@ if (daysUntilDue < -3) {
 - Overdue workout notifications
 
 ### Benefits
+
 - **Save Time:** No need to manually find next workout
 - **Stay on Track:** Clear visual indicators for due workouts
 - **Quick Start:** One-click workout logging from dashboard
@@ -363,18 +387,22 @@ if (daysUntilDue < -3) {
 ## Developer Notes
 
 ### Dependencies
+
 - `date-fns` for date calculations (already in project)
 - No additional dependencies required
 
 ### Breaking Changes
+
 - None - fully backward compatible
 
 ### Migration Notes
+
 - No migration required
 - Feature automatically available to all users
 - Works with existing 5/3/1 cycles and custom plans
 
 ### Performance Considerations
+
 - All calculations performed client-side
 - Minimal overhead (< 1ms for typical cycles)
 - No impact on existing functionality

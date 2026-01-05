@@ -1,23 +1,27 @@
 # Plate Calculator System Documentation
 
 ## Overview
+
 The Plate Calculator is a comprehensive feature that helps users determine which weight plates to load on a barbell for any target weight. It includes location-aware plate set management, customizable plate configurations, and seamless integration with the workout logger.
 
 ## Features
 
 ### 🏋️ Core Plate Calculation
+
 - **Smart Algorithm**: Automatically calculates optimal plate combinations for any target weight
 - **Multiple Bar Types**: Supports Olympic (45 lbs), Women's (35 lbs), Training (25 lbs), and metric bars
 - **Visual Display**: Shows plates with color coding and visual representation
 - **Accuracy Tracking**: Indicates exact matches vs. approximations with remaining weight
 
 ### 📍 Location-Based Management
+
 - **Automatic Detection**: Uses browser geolocation API to detect current location
 - **Location Matching**: Automatically selects appropriate plate set based on proximity (within 1km)
 - **Privacy Friendly**: Location data stored locally, with user permission required
 - **Custom Naming**: Name locations (e.g., "Home Gym", "Commercial Gym")
 
 ### ⚙️ Customizable Plate Sets
+
 - **Multiple Configurations**: Create unlimited plate sets for different locations
 - **Preset Templates**: Quick setup with Olympic or Metric plate standards
 - **Custom Plates**: Add any weight, quantity, and color combination
@@ -25,6 +29,7 @@ The Plate Calculator is a comprehensive feature that helps users determine which
 - **Default Selection**: Set preferred plate set for quick access
 
 ### 🔧 Workout Logger Integration
+
 - **Inline Buttons**: 🏋️ buttons next to weight inputs for quick access
 - **Modal Interface**: Full plate calculator opens in overlay
 - **Real-time Updates**: Immediate calculation display
@@ -33,6 +38,7 @@ The Plate Calculator is a comprehensive feature that helps users determine which
 ## Technical Architecture
 
 ### Type Definitions (`types/plateCalculator.ts`)
+
 ```typescript
 interface PlateSet {
   id: string;
@@ -58,6 +64,7 @@ interface Plate {
 ```
 
 ### Storage Service (`services/plateCalculatorStorage.ts`)
+
 - **Local Storage**: All data persisted in browser localStorage
 - **Initialization**: Automatic creation of default Olympic plate set
 - **CRUD Operations**: Full create, read, update, delete for plate sets
@@ -67,6 +74,7 @@ interface Plate {
 ### Main Components
 
 #### PlateCalculator (`components/PlateCalculator.tsx`)
+
 - **Dual Mode**: Standalone component or inline integration
 - **Weight Input**: Direct weight entry with real-time calculation
 - **Plate Set Selection**: Dropdown for quick plate set switching
@@ -74,6 +82,7 @@ interface Plate {
 - **Location Toggle**: Enable/disable location-based features
 
 #### PlateSetManager (`components/PlateSetManager.tsx`)
+
 - **CRUD Interface**: Complete plate set management
 - **Location Assignment**: GPS integration for automatic location setting
 - **Preset Loading**: One-click Olympic/Metric plate setup
@@ -81,6 +90,7 @@ interface Plate {
 - **Default Management**: Set/unset default plate configurations
 
 #### WorkoutLogger Integration
+
 - **Weight Input Enhancement**: Added plate calculator buttons to all weight fields
 - **Modal Interface**: Full-featured plate calculator in popup
 - **Context Preservation**: Maintains workout state during plate calculation
@@ -89,6 +99,7 @@ interface Plate {
 ## Algorithm Details
 
 ### Plate Selection Algorithm
+
 ```typescript
 calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
   // 1. Calculate weight to load (target - bar weight)
@@ -126,6 +137,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ```
 
 ### Location Matching
+
 - **Proximity Threshold**: 1 kilometer radius for location matching
 - **Haversine Distance**: Accurate distance calculation considering Earth's curvature
 - **Fallback Behavior**: Uses default plate set if no location match found
@@ -134,6 +146,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## User Interface
 
 ### Main Plate Calculator Screen
+
 1. **Header Controls**
    - Location toggle button (📍)
    - Manage plate sets button (⚙️)
@@ -151,6 +164,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
    - Warning for inexact matches
 
 ### Workout Logger Integration
+
 1. **Enhanced Weight Inputs**
    - Original weight input field
    - 🏋️ plate calculator button
@@ -162,6 +176,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
    - Calculation summary display
 
 ### Plate Set Management
+
 1. **Overview Screen**
    - Grid layout of existing plate sets
    - Default badge indication
@@ -178,6 +193,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## Default Configurations
 
 ### Olympic Plates (Imperial)
+
 - 45 lbs × 8 (Red)
 - 35 lbs × 2 (Blue)  
 - 25 lbs × 4 (Green)
@@ -187,6 +203,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 - **Bar Weight**: 45 lbs
 
 ### Metric Plates
+
 - 20 kg × 8 (Red)
 - 15 kg × 2 (Blue)
 - 10 kg × 4 (Green)
@@ -198,24 +215,28 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## Usage Examples
 
 ### Basic Usage
+
 1. Open Plate Calculator tab
 2. Enter target weight (e.g., 225 lbs)
 3. View calculated plate configuration
 4. Load plates as displayed
 
 ### Location-Based Setup
+
 1. Enable location services
 2. Create plate set at gym location
 3. Automatic selection when returning to gym
 4. Different configurations for home vs. commercial gym
 
 ### Workout Integration
+
 1. Start logging workout in Workout Logger
 2. Click 🏋️ button next to weight input
 3. Calculate plates for working weight
 4. Continue with workout logging
 
 ### Custom Plate Set
+
 1. Open Plate Calculator
 2. Click ⚙️ Manage button
 3. Create new plate set
@@ -226,18 +247,21 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## Browser Compatibility
 
 ### Required Features
+
 - **localStorage**: For data persistence
 - **Geolocation API**: For location features (optional)
 - **Modern JavaScript**: ES6+ support
 - **CSS Grid/Flexbox**: For responsive layouts
 
 ### Supported Browsers
+
 - Chrome 60+
 - Firefox 60+
 - Safari 12+
 - Edge 79+
 
 ### Progressive Enhancement
+
 - Core functionality works without location services
 - Graceful degradation for older browsers
 - Accessibility features throughout
@@ -245,16 +269,19 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## Performance Considerations
 
 ### Storage Efficiency
+
 - Compact JSON storage format
 - Minimal data structure overhead
 - Efficient plate set indexing
 
 ### Calculation Speed
+
 - O(n) plate selection algorithm
 - Cached distance calculations
 - Optimized React re-renders
 
 ### Memory Usage
+
 - Lazy loading of plate set manager
 - Component-based code splitting
 - Efficient state management
@@ -262,6 +289,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## Accessibility Features
 
 ### WCAG 2.1 Compliance
+
 - **Keyboard Navigation**: Full keyboard support
 - **Screen Reader**: ARIA labels and roles
 - **Color Independence**: Information not color-dependent
@@ -269,6 +297,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 - **Alternative Text**: Descriptive labels for all controls
 
 ### Specific Features
+
 - Skip links for keyboard users
 - Role and aria-label attributes
 - High contrast color schemes
@@ -279,6 +308,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 ## Future Enhancements
 
 ### Planned Features
+
 - **Plate Loading Order**: Visual guide for optimal loading sequence
 - **Weight Conversions**: Automatic imperial/metric conversion
 - **Sharing**: Export/import plate set configurations
@@ -286,6 +316,7 @@ calculatePlates(targetWeight: number, plateSet: PlateSet): PlateCalculation {
 - **Advanced Algorithms**: Multi-objective optimization (minimize plates, balanced loading)
 
 ### Integration Opportunities
+
 - **Progress Tracking**: Historical plate usage analytics
 - **Workout Planning**: Suggest warmup plate progressions
 - **Social Features**: Share custom plate configurations

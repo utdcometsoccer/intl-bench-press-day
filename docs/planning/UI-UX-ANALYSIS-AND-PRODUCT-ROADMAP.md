@@ -6,7 +6,7 @@
 **Date:** November 2025  
 **Status:** Product Planning Document
 
----
+ ---
 
 ## Table of Contents
 
@@ -30,13 +30,14 @@
    - [Social Media Features](#13-social-media-features)
 6. [Product Roadmap](#product-roadmap)
 
----
+ ---
 
 ## Executive Summary
 
 The International Bench Press Day fitness tracker is a Progressive Web Application (PWA) built with React, TypeScript, and Vite. It implements Jim Wendler's 5/3/1 strength training methodology and provides comprehensive workout tracking capabilities. This document provides a thorough UI/UX analysis and outlines a strategic product roadmap for future development.
 
 ### Current Strengths
+
 - ✅ Strong accessibility foundation (Section 508 compliant)
 - ✅ Offline-first PWA architecture
 - ✅ Comprehensive 5/3/1 methodology implementation
@@ -45,19 +46,21 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 - ✅ Responsive design with mobile-first approach
 
 ### Areas for Improvement
+
 - 🔄 User authentication and cloud sync
 - 🔄 Enhanced user onboarding experience
 - 🔄 Workout navigation improvements
 - 🔄 Social and sharing features
 - 🔄 Third-party fitness platform integrations
 
----
+ ---
 
 ## Current State Assessment
 
 ### Technology Stack
+
 | Component | Technology | Version |
-|-----------|------------|---------|
+| ----------- | ------------ | --------- |
 | Frontend Framework | React | 19.x |
 | Language | TypeScript | 5.8.x |
 | Build Tool | Vite | 7.x |
@@ -67,10 +70,11 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 | Storage | IndexedDB | Native |
 
 ### Test Coverage
+
 - **351 passing tests** across 31 test files
 - Comprehensive coverage of storage systems, components, and business logic
 
----
+ ---
 
 ## UI/UX Analysis
 
@@ -79,8 +83,9 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 #### Current Score: 90/100 (Good Compliance)
 
 **Strengths:**
+
 | Feature | Status | Implementation |
-|---------|--------|----------------|
+| --------- | -------- | ---------------- |
 | Skip Links | ✅ Implemented | Skip to main content, Skip to navigation |
 | Landmark Roles | ✅ Implemented | banner, navigation, main regions |
 | Keyboard Navigation | ✅ Implemented | Full keyboard accessibility with logical tab order |
@@ -116,14 +121,15 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
     transition-duration: 0.01ms !important;
   }
 }
-```
+```text
 
----
+ ---
 
 ### 2. User Journey Analysis
 
 #### Current User Flow
-```
+
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                         User Journey                             │
 ├─────────────────────────────────────────────────────────────────┤
@@ -160,7 +166,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 │                                         └─────────────────┘     │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 #### Pain Points Identified
 
@@ -182,29 +188,32 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 #### Recommended User Journey Improvements
 
 1. **First-Time User Experience**
-   ```
+
+```text
    Welcome Screen → Quick Profile Setup → Create First Cycle → Guided Workout
-   ```
+```text
 
 2. **Returning User Experience**
-   ```
+
+```text
    Dashboard → Today's Workout (highlighted) → Quick Log → Progress Summary
-   ```
+```text
 
 3. **Smart Workout Suggestions**
    - Auto-detect next workout based on previous sessions
    - Calendar view with completed/upcoming workouts
    - Push notifications for scheduled workouts
 
----
+ ---
 
 ### 3. Color Scheme Assessment
 
 #### Current Color Palette
 
 **Light Theme:**
+
 | Element | Color | Hex Code | Usage |
-|---------|-------|----------|-------|
+| --------- | ------- | ---------- | ------- |
 | Primary | Blue | `#007bff` | Buttons, active states, links |
 | Success | Green | `#28a745` | Save buttons, positive indicators |
 | Danger | Red | `#dc3545` | Delete buttons, AMRAP indicators |
@@ -215,8 +224,9 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 | Text Secondary | Gray | `#6c757d` | Secondary text, labels |
 
 **Dark Theme:**
+
 | Element | Color | Hex Code | Usage |
-|---------|-------|----------|-------|
+| --------- | ------- | ---------- | ------- |
 | Primary | Blue | `#0d6efd` | Buttons, active states |
 | Background | Dark Gray | `#242424` | Main background |
 | Surface | Darker Gray | `#1a1a1a` | Cards, containers |
@@ -226,6 +236,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 #### Color Scheme Recommendations
 
 1. **Enhanced Color Semantics**
+
    ```css
    :root {
      /* Semantic colors for workout states */
@@ -234,13 +245,13 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
      --workout-amrap: #ff6b6b;     /* Red - AMRAP challenge */
      --workout-complete: #4d96ff;  /* Blue - Completed */
      --workout-rest: #c4c4c4;      /* Gray - Rest day */
-     
+
      /* Progress indicators */
      --progress-start: #ff9f43;    /* Orange - Beginning */
      --progress-mid: #feca57;      /* Yellow - Mid-progress */
      --progress-end: #26de81;      /* Green - Goal achieved */
    }
-   ```
+```text
 
 2. **Improved Contrast Ratios**
    - Increase secondary text contrast in dark mode
@@ -251,14 +262,14 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
    - Use color gradients to indicate workout progression
    - Distinguish between past, current, and future workouts
 
----
+ ---
 
 ### 4. Typography Review
 
 #### Current Typography System
 
 | Element | Font | Size | Weight | Line Height |
-|---------|------|------|--------|-------------|
+| --------- | ------ | ------ | -------- | ------------- |
 | Body | System UI Stack | 16px base | 400 | 1.5 |
 | H1 | System UI | 30-38px | 700 | 1.2 |
 | H2 | System UI | 24-30px | 600 | 1.3 |
@@ -267,52 +278,56 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 | Labels | System UI | 12-14px | 500 | 1.4 |
 
 **Font Stack:**
+
 ```css
 font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-```
+```text
 
 #### Typography Recommendations
 
 1. **Add Dedicated Heading Font**
+
    ```css
    /* Consider adding a display font for headings */
    --font-display: 'Montserrat', 'Inter', system-ui, sans-serif;
    --font-body: 'Open Sans', system-ui, sans-serif;
    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-   ```
+```text
 
 2. **Number Formatting**
    - Use tabular (monospace) numbers for workout data
    - Consistent decimal formatting for weights
+
    ```css
    .workout-number {
      font-feature-settings: "tnum";
      font-variant-numeric: tabular-nums;
    }
-   ```
+```text
 
 3. **Responsive Typography Scale**
+
    ```css
    /* Fluid typography */
    --font-size-base: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);
    --font-size-lg: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
    --font-size-xl: clamp(1.25rem, 1rem + 1vw, 1.5rem);
    --font-size-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
-   ```
+```text
 
 4. **Reading Optimization**
    - Maximum line width of 65-75 characters for readability
    - Increased letter-spacing for all-caps labels
    - Proper paragraph spacing in notes sections
 
----
+ ---
 
 ### 5. Responsive Design Evaluation
 
 #### Current Breakpoints
 
 | Breakpoint | Width | Device Target |
-|------------|-------|---------------|
+| ------------ | ------- | --------------- |
 | XS | 0px | Portrait phones |
 | SM | 576px | Landscape phones |
 | MD | 768px | Tablets |
@@ -321,6 +336,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 | XXL | 1320px | Large desktops |
 
 #### Responsive Features
+
 - ✅ Mobile-first CSS approach
 - ✅ Hamburger menu for mobile navigation
 - ✅ Grid layouts with responsive breakpoints
@@ -330,6 +346,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 #### Responsive Design Recommendations
 
 1. **Enhanced Mobile Experience**
+
    ```css
    /* Bottom navigation for mobile */
    @media (max-width: 767px) {
@@ -346,7 +363,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
        z-index: 1000;
      }
    }
-   ```
+```text
 
 2. **Tablet Optimization**
    - Two-column layout for workout logging
@@ -363,18 +380,19 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
    - iOS safe area handling
    - Android navigation bar adaptation
 
----
+ ---
 
 ## Feature Planning
 
 ### 6. Entra ID Authentication Plan
 
 #### Overview
+
 Microsoft Entra ID (formerly Azure AD) provides enterprise-grade identity management with support for personal Microsoft accounts.
 
 #### Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Authentication Flow                           │
 ├─────────────────────────────────────────────────────────────────┤
@@ -409,17 +427,19 @@ Microsoft Entra ID (formerly Azure AD) provides enterprise-grade identity manage
 │                          └──────────────────┘                   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 #### Implementation Steps
 
 **Phase 1: Azure Configuration**
+
 1. Register application in Azure Portal
 2. Configure redirect URIs (localhost for dev, production URL)
 3. Set up API permissions (User.Read, offline_access)
 4. Create client secret for backend (if needed)
 
 **Phase 2: Frontend Integration**
+
 ```typescript
 // auth/config.ts
 import { Configuration, PublicClientApplication } from '@azure/msal-browser';
@@ -442,9 +462,10 @@ export const loginRequest = {
 };
 
 export const msalInstance = new PublicClientApplication(msalConfig);
-```
+```text
 
 **Phase 3: React Context Provider**
+
 ```typescript
 // auth/AuthProvider.tsx
 import { MsalProvider, useMsal, useIsAuthenticated } from '@azure/msal-react';
@@ -458,7 +479,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => (
 export const useAuth = () => {
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
-  
+
   return {
     isAuthenticated,
     user: accounts[0],
@@ -466,56 +487,62 @@ export const useAuth = () => {
     logout: () => instance.logoutPopup()
   };
 };
-```
+```text
 
 **Phase 4: Protected Routes**
+
 ```typescript
 // components/ProtectedRoute.tsx
 export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  
+
   return <>{children}</>;
 };
-```
+```text
 
 #### Dependencies
+
 ```json
 {
   "@azure/msal-browser": "^3.x",
   "@azure/msal-react": "^2.x"
 }
-```
+```text
 
 #### Security Considerations
+
 - Store tokens securely (MSAL handles this)
 - Implement token refresh before expiry
 - Use PKCE flow for SPA security
 - Validate tokens on backend API calls
 
 #### Timeline Estimate
+
 | Phase | Duration | Dependencies |
-|-------|----------|--------------|
+| ------- | ---------- | -------------- |
 | Azure Setup | 2 days | Azure subscription |
 | MSAL Integration | 3 days | None |
 | UI Components | 2 days | None |
 | Testing | 2 days | None |
 | **Total** | **9 days** | |
 
----
+ ---
 
 ### 7. Remote Database Sync Feature
 
 #### Overview
+
 Enable users to sync their workout data to a cloud database and restore it across devices when logged in.
 
 #### Architecture Options
 
 **Option A: Azure Cosmos DB (Recommended)**
-```
+
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Sync Architecture                           │
 ├─────────────────────────────────────────────────────────────────┤
@@ -533,14 +560,16 @@ Enable users to sync their workout data to a cloud database and restore it acros
 │  └─────────────┘                      └──────────────────┘      │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **Option B: Firebase Firestore**
+
 - Easier setup, built-in offline sync
 - Google-managed infrastructure
 - Real-time sync capabilities
 
 **Option C: Azure Blob Storage + Table Storage**
+
 - Lower cost for simple data
 - Good for backup/restore pattern
 - Less real-time sync capability
@@ -553,10 +582,10 @@ interface SyncService {
   // Core sync operations
   pushLocalChanges(): Promise<SyncResult>;
   pullRemoteChanges(): Promise<SyncResult>;
-  
+
   // Conflict resolution
   resolveConflict(local: DataRecord, remote: DataRecord): DataRecord;
-  
+
   // Status
   getSyncStatus(): SyncStatus;
   getLastSyncTime(): Date | null;
@@ -566,11 +595,11 @@ interface SyncService {
 class AzureSyncService implements SyncService {
   private api: AzureFunctionsClient;
   private localDb: IndexedDBService;
-  
+
   async pushLocalChanges(): Promise<SyncResult> {
     const unsyncedRecords = await this.localDb.getUnsyncedRecords();
     const userId = await this.getUserId();
-    
+
     for (const record of unsyncedRecords) {
       await this.api.post(`/users/${userId}/data`, {
         ...record,
@@ -578,21 +607,21 @@ class AzureSyncService implements SyncService {
       });
       await this.localDb.markAsSynced(record.id);
     }
-    
+
     return { success: true, recordsSynced: unsyncedRecords.length };
   }
-  
+
   async pullRemoteChanges(): Promise<SyncResult> {
     const lastSync = await this.localDb.getLastSyncTime();
     const userId = await this.getUserId();
-    
+
     const remoteRecords = await this.api.get(`/users/${userId}/data`, {
       modifiedSince: lastSync
     });
-    
+
     for (const record of remoteRecords) {
       const local = await this.localDb.getRecord(record.id);
-      
+
       if (!local) {
         await this.localDb.saveRecord(record);
       } else if (record.lastModified > local.lastModified) {
@@ -600,16 +629,16 @@ class AzureSyncService implements SyncService {
         await this.localDb.saveRecord(resolved);
       }
     }
-    
+
     return { success: true, recordsSynced: remoteRecords.length };
   }
-  
+
   resolveConflict(local: DataRecord, remote: DataRecord): DataRecord {
     // Last-write-wins strategy (configurable)
     return remote.lastModified > local.lastModified ? remote : local;
   }
 }
-```
+```text
 
 #### Data Model for Sync
 
@@ -634,7 +663,7 @@ interface SyncStatus {
   syncInProgress: boolean;
   error?: string;
 }
-```
+```text
 
 #### UI Components
 
@@ -661,8 +690,9 @@ interface SyncStatus {
 4. Periodic sync attempts with exponential backoff
 
 #### Timeline Estimate
+
 | Phase | Duration | Dependencies |
-|-------|----------|--------------|
+| ------- | ---------- | -------------- |
 | Azure Setup | 3 days | Azure subscription |
 | API Development | 5 days | Auth complete |
 | Sync Service | 5 days | API complete |
@@ -670,7 +700,7 @@ interface SyncStatus {
 | Testing | 3 days | All above |
 | **Total** | **19 days** | |
 
----
+ ---
 
 ### 8. New Feature Suggestions
 
@@ -678,6 +708,7 @@ interface SyncStatus {
 
 **1. Dashboard Home View**
 Replace default Exercise Tracker with personalized dashboard:
+
 - Today's scheduled workout
 - Weekly progress summary
 - Streak counter
@@ -686,6 +717,7 @@ Replace default Exercise Tracker with personalized dashboard:
 
 **2. Workout Templates**
 Allow users to create custom workout templates beyond 5/3/1:
+
 - Custom exercise combinations
 - Flexible rep schemes
 - Template sharing
@@ -693,6 +725,7 @@ Allow users to create custom workout templates beyond 5/3/1:
 
 **3. Rest Timer**
 Built-in rest period timer:
+
 - Configurable rest periods (60s, 90s, 120s, etc.)
 - Audio/vibration alerts
 - Auto-start after set completion
@@ -700,6 +733,7 @@ Built-in rest period timer:
 
 **4. Calendar View**
 Visual workout calendar:
+
 - Completed workouts marked
 - Scheduled workouts displayed
 - Drag-to-reschedule
@@ -707,6 +741,7 @@ Visual workout calendar:
 
 **5. Personal Records Board**
 Dedicated PR tracking:
+
 - All-time records by exercise
 - Recent PRs (last 30/60/90 days)
 - PR projections based on progress
@@ -716,6 +751,7 @@ Dedicated PR tracking:
 
 **6. Workout History**
 Detailed workout history view:
+
 - Searchable/filterable history
 - Volume trends over time
 - Exercise frequency analysis
@@ -723,6 +759,7 @@ Detailed workout history view:
 
 **7. Custom Exercises**
 Allow adding custom exercises:
+
 - Exercise name and category
 - Target muscle groups
 - Custom instructions
@@ -730,6 +767,7 @@ Allow adding custom exercises:
 
 **8. Body Measurements Tracker**
 Track beyond weight:
+
 - Body measurements (arms, chest, waist, etc.)
 - Progress photos (local only)
 - BMI/body fat estimates
@@ -737,6 +775,7 @@ Track beyond weight:
 
 **9. Nutrition Integration (Basic)**
 Simple calorie/macro tracking:
+
 - Daily calorie goal
 - Quick food logging
 - Weekly average display
@@ -744,6 +783,7 @@ Simple calorie/macro tracking:
 
 **10. Achievements & Badges**
 Gamification elements:
+
 - Workout streak badges
 - PR milestones
 - Consistency awards
@@ -753,6 +793,7 @@ Gamification elements:
 
 **11. Workout Notes AI Summary**
 AI-powered workout insights:
+
 - Summarize workout notes over time
 - Pattern recognition
 - Fatigue indicators
@@ -760,17 +801,19 @@ AI-powered workout insights:
 
 **12. Voice Logging**
 Hands-free workout logging:
+
 - "Add 5 reps at 225"
 - Voice confirmation
 - Wake word activation
 
 **13. Spotify Integration**
 Music during workouts:
+
 - Playlist sync
 - BPM-based song selection
 - Workout-specific playlists
 
----
+ ---
 
 ### 9. Workout Logger Improvements
 
@@ -794,6 +837,7 @@ Music during workouts:
 #### Improvement Plan
 
 **1. Smart Workout Selection**
+
 ```typescript
 // services/workoutSuggestion.ts
 interface WorkoutSuggestion {
@@ -807,15 +851,16 @@ interface WorkoutSuggestion {
 const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
   const cycle = await fiveThreeOneStorage.getCycleById(cycleId);
   const results = await workoutResultsStorage.getCycleResults(cycleId);
-  
+
   // Find first incomplete workout in current week
   // or suggest next week if all complete
   // ...implementation
 };
-```
+```text
 
 **2. Visual Workout Cards**
-```
+
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  Week 1 - Day 2: Bench Press                                    │
 ├─────────────────────────────────────────────────────────────────┤
@@ -831,10 +876,11 @@ const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
 │  └─────────────────────────────────────────────────────────────┘│
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **3. Simplified Set Entry**
-```
+
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  Set 3 (AMRAP)                                    🏋️ 185 lbs   │
 ├─────────────────────────────────────────────────────────────────┤
@@ -853,21 +899,24 @@ const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
 │  └──────────┘  └──────────┘  └──────────────────────────────┘  │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **4. Progress Indicators**
+
 - Color-coded workout cards (gray/yellow/green)
 - Progress bar for weekly completion
 - Visual streak counter
 - "On track" vs "behind" messaging
 
 **5. Quick Actions**
+
 - One-tap "completed as planned"
 - Swipe gestures for set completion
 - Voice input for reps
 - Auto-advance to next set
 
 **6. Enhanced Rest Timer**
+
 ```typescript
 // components/RestTimer.tsx
 interface RestTimerProps {
@@ -879,10 +928,10 @@ interface RestTimerProps {
 const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
   const [remaining, setRemaining] = useState(duration);
   const [isActive, setIsActive] = useState(autoStart);
-  
+
   useEffect(() => {
     if (!isActive || remaining <= 0) return;
-    
+
     const timer = setInterval(() => {
       setRemaining(prev => {
         if (prev <= 1) {
@@ -895,10 +944,10 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
         return prev - 1;
       });
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [isActive, remaining, onComplete]);
-  
+
   return (
     <div className="rest-timer">
       <div className="timer-display">{formatTime(remaining)}</div>
@@ -909,11 +958,12 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
     </div>
   );
 };
-```
+```text
 
 #### Timeline Estimate
+
 | Feature | Duration | Priority |
-|---------|----------|----------|
+| --------- | ---------- | ---------- |
 | Smart Workout Selection | 3 days | High |
 | Visual Workout Cards | 2 days | High |
 | Simplified Set Entry | 3 days | High |
@@ -922,7 +972,7 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
 | Quick Actions | 2 days | Low |
 | **Total** | **14 days** | |
 
----
+ ---
 
 ### 10. Apple Fitness Integration
 
@@ -931,6 +981,7 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
 **Current Status: Limited Feasibility (Web Only)**
 
 Apple Fitness (formerly Apple Health/HealthKit) has strict platform requirements:
+
 - Native iOS app required for full integration
 - No web API available
 - Third-party access requires app review
@@ -938,16 +989,19 @@ Apple Fitness (formerly Apple Health/HealthKit) has strict platform requirements
 #### Integration Options
 
 **Option A: Apple Shortcuts Integration (Limited)**
+
 - User manually triggers Shortcuts
 - Share workout data via standardized format
 - Requires user setup
 
 **Option B: Export to Apple Health-Compatible Format**
+
 - Export workouts as GPX/TCX files
 - User imports manually to Health app
 - Low friction, no native integration
 
 **Option C: React Native / Capacitor App**
+
 - Build native app wrapper
 - Use HealthKit APIs directly
 - Full bidirectional sync
@@ -955,6 +1009,7 @@ Apple Fitness (formerly Apple Health/HealthKit) has strict platform requirements
 - App Store submission process
 
 **Option D: Partner with Existing Integration**
+
 - Strava sync (then Strava → Apple Health)
 - Garmin Connect integration
 - Fitbit ecosystem
@@ -962,6 +1017,7 @@ Apple Fitness (formerly Apple Health/HealthKit) has strict platform requirements
 #### Recommended Approach
 
 **Phase 1: Export Compatibility** (Low effort, immediate value)
+
 ```typescript
 // services/appleHealthExport.ts
 interface HealthKitWorkout {
@@ -992,9 +1048,10 @@ const exportToHealthKitFormat = (workout: WorkoutResult): HealthKitWorkout => {
     }
   };
 };
-```
+```text
 
 **Phase 2: Capacitor Native Bridge** (Future consideration)
+
 ```typescript
 // For future native app
 import { HealthKit } from '@capacitor-community/health-kit';
@@ -1003,7 +1060,7 @@ const syncToHealthKit = async (workout: WorkoutResult) => {
   await HealthKit.requestAuthorization({
     all: ['workoutType']
   });
-  
+
   await HealthKit.saveWorkout({
     type: 'traditionalStrengthTraining',
     startDate: workout.datePerformed,
@@ -1012,7 +1069,7 @@ const syncToHealthKit = async (workout: WorkoutResult) => {
     energyBurned: estimateCaloriesBurned(workout)
   });
 };
-```
+```text
 
 #### Alternative: Google Fit Integration (More Feasible)
 
@@ -1024,7 +1081,7 @@ import { GoogleFitClient } from './googleFitClient';
 
 class GoogleFitService {
   private client: GoogleFitClient;
-  
+
   async syncWorkout(workout: WorkoutResult): Promise<void> {
     const session = {
       name: `${workout.exerciseName} - ${workout.cycleName}`,
@@ -1033,33 +1090,34 @@ class GoogleFitService {
       endTimeMillis: workout.datePerformed.getTime() + workout.duration * 60000,
       activityType: 97,  // Weight training
     };
-    
+
     await this.client.sessions.create(session);
   }
 }
-```
+```text
 
 #### Timeline & Effort Estimates
 
 | Option | Effort | Value | Recommendation |
-|--------|--------|-------|----------------|
+| -------- | -------- | ------- | ---------------- |
 | Export Format | Low (2 days) | Medium | ✅ Implement now |
 | Strava Sync | Medium (5 days) | High | ✅ Phase 2 |
 | Google Fit | Medium (5 days) | High | ✅ Phase 2 |
 | Native iOS App | High (4+ weeks) | Very High | 📋 Long-term |
 
----
+ ---
 
 ## Content & Marketing
 
 ### 11. Landing Page Plan
 
 #### Purpose
+
 Convert visitors into app users by showcasing key features, benefits, and social proof.
 
 #### Structure
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        LANDING PAGE                              │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1117,7 +1175,7 @@ Convert visitors into app users by showcasing key features, benefits, and social
 │  └─────────────────────────────────────────────────────────────┘│
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 #### Key Elements
 
@@ -1161,19 +1219,21 @@ const LandingPage: FC = () => {
     </div>
   );
 };
-```
+```text
 
 #### SEO Considerations
+
 - Meta tags for fitness, workout tracker, 5/3/1
 - Schema.org structured data for software application
 - Open Graph tags for social sharing
 - Performance optimization (Core Web Vitals)
 
----
+ ---
 
 ### 12. Blog Plan
 
 #### Purpose
+
 - Drive organic traffic through fitness content
 - Establish authority in strength training space
 - Educate users on 5/3/1 methodology
@@ -1210,7 +1270,7 @@ const LandingPage: FC = () => {
 #### Content Calendar (Sample)
 
 | Week | Category | Title |
-|------|----------|-------|
+| ------ | ---------- | ------- |
 | 1 | Guide | "Getting Started with 5/3/1" |
 | 2 | Tutorial | "Perfect Your Squat Technique" |
 | 3 | Update | "New Feature: Rest Timer" |
@@ -1219,27 +1279,30 @@ const LandingPage: FC = () => {
 #### Technical Implementation
 
 **Option A: Static Blog with Markdown**
-```
+
+```text
 docs/blog/
 ├── 2025-01-01-getting-started.md
 ├── 2025-01-08-squat-technique.md
 ├── 2025-01-15-rest-timer.md
 └── images/
     └── ...
-```
+```text
 
 **Option B: Headless CMS**
+
 - Contentful, Sanity, or Strapi
 - Rich content editing
 - Image optimization
 - SEO tools built-in
 
 **Option C: Blog as React Route**
+
 ```typescript
 // pages/Blog.tsx
 const Blog: FC = () => {
   const { posts } = useBlogPosts();
-  
+
   return (
     <div className="blog-page">
       <h1>IBPD Blog</h1>
@@ -1249,9 +1312,9 @@ const Blog: FC = () => {
     </div>
   );
 };
-```
+```text
 
----
+ ---
 
 ### 13. Social Media Features
 
@@ -1260,7 +1323,7 @@ const Blog: FC = () => {
 **1. Share Cards**
 Generate shareable images of workout achievements:
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        WORKOUT COMPLETE                          │
 │                    🏋️ International Bench Press Day              │
@@ -1283,7 +1346,7 @@ Generate shareable images of workout achievements:
 │  Try IBPD: https://ibpd.app                                     │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **2. Implementation**
 
@@ -1307,15 +1370,15 @@ const generateShareImage = async (workout: ShareableWorkout): Promise<Blob> => {
   container.innerHTML = createShareCardHTML(workout);
   container.style.cssText = 'position:absolute;left:-9999px;';
   document.body.appendChild(container);
-  
+
   const canvas = await html2canvas(container, {
     width: 600,
     height: 400,
     backgroundColor: '#1a1a1a'
   });
-  
+
   document.body.removeChild(container);
-  
+
   return new Promise(resolve => {
     canvas.toBlob(blob => resolve(blob!), 'image/png');
   });
@@ -1324,7 +1387,7 @@ const generateShareImage = async (workout: ShareableWorkout): Promise<Blob> => {
 const shareToSocial = async (workout: ShareableWorkout): Promise<void> => {
   const imageBlob = await generateShareImage(workout);
   const file = new File([imageBlob], 'workout.png', { type: 'image/png' });
-  
+
   if (navigator.canShare?.({ files: [file] })) {
     await navigator.share({
       title: 'My Workout Results',
@@ -1339,22 +1402,24 @@ const shareToSocial = async (workout: ShareableWorkout): Promise<void> => {
     alert('Image copied to clipboard!');
   }
 };
-```
+```text
 
 #### Sharing the App
 
 **1. Referral System**
+
 - Unique referral links
 - Track referrals in analytics
 - Optional: reward system for referrals
 
 **2. Social Share Buttons**
+
 ```typescript
 // components/ShareButtons.tsx
 const ShareButtons: FC = () => {
   const appUrl = 'https://ibpd.app';
   const shareText = 'Check out this awesome 5/3/1 workout tracker!';
-  
+
   return (
     <div className="share-buttons">
       <a 
@@ -1387,9 +1452,10 @@ const ShareButtons: FC = () => {
     </div>
   );
 };
-```
+```text
 
 **3. QR Code Generation**
+
 ```typescript
 // Generate QR code for app URL
 import QRCode from 'qrcode';
@@ -1404,15 +1470,15 @@ const generateAppQR = async (): Promise<string> => {
     }
   });
 };
-```
+```text
 
----
+ ---
 
 ## Product Roadmap
 
 ### Version Timeline
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      PRODUCT ROADMAP 2025-2026                   │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1450,15 +1516,16 @@ const generateAppQR = async (): Promise<string> => {
 └─────────────────────────────────────────────────────────────────┘
 
 Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
-```
+```text
 
 ### Detailed Phase Breakdown
 
 #### Phase 1: Foundation Enhancements (Q2 2025)
+
 **Duration:** 6-8 weeks
 
 | Feature | Priority | Effort | Dependencies |
-|---------|----------|--------|--------------|
+| --------- | ---------- | -------- | -------------- |
 | Workout Logger Improvements | High | 14 days | None |
 | Rest Timer | High | 2 days | None |
 | Smart Workout Suggestions | High | 3 days | None |
@@ -1468,10 +1535,11 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 **Total Estimated Effort:** 26 days
 
 #### Phase 2: Cloud & Authentication (Q3 2025)
+
 **Duration:** 8-10 weeks
 
 | Feature | Priority | Effort | Dependencies |
-|---------|----------|--------|--------------|
+| --------- | ---------- | -------- | -------------- |
 | Entra ID Authentication | High | 9 days | Azure subscription |
 | Remote Database Sync | High | 19 days | Auth complete |
 | Dashboard Home View | Medium | 5 days | Sync recommended |
@@ -1480,10 +1548,11 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 **Total Estimated Effort:** 38 days
 
 #### Phase 3: Growth Features (Q4 2025)
+
 **Duration:** 8-10 weeks
 
 | Feature | Priority | Effort | Dependencies |
-|---------|----------|--------|--------------|
+| --------- | ---------- | -------- | -------------- |
 | Social Sharing | Medium | 5 days | Auth complete |
 | Google Fit Integration | Medium | 5 days | Auth complete |
 | Custom Workout Templates | Medium | 7 days | None |
@@ -1495,7 +1564,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 ### Success Metrics
 
 | Metric | Current | Q2 Target | Q4 Target |
-|--------|---------|-----------|-----------|
+| -------- | --------- | ----------- | ----------- |
 | Monthly Active Users | N/A | 500 | 2,000 |
 | Workouts Logged/Month | N/A | 2,000 | 10,000 |
 | PWA Installs | N/A | 100 | 500 |
@@ -1505,21 +1574,21 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 ### Risk Assessment
 
 | Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
+| ------ | ------------- | -------- | ------------ |
 | Azure costs exceed budget | Medium | Medium | Monitor usage, set alerts |
 | User adoption slower than expected | Medium | High | Increase marketing, improve onboarding |
 | Apple Health integration blocked | High | Low | Focus on Google Fit, export options |
 | Performance issues at scale | Low | High | Load testing, caching strategies |
 | Security vulnerabilities | Low | Very High | Regular audits, penetration testing |
 
----
+ ---
 
 ## Appendix
 
 ### A. Competitive Analysis
 
 | Feature | IBPD | Strong App | JEFIT | Hevy |
-|---------|------|------------|-------|------|
+| --------- | ------ | ------------ | ------- | ------ |
 | 5/3/1 Support | ✅ | ❌ | ❌ | ❌ |
 | Free | ✅ | Freemium | Freemium | Freemium |
 | Offline | ✅ | ✅ | ✅ | ✅ |
@@ -1531,18 +1600,21 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 ### B. User Personas
 
 **1. The Dedicated Lifter**
+
 - Age: 25-35
 - Experience: Intermediate to advanced
 - Goals: Strength gains, PR tracking
 - Needs: Reliable tracking, progress visualization
 
 **2. The Beginner**
+
 - Age: 18-30
 - Experience: Beginner
 - Goals: Learn 5/3/1, consistent training
 - Needs: Guidance, simple interface
 
 **3. The Coach**
+
 - Age: 30-50
 - Experience: Expert
 - Goals: Program multiple athletes
@@ -1565,9 +1637,9 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
     "qrcode": "^1.5.x"
   }
 }
-```
+```text
 
----
+ ---
 
 **Document Version:** 1.0  
 **Last Updated:** November 2025  

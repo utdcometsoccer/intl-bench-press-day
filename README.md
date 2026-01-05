@@ -7,6 +7,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 ## 🏋️ Features
 
 ### 🎯 Core Functionality
+
 - **One Rep Max Calculator**: Multiple scientific formulas (Epley, Brzycki, Lander, Lombardi)
 - **5/3/1 Program Integration**: Complete implementation of Jim Wendler's 5/3/1 methodology
 - **Exercise Database**: Comprehensive exercise library with categorization
@@ -15,6 +16,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **Data Export**: Export all workout data for backup or analysis
 
 ### 🏋️ Plate Calculator System
+
 - **Smart Plate Calculation**: Automatically calculates optimal plate combinations for any target weight
 - **Location-Aware Plate Sets**: GPS-enabled automatic gym detection and plate set selection
 - **Custom Plate Configurations**: Create unlimited plate sets for different gyms/locations
@@ -23,6 +25,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **Multiple Bar Types**: Support for Olympic (45 lbs), Women's (35 lbs), Training, and Metric bars
 
 ### 📱 Progressive Web App (PWA)
+
 - **App Installation**: Install directly to home screen on mobile and desktop
 - **Offline Functionality**: Complete app works without internet connection
 - **Service Worker**: Background caching and automatic updates
@@ -30,6 +33,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **Cross-Platform**: Works on iOS, Android, Windows, macOS, and Linux
 
 ### ♿ Accessibility Features
+
 - **Section 508 Compliance**: Full compliance with federal accessibility standards
 - **WCAG 2.1 AA**: Meets Web Content Accessibility Guidelines Level AA
 - **Screen Reader Support**: Complete ARIA implementation and semantic HTML
@@ -38,6 +42,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **Focus Management**: Logical tab order and clear focus indicators
 
 ### 🎤 Voice Navigation
+
 - **Hands-free Control**: Navigate the app using voice commands while training
 - **Speech Recognition**: Uses Web Speech API for browser-native speech recognition
 - **Navigation Commands**: Voice commands for all major app sections
@@ -46,6 +51,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **Accessibility Feature**: Additional input method for users with motor impairments
 
 ### 🔗 Health Platform Integration
+
 - **Google Fit Sync**: Export workouts directly to Google Fit
 - **Apple Health Export**: Export workout data in HealthKit-compatible format
 - **Session Tracking**: Complete workout sessions with duration and activity type
@@ -53,6 +59,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 - **Cross-Platform Data**: Share workout data across health and fitness apps
 
 ### 🔧 Advanced Features
+
 - **Custom Formula System**: Create and store custom one-rep-max calculation formulas
 - **Exercise Records**: Detailed history of all exercise performances with trend analysis
 - **Progress Visualization**: Interactive charts using Recharts library
@@ -63,24 +70,28 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 ## 🛠️ Technology Stack
 
 ### Frontend & Framework
+
 - **React 19** with TypeScript for modern UI development
 - **Vite 7** for lightning-fast development and building
 - **Progressive Web App** with Vite PWA plugin and Workbox
 - **CSS Modules** for component-scoped styling
 
 ### Data & Storage
+
 - **IndexedDB** for client-side data persistence and offline functionality
 - **Service Worker** for background sync and caching
 - **Location Services** using browser Geolocation API
 - **Local Storage** for preferences and settings
 
 ### Visualization & UX
+
 - **Recharts** for interactive data visualization and progress charts
 - **ARIA Implementation** for complete screen reader accessibility
 - **Responsive Design** with mobile-first approach
 - **Dark/Light Theme** support with system preference detection
 
 ### Development & Quality
+
 - **TypeScript 5.8** with strict mode for type safety
 - **Vitest 3** with React Testing Library for comprehensive testing
 - **ESLint 9** with TypeScript-aware rules and React hooks plugin
@@ -88,7 +99,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 
 ## 📋 Project Structure
 
-```
+```text
 src/
 ├── components/
 │   ├── ExerciseOneRepMaxTracker.tsx    # Main exercise tracking component
@@ -128,6 +139,7 @@ src/
 This project features a robust testing suite with **351 passing tests** covering all functionality:
 
 ### Test Coverage
+
 - **Storage Systems**: Database operations, CRUD functionality, error handling
 - **React Components**: Rendering, user interactions, integration testing  
 - **Business Logic**: 5/3/1 calculations, one-rep-max formulas, statistics
@@ -139,6 +151,7 @@ This project features a robust testing suite with **351 passing tests** covering
 - **Error Handling**: Graceful degradation and comprehensive error recovery
 
 ### Testing Tools
+
 - **Vitest 3**: Modern test runner with native ES modules and hot reload
 - **React Testing Library**: Component testing with user-centric queries and accessibility focus
 - **Jest DOM**: Extended matchers for DOM and accessibility testing
@@ -146,6 +159,7 @@ This project features a robust testing suite with **351 passing tests** covering
 - **User Event**: Realistic user interaction simulation
 
 ### Test Statistics
+
 - ✅ **351 tests passing** (100% success rate)
 - ✅ **31 test files** completely passing
 - ✅ **Complete coverage** of all functionality including accessibility
@@ -155,23 +169,27 @@ This project features a robust testing suite with **351 passing tests** covering
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - npm or yarn package manager
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd intl-bench-press-day
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Run the development server**
+
    ```bash
    npm run dev
    ```
@@ -201,6 +219,7 @@ npm run lint             # Run ESLint with accessibility rules
 The application uses **IndexedDB** and **Service Workers** for complete offline functionality:
 
 ### Storage Capabilities
+
 - **Complete Offline Mode**: All functionality works without internet connection
 - **Automatic Sync**: Service worker handles background data synchronization
 - **Performance**: Lightning-fast queries with efficient indexing
@@ -220,6 +239,7 @@ The application uses **IndexedDB** and **Service Workers** for complete offline 
 8. **AppleHealthExport**: HealthKit-compatible workout data export
 
 ### Progressive Web App Features
+
 - **Install Prompt**: Custom install banner with one-click installation
 - **Offline Support**: Complete app functionality without network
 - **Background Updates**: Automatic app updates via service worker
@@ -231,6 +251,7 @@ The application uses **IndexedDB** and **Service Workers** for complete offline 
 Complete implementation of Jim Wendler's 5/3/1 methodology:
 
 ### Program Features
+
 - **Wave Periodization**: 4-week cycles with prescribed percentages
 - **AMRAP Sets**: As Many Reps As Possible tracking
 - **Assistance Work**: Secondary exercise programming
@@ -238,6 +259,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Deload Weeks**: Built-in recovery periods
 
 ### Supported Lifts
+
 - **Main Lifts**: Squat, Bench Press, Deadlift, Overhead Press
 - **Assistance**: Various secondary movements
 - **Custom Exercises**: Add your own exercises to the database
@@ -245,6 +267,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 ## 🎯 Exercise Tracking & Workout Management
 
 ### One Rep Max Calculator
+
 - **Multiple Formulas**: Choose from scientifically validated formulas (Epley, Brzycki, Lander, Lombardi)
 - **Custom Formulas**: Create and store your own calculation methods
 - **Historical Tracking**: Complete strength progression analysis over time
@@ -252,6 +275,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Real-time Updates**: Instant calculations as you input data
 
 ### Workout Logger
+
 - **Complete Sessions**: Log full workouts with warmup, main sets, and assistance work
 - **RPE Tracking**: Rate of Perceived Exertion for each set
 - **AMRAP Support**: As Many Reps As Possible set tracking
@@ -260,6 +284,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Notes System**: Detailed notes for each set and workout
 
 ### Progress Visualization
+
 - **Interactive Charts**: Responsive charts with zoom and filter capabilities
 - **Multiple Views**: Progress over time, volume analysis, strength trends
 - **Filter Options**: Date ranges, exercise categories, specific movements
@@ -267,6 +292,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Export Capability**: Complete data export for backup and external analysis
 
 ### Plate Calculator System
+
 - **Smart Algorithm**: Optimal plate combination calculation using greedy algorithm
 - **Location Awareness**: GPS-enabled automatic gym detection (1km radius)
 - **Custom Plate Sets**: Unlimited configurations for different locations
@@ -277,6 +303,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 ## ♿ Accessibility & Compliance
 
 ### Section 508 Compliance
+
 - **Full Federal Compliance**: Meets all Section 508 standards for federal accessibility
 - **WCAG 2.1 AA**: Exceeds Web Content Accessibility Guidelines Level AA requirements
 - **Screen Reader Optimized**: Complete ARIA implementation with semantic HTML structure
@@ -285,6 +312,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Focus Management**: Clear focus indicators and proper focus trapping in modals
 
 ### Accessibility Features
+
 - **Skip Links**: Quick navigation for keyboard and screen reader users
 - **ARIA Labels**: Comprehensive labeling for all interactive elements
 - **Semantic HTML**: Proper heading hierarchy and landmark regions
@@ -295,6 +323,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Voice Navigation**: Hands-free control via speech recognition
 
 ### Accessibility Testing
+
 - **Automated Testing**: ESLint accessibility rules and automated checks
 - **Manual Testing**: Comprehensive keyboard and screen reader testing
 - **User Testing**: Validation with actual assistive technology users
@@ -303,6 +332,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 ## 🔧 Development & Architecture
 
 ### Code Quality
+
 - **TypeScript 5.8**: Strict type checking with comprehensive type definitions
 - **ESLint 9**: Advanced linting with accessibility, React hooks, and TypeScript rules
 - **Modern React**: React 19 with hooks, context, and functional components
@@ -310,6 +340,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Security**: No eval() usage, secure data handling, and input validation
 
 ### Testing Excellence
+
 - **251 Comprehensive Tests**: Complete coverage of all functionality
 - **Test-Driven Development**: Tests written alongside feature development
 - **Accessibility Testing**: Automated and manual accessibility validation
@@ -318,6 +349,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Performance Testing**: Load testing and optimization validation
 
 ### CI/CD Pipeline
+
 - **GitHub Actions**: Automated build, test, and deployment pipeline
 - **Azure Static Web Apps**: Production deployment with CDN and SSL
 - **Automated Testing**: All tests run on every commit and pull request
@@ -327,11 +359,13 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 ## 🚀 Deployment & Production
 
 ### Live Application
+
 [![Build and Deploy](https://github.com/utdcometsoccer/intl-bench-press-day/actions/workflows/azure-static-web-apps-orange-mud-0a4faef1e.yml/badge.svg)](https://github.com/utdcometsoccer/intl-bench-press-day/actions/workflows/azure-static-web-apps-orange-mud-0a4faef1e.yml)
 
 🌐 **Live App**: [https://orange-mud-0a4faef1e.5.azurestaticapps.net](https://orange-mud-0a4faef1e.5.azurestaticapps.net)
 
 ### Production Features
+
 - **Azure Static Web Apps**: Enterprise-grade hosting with global CDN
 - **PWA Support**: Installable app with offline functionality
 - **HTTPS**: Secure connection with automatic SSL certificates
@@ -339,6 +373,7 @@ Complete implementation of Jim Wendler's 5/3/1 methodology:
 - **Performance Optimized**: Vite bundling with code splitting and tree shaking
 
 ### Deployment Pipeline
+
 - **Automated Deployment**: Triggered automatically on main branch changes
 - **Build Validation**: Complete TypeScript compilation and testing
 - **Production Optimization**: Minified bundles with optimal loading performance
@@ -356,12 +391,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 ### Documentation
 
 All project documentation is organized in the `docs/` folder. See the [Documentation Index](docs/README.md) for a complete guide to available documentation including:
+
 - Feature implementation guides
 - Accessibility compliance reports  
 - Product roadmaps and planning
 - User guides and tutorials
 
 ### Development Setup
+
 1. **Fork and Clone**: Fork the repository and clone your fork
 2. **Install Dependencies**: `npm install`
 3. **Start Development**: `npm run dev`
@@ -369,6 +406,7 @@ All project documentation is organized in the `docs/` folder. See the [Documenta
 5. **Build Validation**: `npm run build` to ensure production readiness
 
 ### Contribution Guidelines
+
 - **Code Standards**: Follow TypeScript strict mode and ESLint rules
 - **Accessibility First**: Ensure all new features meet Section 508 compliance
 - **Test Coverage**: Write comprehensive tests for new functionality
@@ -376,6 +414,7 @@ All project documentation is organized in the `docs/` folder. See the [Documenta
 - **Progressive Enhancement**: Ensure functionality works without JavaScript
 
 ### Pull Request Process
+
 1. **Feature Branch**: Create a descriptive feature branch
 2. **Test Validation**: Ensure all tests pass and add new tests
 3. **Accessibility Check**: Validate accessibility with screen readers
@@ -385,14 +424,17 @@ All project documentation is organized in the `docs/` folder. See the [Documenta
 ## � License & Legal
 
 ### Open Source License
+
 This project is open source and available under the **MIT License**.
 
 ### Accessibility Compliance
+
 - **Section 508 Compliant**: Meets federal accessibility requirements
 - **WCAG 2.1 AA**: Exceeds international accessibility standards
 - **ADA Compliant**: Follows Americans with Disabilities Act guidelines
 
 ### Privacy & Data
+
 - **Local Storage Only**: All data stored locally on user's device
 - **No Data Collection**: No personal information collected or transmitted
 - **Offline Capable**: Full functionality without internet connection
@@ -401,17 +443,20 @@ This project is open source and available under the **MIT License**.
 ## 🏆 Acknowledgments & Recognition
 
 ### Methodology & Inspiration
+
 - **Jim Wendler** for the revolutionary 5/3/1 strength training methodology
 - **Powerlifting Community** for inspiration and feedback on training tools
 - **Accessibility Advocates** for guidance on inclusive design principles
 
 ### Technical Excellence
+
 - **React Team** for the cutting-edge React 19 framework
 - **Vite Team** for lightning-fast development and build tooling
 - **Testing Library** for user-centric testing philosophy and utilities
 - **TypeScript Team** for robust type safety and developer experience
 
 ### Community & Standards
+
 - **Web Accessibility Initiative** for WCAG guidelines and accessibility standards
 - **Progressive Web App Community** for offline-first application patterns
 - **Open Source Community** for tools, libraries, and collaborative development
@@ -419,12 +464,14 @@ This project is open source and available under the **MIT License**.
 ## 📞 Support & Resources
 
 ### Getting Help
+
 - **📋 Issues**: [Report bugs or request features](https://github.com/utdcometsoccer/intl-bench-press-day/issues)
 - **📖 Documentation**: Comprehensive inline code documentation and README
 - **🧪 Testing**: Run `npm test` to verify functionality and see all 351 tests
 - **🔧 Development**: Use `npm run dev` for local development with hot reload
 
 ### Training Resources
+
 - **5/3/1 Methodology**: Official Jim Wendler 5/3/1 training resources
 - **One-Rep Max Calculation**: Multiple formula options for accurate strength assessment
 - **Plate Loading**: Location-aware plate calculator for global gym compatibility
@@ -432,4 +479,5 @@ This project is open source and available under the **MIT License**.
 
 ---
 
-**Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready • 351 Tests Strong**
+Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready •
+351 Tests Strong
