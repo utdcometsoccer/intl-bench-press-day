@@ -1,7 +1,7 @@
 # Product Roadmap - International Bench Press Day
 
-**Version:** 2.0  
-**Last Updated:** December 24, 2025  
+**Version:** 2.1  
+**Last Updated:** January 5, 2026  
 **Status:** Active Development
 
 ---
@@ -26,7 +26,7 @@ International Bench Press Day is a Progressive Web Application (PWA) for compreh
 
 ### Current Status (Q4 2025 - Q1 2026)
 - **Version:** 1.0 (Production)
-- **Test Coverage:** 544 passing tests across 43 test suites
+- **Test Coverage:** 572 passing tests across 44 test suites
 - **Source Files:** 95+ TypeScript/React files
 - **Components:** 35+ React components
 - **Accessibility:** Section 508 compliant (90/100 score)
@@ -42,6 +42,13 @@ International Bench Press Day is a Progressive Web Application (PWA) for compreh
 - 45 new tests (28 service + 17 component)
 - Full accessibility compliance
 - Comprehensive documentation
+
+🎉 **Rest Timer Feature** - Implemented configurable rest timer between sets
+- 28 new tests covering timer logic, UI, audio/vibration, accessibility
+- Integration with WorkoutLogger
+- User preference storage
+- Full Section 508 accessibility compliance
+- Comprehensive documentation (docs/features/REST-TIMER.md)
 
 ### Key Strengths
 ✅ **Robust Core Features** - Complete 5/3/1 implementation, workout logging, progress tracking  
@@ -313,6 +320,29 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 
 ---
 
+#### 13. **Rest Timer** ⏱️
+**Status:** ✅ Production Ready (NEW - January 2026)  
+**Components:** `RestTimer`  
+**Features:**
+- Configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
+- Visual countdown with animated circular progress ring
+- Audio notification using Web Audio API (800Hz sine wave beep)
+- Vibration notification for mobile devices (5-pulse pattern)
+- Extend/reduce buttons (+30s, -30s)
+- Auto-start option in user settings
+- User preference storage (preferred rest time, auto-start)
+- Integration with WorkoutLogger between sets
+- Section 508 accessibility compliant:
+  - Keyboard navigation support
+  - Screen reader optimized (ARIA live regions)
+  - Focus management
+  - Reduced motion support
+- Full offline support
+
+**Test Coverage:** 28 tests in `RestTimer.test.tsx`
+
+---
+
 ### In Development Features (🔄 In Progress)
 
 None currently - all planned features are in the roadmap below.
@@ -444,9 +474,9 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 
 ---
 
-#### 🟡 Issue #6: No Rest Timer
+#### 🟢 Issue #6: No Rest Timer
 **Category:** Feature Gap  
-**Status:** Open  
+**Status:** ✅ RESOLVED (January 2026)  
 **Impact:** Medium
 
 **Problem:**
@@ -454,16 +484,27 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 - Users must use external timer apps
 - Reduces app stickiness
 
-**Proposed Solution:**
-- Implement configurable rest timer
-- Audio/vibration alerts
-- Auto-start option after set logging
-- Quick adjust (skip/extend)
+**Solution Implemented:**
+- Full rest timer feature with:
+  - Configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
+  - Audio notification using Web Audio API (800Hz beep)
+  - Vibration notification for mobile devices
+  - Visual countdown with animated circular progress ring
+  - Extend/reduce buttons (+30s, -30s)
+  - Auto-start option in settings
+  - Integration with WorkoutLogger
+  - User preference storage
+  - Section 508 accessibility compliant
+  - Comprehensive test coverage (28 tests)
 
-**Effort:** Low (2-3 days)  
-**Priority:** High  
-**Target:** Q1 2025  
-**See:** [Phase 1 Roadmap](#phase-1-user-experience-enhancements-q1-2025)
+**Implementation:**
+- `RestTimer` component with circular progress visualization
+- `RestTimer.css` for styling
+- Settings integration in `NotificationSettings`
+- User preferences in `userPreferencesStorage`
+- Feature documentation: `docs/features/REST-TIMER.md`
+
+**Status:** ✅ COMPLETED
 
 ---
 
@@ -634,20 +675,27 @@ Automatically suggest the next workout based on training history.
 
 ---
 
-**1.2 Rest Timer** ⏱️  
+**1.2 Rest Timer** ⏱️ ✅ **COMPLETED**  
 **Effort:** 2-3 days  
-**Value:** High
+**Value:** High  
+**Status:** Production Ready (January 2026)
 
 Built-in rest timer between sets.
 
-- Configurable rest periods (30s-5min presets)
-- Audio/vibration alerts
-- Visual countdown
-- Quick adjust (add 30s, skip)
-- Auto-start option
+- ✅ Configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
+- ✅ Audio notification (800Hz sine wave beep)
+- ✅ Vibration notification (mobile devices)
+- ✅ Visual countdown with circular progress display
+- ✅ Quick adjust buttons (+30s, -30s)
+- ✅ Auto-start option in settings
+- ✅ Integration with WorkoutLogger
+- ✅ User preference storage (preferred rest time, auto-start)
+- ✅ 28 comprehensive tests
+- ✅ Section 508 accessibility compliance
+- ✅ Feature documentation (docs/features/REST-TIMER.md)
 
 **Dependencies:** None  
-**Testing:** Timer logic tests, audio/vibration tests, UI tests
+**Testing:** ✅ Complete - 28 tests covering timer logic, UI, audio/vibration, accessibility
 
 ---
 
@@ -1669,14 +1717,15 @@ For each new feature, ensure:
 
 ## Document Control
 
-**Version:** 2.0  
+**Version:** 2.1  
 **Status:** Active  
 **Owner:** Product Team  
 **Contributors:** Development Team, UX Team  
-**Last Updated:** December 24, 2025  
-**Next Review:** March 24, 2025 (Quarterly)
+**Last Updated:** January 5, 2026  
+**Next Review:** April 5, 2026 (Quarterly)
 
 **Change Log:**
+- v2.1 (Jan 5, 2026): Updated with Rest Timer completion, updated test counts
 - v2.0 (Dec 24, 2025): Comprehensive roadmap with Q1-Q4 2025 planning
 - v1.0 (Nov 2025): Initial roadmap (docs/UI-UX-ANALYSIS-AND-PRODUCT-ROADMAP.md)
 
