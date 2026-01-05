@@ -6,6 +6,7 @@ import {
   getAllWorkoutSuggestions,
   getCycleProgress,
   getTodaysWorkouts,
+  shouldNotifyForWorkout,
 } from '../services/workoutSuggestionService';
 import { convertCycleToPlan } from '../services/workoutPlanStorage';
 
@@ -220,6 +221,133 @@ describe('WorkoutSuggestionService', () => {
 
       expect(todaysWorkouts.length).toBeGreaterThan(0);
       expect(todaysWorkouts[0].isNextWorkout).toBe(true);
+    });
+
+    it('should filter out completed workouts', () => {
+      const cycle = createMockCycle();
+      const results = createMockResults([
+        { week: 1, day: 1 },
+        { week: 1, day: 2 },
+      ]);
+
+      const todaysWorkouts = getTodaysWorkouts(convertCycleToPlan(cycle), results);
+
+      expect(todaysWorkouts.every(w => w.recommendation !== 'completed')).toBe(true);
+    });
+  });
+
+  describe('shouldNotifyForWorkout', () => {
+    it('should return false when notifications are disabled', () => {
+      const cycle = createMockCycle();
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), []);
+
+      expect(suggestion).not.toBeNull();
+      if (suggestion) {
+        const shouldNotify = shouldNotifyForWorkout(suggestion, false);
+        expect(shouldNotify).toBe(false);
+      }
+    });
+
+    it('should return false for completed workouts', () => {
+      const cycle = createMockCycle();
+      const results = createMockResults([{ week: 1, day: 1 }]);
+      const suggestions = getAllWorkoutSuggestions(convertCycleToPlan(cycle), results);
+      const completedSuggestion = suggestions.find(s => s.recommendation === 'completed');
+
+      expect(completedSuggestion).toBeDefined();
+      if (completedSuggestion) {
+        const shouldNotify = shouldNotifyForWorkout(completedSuggestion, true);
+        expect(shouldNotify).toBe(false);
+      }
+    });
+
+    it('should return true for overdue workouts when notifications enabled', () => {
+      const cycle = createMockCycle();
+      // Set start date in the past to make workout overdue
+      cycle.startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), []);
+
+      expect(suggestion).not.toBeNull();
+      if (suggestion && suggestion.daysUntilDue <= 0) {
+        const shouldNotify = shouldNotifyForWorkout(suggestion, true);
+        expect(shouldNotify).toBe(true);
+      }
+    });
+
+    it('should return true for today workouts when notifications enabled', () => {
+      const cycle = createMockCycle();
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), []);
+
+      expect(suggestion).not.toBeNull();
+      if (suggestion && suggestion.recommendation === 'today') {
+        const shouldNotify = shouldNotifyForWorkout(suggestion, true);
+        expect(shouldNotify).toBe(true);
+      }
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('should handle null plan gracefully', () => {
+      const suggestion = getNextWorkout(
+        { id: '', name: '', type: '531', createdDate: new Date(), workouts: [], isActive: true },
+        []
+      );
+      expect(suggestion).toBeNull();
+    });
+
+    it('should handle plan with no workouts', () => {
+      const suggestions = getAllWorkoutSuggestions(
+        { id: '', name: '', type: '531', createdDate: new Date(), workouts: [], isActive: true },
+        []
+      );
+      expect(suggestions).toHaveLength(0);
+    });
+
+    it('should handle multiple weeks correctly', () => {
+      const cycle = createMockCycle();
+      // Add workouts for week 2
+      cycle.workouts.push(
+        {
+          id: 'squat_week2',
+          week: 2,
+          day: 1,
+          exerciseId: 'back-squat',
+          exerciseName: 'Back Squat',
+          mainSets: [
+            { reps: 3, percentage: 70, weight: 189 },
+            { reps: 3, percentage: 80, weight: 216 },
+            { reps: 3, percentage: 90, weight: 243, isAmrap: true },
+          ],
+          warmupSets: [],
+        }
+      );
+
+      const results = createMockResults([
+        { week: 1, day: 1 },
+        { week: 1, day: 2 },
+        { week: 1, day: 3 },
+        { week: 1, day: 4 },
+      ]);
+
+      const suggestion = getNextWorkout(convertCycleToPlan(cycle), results);
+      expect(suggestion).not.toBeNull();
+      expect(suggestion?.week).toBe(2);
+      expect(suggestion?.day).toBe(1);
+    });
+
+    it('should mark isNextWorkout correctly across weeks', () => {
+      const cycle = createMockCycle();
+      const results = createMockResults([
+        { week: 1, day: 1 },
+        { week: 1, day: 2 },
+      ]);
+
+      const suggestions = getAllWorkoutSuggestions(convertCycleToPlan(cycle), results);
+      const nextWorkouts = suggestions.filter(s => s.isNextWorkout);
+      
+      expect(nextWorkouts).toHaveLength(1);
+      expect(nextWorkouts[0].week).toBe(1);
+      expect(nextWorkouts[0].day).toBe(3);
     });
   });
 });
