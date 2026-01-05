@@ -9,12 +9,13 @@ vi.mock('../services/socialSharingService', () => ({
     isWebShareSupported: vi.fn(() => false),
     shareWithWebShare: vi.fn().mockResolvedValue(false),
     copyToClipboard: vi.fn().mockResolvedValue(true),
-    shareToTwitter: vi.fn(),
-    shareToFacebook: vi.fn(),
-    shareToLinkedIn: vi.fn(),
-    shareToWhatsApp: vi.fn(),
-    shareToReddit: vi.fn(),
-    downloadPhoto: vi.fn(),
+    shareToTwitter: vi.fn().mockResolvedValue(undefined),
+    shareToFacebook: vi.fn().mockResolvedValue(undefined),
+    shareToLinkedIn: vi.fn().mockResolvedValue(undefined),
+    shareToWhatsApp: vi.fn().mockResolvedValue(undefined),
+    shareToReddit: vi.fn().mockResolvedValue(undefined),
+    downloadPhoto: vi.fn().mockResolvedValue(undefined),
+    generateShareableImage: vi.fn().mockResolvedValue('data:image/png;base64,generated'),
   },
 }));
 
@@ -129,13 +130,19 @@ describe('ShareModal', () => {
     const twitterButton = screen.getByLabelText('Share to Twitter');
     fireEvent.click(twitterButton);
 
-    expect(socialSharingService.shareToTwitter).toHaveBeenCalledWith(
-      mockPhoto,
-      expect.objectContaining({
-        text: expect.stringContaining('1/1/2025'),
-        hashtags: expect.arrayContaining(['fitness', 'progress', 'workout', 'BenchPressDay']),
-      })
-    );
+    await waitFor(() => {
+      expect(socialSharingService.shareToTwitter).toHaveBeenCalledWith(
+        mockPhoto,
+        expect.objectContaining({
+          text: expect.stringContaining('1/1/2025'),
+          hashtags: expect.arrayContaining(['fitness', 'progress', 'workout', 'BenchPressDay']),
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Photo with text overlay downloaded/)).toBeInTheDocument();
+    });
   });
 
   it('handles Facebook share', async () => {
@@ -146,7 +153,13 @@ describe('ShareModal', () => {
     const facebookButton = screen.getByLabelText('Share to Facebook');
     fireEvent.click(facebookButton);
 
-    expect(socialSharingService.shareToFacebook).toHaveBeenCalledWith(mockPhoto);
+    await waitFor(() => {
+      expect(socialSharingService.shareToFacebook).toHaveBeenCalledWith(mockPhoto);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Photo with text overlay downloaded/)).toBeInTheDocument();
+    });
   });
 
   it('handles LinkedIn share', async () => {
@@ -157,12 +170,18 @@ describe('ShareModal', () => {
     const linkedinButton = screen.getByLabelText('Share to LinkedIn');
     fireEvent.click(linkedinButton);
 
-    expect(socialSharingService.shareToLinkedIn).toHaveBeenCalledWith(
-      mockPhoto,
-      expect.objectContaining({
-        title: 'Fitness Progress Update',
-      })
-    );
+    await waitFor(() => {
+      expect(socialSharingService.shareToLinkedIn).toHaveBeenCalledWith(
+        mockPhoto,
+        expect.objectContaining({
+          title: 'Fitness Progress Update',
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Photo with text overlay downloaded/)).toBeInTheDocument();
+    });
   });
 
   it('handles WhatsApp share', async () => {
@@ -173,12 +192,18 @@ describe('ShareModal', () => {
     const whatsappButton = screen.getByLabelText('Share to WhatsApp');
     fireEvent.click(whatsappButton);
 
-    expect(socialSharingService.shareToWhatsApp).toHaveBeenCalledWith(
-      mockPhoto,
-      expect.objectContaining({
-        text: expect.stringContaining('1/1/2025'),
-      })
-    );
+    await waitFor(() => {
+      expect(socialSharingService.shareToWhatsApp).toHaveBeenCalledWith(
+        mockPhoto,
+        expect.objectContaining({
+          text: expect.stringContaining('1/1/2025'),
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Photo with text overlay downloaded/)).toBeInTheDocument();
+    });
   });
 
   it('handles Reddit share', async () => {
@@ -189,12 +214,18 @@ describe('ShareModal', () => {
     const redditButton = screen.getByLabelText('Share to Reddit');
     fireEvent.click(redditButton);
 
-    expect(socialSharingService.shareToReddit).toHaveBeenCalledWith(
-      mockPhoto,
-      expect.objectContaining({
-        title: expect.stringContaining('1/1/2025'),
-      })
-    );
+    await waitFor(() => {
+      expect(socialSharingService.shareToReddit).toHaveBeenCalledWith(
+        mockPhoto,
+        expect.objectContaining({
+          title: expect.stringContaining('1/1/2025'),
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Photo with text overlay downloaded/)).toBeInTheDocument();
+    });
   });
 
   it('handles photo download', async () => {
@@ -205,10 +236,38 @@ describe('ShareModal', () => {
     const downloadButton = screen.getByLabelText('Download photo');
     fireEvent.click(downloadButton);
 
-    expect(socialSharingService.downloadPhoto).toHaveBeenCalledWith(mockPhoto);
+    await waitFor(() => {
+      expect(socialSharingService.downloadPhoto).toHaveBeenCalledWith(mockPhoto);
+    });
 
     await waitFor(() => {
-      expect(screen.getByText('Photo downloaded!')).toBeInTheDocument();
+      expect(screen.getByText('Photo with text overlay downloaded!')).toBeInTheDocument();
+    });
+  });
+
+  it('generates shareable image when sharing to Twitter', async () => {
+    const { socialSharingService } = await import('../services/socialSharingService');
+    
+    render(<ShareModal photo={mockPhoto} onClose={mockOnClose} />);
+
+    const twitterButton = screen.getByLabelText('Share to Twitter');
+    fireEvent.click(twitterButton);
+
+    await waitFor(() => {
+      expect(socialSharingService.shareToTwitter).toHaveBeenCalled();
+    });
+  });
+
+  it('generates shareable image when copying to clipboard', async () => {
+    const { socialSharingService } = await import('../services/socialSharingService');
+    
+    render(<ShareModal photo={mockPhoto} onClose={mockOnClose} />);
+
+    const copyButton = screen.getByLabelText('Copy photo to clipboard');
+    fireEvent.click(copyButton);
+
+    await waitFor(() => {
+      expect(socialSharingService.copyToClipboard).toHaveBeenCalledWith(mockPhoto);
     });
   });
 

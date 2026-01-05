@@ -75,41 +75,98 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
     }
   };
 
-  const handleTwitterShare = () => {
-    socialSharingService.shareToTwitter(photo, {
-      text: `Check out my fitness progress from ${photo.dateTaken.toLocaleDateString()}!`,
-      hashtags: ['fitness', 'progress', 'workout', 'BenchPressDay'],
-    });
+  const handleTwitterShare = async () => {
+    try {
+      await socialSharingService.shareToTwitter(photo, {
+        text: `Check out my fitness progress from ${photo.dateTaken.toLocaleDateString()}!`,
+        hashtags: ['fitness', 'progress', 'workout', 'BenchPressDay'],
+      });
+      setSuccess('Photo with text overlay downloaded! You can now upload it to Twitter.');
+      const timeoutId = setTimeout(() => setSuccess(null), 4000);
+      timeoutRefs.current.push(timeoutId);
+    } catch (err) {
+      console.error('Failed to share to Twitter:', err);
+      setError('Failed to prepare photo for sharing.');
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
+    }
   };
 
-  const handleFacebookShare = () => {
-    socialSharingService.shareToFacebook(photo);
+  const handleFacebookShare = async () => {
+    try {
+      await socialSharingService.shareToFacebook(photo);
+      setSuccess('Photo with text overlay downloaded! You can now upload it to Facebook.');
+      const timeoutId = setTimeout(() => setSuccess(null), 4000);
+      timeoutRefs.current.push(timeoutId);
+    } catch (err) {
+      console.error('Failed to share to Facebook:', err);
+      setError('Failed to prepare photo for sharing.');
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
+    }
   };
 
-  const handleLinkedInShare = () => {
-    socialSharingService.shareToLinkedIn(photo, {
-      title: 'Fitness Progress Update',
-      text: `Tracking my fitness journey - progress photo from ${photo.dateTaken.toLocaleDateString()}`,
-    });
+  const handleLinkedInShare = async () => {
+    try {
+      await socialSharingService.shareToLinkedIn(photo, {
+        title: 'Fitness Progress Update',
+        text: `Tracking my fitness journey - progress photo from ${photo.dateTaken.toLocaleDateString()}`,
+      });
+      setSuccess('Photo with text overlay downloaded! You can now upload it to LinkedIn.');
+      const timeoutId = setTimeout(() => setSuccess(null), 4000);
+      timeoutRefs.current.push(timeoutId);
+    } catch (err) {
+      console.error('Failed to share to LinkedIn:', err);
+      setError('Failed to prepare photo for sharing.');
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
+    }
   };
 
-  const handleWhatsAppShare = () => {
-    socialSharingService.shareToWhatsApp(photo, {
-      text: `Check out my fitness progress from ${photo.dateTaken.toLocaleDateString()}!`,
-    });
+  const handleWhatsAppShare = async () => {
+    try {
+      await socialSharingService.shareToWhatsApp(photo, {
+        text: `Check out my fitness progress from ${photo.dateTaken.toLocaleDateString()}!`,
+      });
+      setSuccess('Photo with text overlay downloaded! You can now upload it to WhatsApp.');
+      const timeoutId = setTimeout(() => setSuccess(null), 4000);
+      timeoutRefs.current.push(timeoutId);
+    } catch (err) {
+      console.error('Failed to share to WhatsApp:', err);
+      setError('Failed to prepare photo for sharing.');
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
+    }
   };
 
-  const handleRedditShare = () => {
-    socialSharingService.shareToReddit(photo, {
-      title: `Fitness Progress Update - ${photo.dateTaken.toLocaleDateString()}`,
-    });
+  const handleRedditShare = async () => {
+    try {
+      await socialSharingService.shareToReddit(photo, {
+        title: `Fitness Progress Update - ${photo.dateTaken.toLocaleDateString()}`,
+      });
+      setSuccess('Photo with text overlay downloaded! You can now upload it to Reddit.');
+      const timeoutId = setTimeout(() => setSuccess(null), 4000);
+      timeoutRefs.current.push(timeoutId);
+    } catch (err) {
+      console.error('Failed to share to Reddit:', err);
+      setError('Failed to prepare photo for sharing.');
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
+    }
   };
 
-  const handleDownload = () => {
-    socialSharingService.downloadPhoto(photo);
-    setSuccess('Photo downloaded!');
-    const timeoutId = setTimeout(() => setSuccess(null), 2000);
-    timeoutRefs.current.push(timeoutId);
+  const handleDownload = async () => {
+    try {
+      await socialSharingService.downloadPhoto(photo);
+      setSuccess('Photo with text overlay downloaded!');
+      const timeoutId = setTimeout(() => setSuccess(null), 2000);
+      timeoutRefs.current.push(timeoutId);
+    } catch (err) {
+      console.error('Failed to download photo:', err);
+      setError('Failed to download photo.');
+      const timeoutId = setTimeout(() => setError(null), 3000);
+      timeoutRefs.current.push(timeoutId);
+    }
   };
 
   return (

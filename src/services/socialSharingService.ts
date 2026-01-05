@@ -23,8 +23,11 @@ class SocialSharingService {
     }
 
     try {
+      // Generate shareable image with text overlay
+      const shareableImageData = await this.generateShareableImage(photo);
+      
       // Convert base64 to blob for sharing
-      const blob = await this.base64ToBlob(photo.imageData);
+      const blob = await this.base64ToBlob(shareableImageData);
       const file = new File([blob], `progress-photo-${photo.dateTaken.toISOString().split('T')[0]}.jpg`, {
         type: 'image/jpeg',
       });
@@ -53,7 +56,10 @@ class SocialSharingService {
   // Copy image to clipboard
   async copyToClipboard(photo: ProgressPhoto): Promise<boolean> {
     try {
-      const blob = await this.base64ToBlob(photo.imageData);
+      // Generate shareable image with text overlay
+      const shareableImageData = await this.generateShareableImage(photo);
+      
+      const blob = await this.base64ToBlob(shareableImageData);
       const item = new ClipboardItem({ 'image/jpeg': blob });
       await navigator.clipboard.write([item]);
       return true;
@@ -64,7 +70,16 @@ class SocialSharingService {
   }
 
   // Share to Twitter
-  shareToTwitter(_photo: ProgressPhoto, options: ShareOptions = {}): void {
+  async shareToTwitter(photo: ProgressPhoto, options: ShareOptions = {}): Promise<void> {
+    try {
+      // Generate and download shareable image for user to upload
+      const shareableImageData = await this.generateShareableImage(photo);
+      this.downloadGeneratedImage(shareableImageData, photo);
+    } catch (error) {
+      console.error('Failed to generate shareable image for Twitter.', error);
+      throw error;
+    }
+    
     const text = options.text || `Check out my fitness progress! #FitnessJourney`;
     const hashtags = options.hashtags?.join(',') || 'fitness,workout,progress';
     const url = options.url || window.location.href;
@@ -74,14 +89,32 @@ class SocialSharingService {
   }
 
   // Share to Facebook (photo parameter for consistency, though not used in URL-based sharing)
-  shareToFacebook(_photo: ProgressPhoto, options: ShareOptions = {}): void {
+  async shareToFacebook(photo: ProgressPhoto, options: ShareOptions = {}): Promise<void> {
+    try {
+      // Generate and download shareable image for user to upload
+      const shareableImageData = await this.generateShareableImage(photo);
+      this.downloadGeneratedImage(shareableImageData, photo);
+    } catch (error) {
+      console.error('Failed to generate shareable image for Facebook.', error);
+      throw error;
+    }
+    
     const url = options.url || window.location.href;
     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     window.open(facebookUrl, '_blank', 'width=550,height=420');
   }
 
   // Share to LinkedIn
-  shareToLinkedIn(_photo: ProgressPhoto, options: ShareOptions = {}): void {
+  async shareToLinkedIn(photo: ProgressPhoto, options: ShareOptions = {}): Promise<void> {
+    try {
+      // Generate and download shareable image for user to upload
+      const shareableImageData = await this.generateShareableImage(photo);
+      this.downloadGeneratedImage(shareableImageData, photo);
+    } catch (error) {
+      console.error('Failed to generate shareable image for LinkedIn.', error);
+      throw error;
+    }
+    
     const url = options.url || window.location.href;
     const title = options.title || 'My Fitness Progress';
     const summary = options.text || 'Check out my fitness journey!';
@@ -91,7 +124,16 @@ class SocialSharingService {
   }
 
   // Share to WhatsApp
-  shareToWhatsApp(_photo: ProgressPhoto, options: ShareOptions = {}): void {
+  async shareToWhatsApp(photo: ProgressPhoto, options: ShareOptions = {}): Promise<void> {
+    try {
+      // Generate and download shareable image for user to upload
+      const shareableImageData = await this.generateShareableImage(photo);
+      this.downloadGeneratedImage(shareableImageData, photo);
+    } catch (error) {
+      console.error('Failed to generate shareable image for WhatsApp.', error);
+      throw error;
+    }
+    
     const text = options.text || 'Check out my fitness progress!';
     const url = options.url || window.location.href;
     const message = `${text} ${url}`;
@@ -101,7 +143,16 @@ class SocialSharingService {
   }
 
   // Share to Reddit
-  shareToReddit(_photo: ProgressPhoto, options: ShareOptions = {}): void {
+  async shareToReddit(photo: ProgressPhoto, options: ShareOptions = {}): Promise<void> {
+    try {
+      // Generate and download shareable image for user to upload
+      const shareableImageData = await this.generateShareableImage(photo);
+      this.downloadGeneratedImage(shareableImageData, photo);
+    } catch (error) {
+      console.error('Failed to generate shareable image for Reddit.', error);
+      throw error;
+    }
+    
     const url = options.url || window.location.href;
     const title = options.title || 'My Fitness Progress';
 
@@ -110,9 +161,21 @@ class SocialSharingService {
   }
 
   // Download photo
-  downloadPhoto(photo: ProgressPhoto): void {
+  async downloadPhoto(photo: ProgressPhoto): Promise<void> {
+    try {
+      // Generate shareable image with text overlay
+      const shareableImageData = await this.generateShareableImage(photo);
+      this.downloadGeneratedImage(shareableImageData, photo);
+    } catch (error) {
+      console.error('Failed to download progress photo.', error);
+      throw error;
+    }
+  }
+
+  // Download generated shareable image (with text overlay)
+  private downloadGeneratedImage(imageData: string, photo: ProgressPhoto): void {
     const link = document.createElement('a');
-    link.href = photo.imageData;
+    link.href = imageData;
     link.download = `progress-photo-${photo.dateTaken.toISOString().split('T')[0]}.jpg`;
     document.body.appendChild(link);
     link.click();
