@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import type { MutableRefObject } from 'react';
 import { progressPhotosStorage, type ProgressPhoto } from '../services/progressPhotosStorage';
 import ErrorMessage from './ErrorMessage';
 import SuccessMessage from './SuccessMessage';
@@ -6,6 +7,10 @@ import LoadingState from './LoadingState';
 import ShareModal from './ShareModal';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import styles from './ProgressPhotos.module.css';
+
+function getTimeoutsArray(ref: MutableRefObject<NodeJS.Timeout[]>) {
+  return ref.current;
+}
 
 export function ProgressPhotos() {
   const [photos, setPhotos] = useState<ProgressPhoto[]>([]);
@@ -37,9 +42,11 @@ export function ProgressPhotos() {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
-      // Cleanup all timeouts
-      const timeouts = timeoutRefs.current;
-      timeouts.forEach(clearTimeout);
+      // Cleanup all timeouts (snapshot current list to avoid ref drift warnings)
+      const timeouts = getTimeoutsArray(timeoutRefs);
+      const toClear = timeouts.slice();
+      toClear.forEach(clearTimeout);
+      timeouts.length = 0;
     };
   }, []);
 
