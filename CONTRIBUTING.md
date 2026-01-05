@@ -1,6 +1,8 @@
 # Contributing to International Bench Press Day
 
-Thank you for your interest in contributing to the International Bench Press Day fitness tracking application! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to the International Bench Press
+Day fitness tracking application! This document provides guidelines for
+contributing to the project.
 
 ## Getting Started
 

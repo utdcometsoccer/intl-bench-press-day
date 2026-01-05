@@ -4,7 +4,10 @@ This document provides guidance for GitHub Copilot when working on this reposito
 
 ## Project Overview
 
-This is a Progressive Web Application (PWA) for fitness tracking built with React, TypeScript, and Vite. It implements the 5/3/1 training methodology and provides exercise tracking capabilities with full Section 508 accessibility compliance.
+This is a Progressive Web Application (PWA) for fitness tracking built with
+React, TypeScript, and Vite. It implements the 5/3/1 training methodology and
+provides exercise tracking capabilities with full Section 508 accessibility
+compliance.
 
 ## Technology Stack
 
