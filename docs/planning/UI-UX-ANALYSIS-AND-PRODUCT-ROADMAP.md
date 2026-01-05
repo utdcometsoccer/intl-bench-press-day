@@ -6,7 +6,7 @@
 **Date:** November 2025  
 **Status:** Product Planning Document
 
----
+ ---
 
 ## Table of Contents
 
@@ -30,7 +30,7 @@
    - [Social Media Features](#13-social-media-features)
 6. [Product Roadmap](#product-roadmap)
 
----
+ ---
 
 ## Executive Summary
 
@@ -53,14 +53,14 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 - 🔄 Social and sharing features
 - 🔄 Third-party fitness platform integrations
 
----
+ ---
 
 ## Current State Assessment
 
 ### Technology Stack
 
 | Component | Technology | Version |
-|-----------|------------|---------|
+| ----------- | ------------ | --------- |
 | Frontend Framework | React | 19.x |
 | Language | TypeScript | 5.8.x |
 | Build Tool | Vite | 7.x |
@@ -74,7 +74,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 - **351 passing tests** across 31 test files
 - Comprehensive coverage of storage systems, components, and business logic
 
----
+ ---
 
 ## UI/UX Analysis
 
@@ -85,7 +85,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 **Strengths:**
 
 | Feature | Status | Implementation |
-|---------|--------|----------------|
+| --------- | -------- | ---------------- |
 | Skip Links | ✅ Implemented | Skip to main content, Skip to navigation |
 | Landmark Roles | ✅ Implemented | banner, navigation, main regions |
 | Keyboard Navigation | ✅ Implemented | Full keyboard accessibility with logical tab order |
@@ -123,7 +123,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 }
 ```
 
----
+ ---
 
 ### 2. User Journey Analysis
 
@@ -204,7 +204,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
    - Calendar view with completed/upcoming workouts
    - Push notifications for scheduled workouts
 
----
+ ---
 
 ### 3. Color Scheme Assessment
 
@@ -213,7 +213,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 **Light Theme:**
 
 | Element | Color | Hex Code | Usage |
-|---------|-------|----------|-------|
+| --------- | ------- | ---------- | ------- |
 | Primary | Blue | `#007bff` | Buttons, active states, links |
 | Success | Green | `#28a745` | Save buttons, positive indicators |
 | Danger | Red | `#dc3545` | Delete buttons, AMRAP indicators |
@@ -226,7 +226,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 **Dark Theme:**
 
 | Element | Color | Hex Code | Usage |
-|---------|-------|----------|-------|
+| --------- | ------- | ---------- | ------- |
 | Primary | Blue | `#0d6efd` | Buttons, active states |
 | Background | Dark Gray | `#242424` | Main background |
 | Surface | Darker Gray | `#1a1a1a` | Cards, containers |
@@ -245,7 +245,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
      --workout-amrap: #ff6b6b;     /* Red - AMRAP challenge */
      --workout-complete: #4d96ff;  /* Blue - Completed */
      --workout-rest: #c4c4c4;      /* Gray - Rest day */
-     
+
      /* Progress indicators */
      --progress-start: #ff9f43;    /* Orange - Beginning */
      --progress-mid: #feca57;      /* Yellow - Mid-progress */
@@ -262,14 +262,14 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
    - Use color gradients to indicate workout progression
    - Distinguish between past, current, and future workouts
 
----
+ ---
 
 ### 4. Typography Review
 
 #### Current Typography System
 
 | Element | Font | Size | Weight | Line Height |
-|---------|------|------|--------|-------------|
+| --------- | ------ | ------ | -------- | ------------- |
 | Body | System UI Stack | 16px base | 400 | 1.5 |
 | H1 | System UI | 30-38px | 700 | 1.2 |
 | H2 | System UI | 24-30px | 600 | 1.3 |
@@ -320,14 +320,14 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
    - Increased letter-spacing for all-caps labels
    - Proper paragraph spacing in notes sections
 
----
+ ---
 
 ### 5. Responsive Design Evaluation
 
 #### Current Breakpoints
 
 | Breakpoint | Width | Device Target |
-|------------|-------|---------------|
+| ------------ | ------- | --------------- |
 | XS | 0px | Portrait phones |
 | SM | 576px | Landscape phones |
 | MD | 768px | Tablets |
@@ -380,7 +380,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
    - iOS safe area handling
    - Android navigation bar adaptation
 
----
+ ---
 
 ## Feature Planning
 
@@ -479,7 +479,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => (
 export const useAuth = () => {
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
-  
+
   return {
     isAuthenticated,
     user: accounts[0],
@@ -495,11 +495,11 @@ export const useAuth = () => {
 // components/ProtectedRoute.tsx
 export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  
+
   return <>{children}</>;
 };
 ```
@@ -523,14 +523,14 @@ export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
 #### Timeline Estimate
 
 | Phase | Duration | Dependencies |
-|-------|----------|--------------|
+| ------- | ---------- | -------------- |
 | Azure Setup | 2 days | Azure subscription |
 | MSAL Integration | 3 days | None |
 | UI Components | 2 days | None |
 | Testing | 2 days | None |
 | **Total** | **9 days** | |
 
----
+ ---
 
 ### 7. Remote Database Sync Feature
 
@@ -582,10 +582,10 @@ interface SyncService {
   // Core sync operations
   pushLocalChanges(): Promise<SyncResult>;
   pullRemoteChanges(): Promise<SyncResult>;
-  
+
   // Conflict resolution
   resolveConflict(local: DataRecord, remote: DataRecord): DataRecord;
-  
+
   // Status
   getSyncStatus(): SyncStatus;
   getLastSyncTime(): Date | null;
@@ -595,11 +595,11 @@ interface SyncService {
 class AzureSyncService implements SyncService {
   private api: AzureFunctionsClient;
   private localDb: IndexedDBService;
-  
+
   async pushLocalChanges(): Promise<SyncResult> {
     const unsyncedRecords = await this.localDb.getUnsyncedRecords();
     const userId = await this.getUserId();
-    
+
     for (const record of unsyncedRecords) {
       await this.api.post(`/users/${userId}/data`, {
         ...record,
@@ -607,21 +607,21 @@ class AzureSyncService implements SyncService {
       });
       await this.localDb.markAsSynced(record.id);
     }
-    
+
     return { success: true, recordsSynced: unsyncedRecords.length };
   }
-  
+
   async pullRemoteChanges(): Promise<SyncResult> {
     const lastSync = await this.localDb.getLastSyncTime();
     const userId = await this.getUserId();
-    
+
     const remoteRecords = await this.api.get(`/users/${userId}/data`, {
       modifiedSince: lastSync
     });
-    
+
     for (const record of remoteRecords) {
       const local = await this.localDb.getRecord(record.id);
-      
+
       if (!local) {
         await this.localDb.saveRecord(record);
       } else if (record.lastModified > local.lastModified) {
@@ -629,10 +629,10 @@ class AzureSyncService implements SyncService {
         await this.localDb.saveRecord(resolved);
       }
     }
-    
+
     return { success: true, recordsSynced: remoteRecords.length };
   }
-  
+
   resolveConflict(local: DataRecord, remote: DataRecord): DataRecord {
     // Last-write-wins strategy (configurable)
     return remote.lastModified > local.lastModified ? remote : local;
@@ -692,7 +692,7 @@ interface SyncStatus {
 #### Timeline Estimate
 
 | Phase | Duration | Dependencies |
-|-------|----------|--------------|
+| ------- | ---------- | -------------- |
 | Azure Setup | 3 days | Azure subscription |
 | API Development | 5 days | Auth complete |
 | Sync Service | 5 days | API complete |
@@ -700,7 +700,7 @@ interface SyncStatus {
 | Testing | 3 days | All above |
 | **Total** | **19 days** | |
 
----
+ ---
 
 ### 8. New Feature Suggestions
 
@@ -813,7 +813,7 @@ Music during workouts:
 - BPM-based song selection
 - Workout-specific playlists
 
----
+ ---
 
 ### 9. Workout Logger Improvements
 
@@ -851,7 +851,7 @@ interface WorkoutSuggestion {
 const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
   const cycle = await fiveThreeOneStorage.getCycleById(cycleId);
   const results = await workoutResultsStorage.getCycleResults(cycleId);
-  
+
   // Find first incomplete workout in current week
   // or suggest next week if all complete
   // ...implementation
@@ -928,10 +928,10 @@ interface RestTimerProps {
 const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
   const [remaining, setRemaining] = useState(duration);
   const [isActive, setIsActive] = useState(autoStart);
-  
+
   useEffect(() => {
     if (!isActive || remaining <= 0) return;
-    
+
     const timer = setInterval(() => {
       setRemaining(prev => {
         if (prev <= 1) {
@@ -944,10 +944,10 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
         return prev - 1;
       });
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [isActive, remaining, onComplete]);
-  
+
   return (
     <div className="rest-timer">
       <div className="timer-display">{formatTime(remaining)}</div>
@@ -963,7 +963,7 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
 #### Timeline Estimate
 
 | Feature | Duration | Priority |
-|---------|----------|----------|
+| --------- | ---------- | ---------- |
 | Smart Workout Selection | 3 days | High |
 | Visual Workout Cards | 2 days | High |
 | Simplified Set Entry | 3 days | High |
@@ -972,7 +972,7 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
 | Quick Actions | 2 days | Low |
 | **Total** | **14 days** | |
 
----
+ ---
 
 ### 10. Apple Fitness Integration
 
@@ -1060,7 +1060,7 @@ const syncToHealthKit = async (workout: WorkoutResult) => {
   await HealthKit.requestAuthorization({
     all: ['workoutType']
   });
-  
+
   await HealthKit.saveWorkout({
     type: 'traditionalStrengthTraining',
     startDate: workout.datePerformed,
@@ -1081,7 +1081,7 @@ import { GoogleFitClient } from './googleFitClient';
 
 class GoogleFitService {
   private client: GoogleFitClient;
-  
+
   async syncWorkout(workout: WorkoutResult): Promise<void> {
     const session = {
       name: `${workout.exerciseName} - ${workout.cycleName}`,
@@ -1090,7 +1090,7 @@ class GoogleFitService {
       endTimeMillis: workout.datePerformed.getTime() + workout.duration * 60000,
       activityType: 97,  // Weight training
     };
-    
+
     await this.client.sessions.create(session);
   }
 }
@@ -1099,13 +1099,13 @@ class GoogleFitService {
 #### Timeline & Effort Estimates
 
 | Option | Effort | Value | Recommendation |
-|--------|--------|-------|----------------|
+| -------- | -------- | ------- | ---------------- |
 | Export Format | Low (2 days) | Medium | ✅ Implement now |
 | Strava Sync | Medium (5 days) | High | ✅ Phase 2 |
 | Google Fit | Medium (5 days) | High | ✅ Phase 2 |
 | Native iOS App | High (4+ weeks) | Very High | 📋 Long-term |
 
----
+ ---
 
 ## Content & Marketing
 
@@ -1228,7 +1228,7 @@ const LandingPage: FC = () => {
 - Open Graph tags for social sharing
 - Performance optimization (Core Web Vitals)
 
----
+ ---
 
 ### 12. Blog Plan
 
@@ -1270,7 +1270,7 @@ const LandingPage: FC = () => {
 #### Content Calendar (Sample)
 
 | Week | Category | Title |
-|------|----------|-------|
+| ------ | ---------- | ------- |
 | 1 | Guide | "Getting Started with 5/3/1" |
 | 2 | Tutorial | "Perfect Your Squat Technique" |
 | 3 | Update | "New Feature: Rest Timer" |
@@ -1302,7 +1302,7 @@ docs/blog/
 // pages/Blog.tsx
 const Blog: FC = () => {
   const { posts } = useBlogPosts();
-  
+
   return (
     <div className="blog-page">
       <h1>IBPD Blog</h1>
@@ -1314,7 +1314,7 @@ const Blog: FC = () => {
 };
 ```
 
----
+ ---
 
 ### 13. Social Media Features
 
@@ -1370,15 +1370,15 @@ const generateShareImage = async (workout: ShareableWorkout): Promise<Blob> => {
   container.innerHTML = createShareCardHTML(workout);
   container.style.cssText = 'position:absolute;left:-9999px;';
   document.body.appendChild(container);
-  
+
   const canvas = await html2canvas(container, {
     width: 600,
     height: 400,
     backgroundColor: '#1a1a1a'
   });
-  
+
   document.body.removeChild(container);
-  
+
   return new Promise(resolve => {
     canvas.toBlob(blob => resolve(blob!), 'image/png');
   });
@@ -1387,7 +1387,7 @@ const generateShareImage = async (workout: ShareableWorkout): Promise<Blob> => {
 const shareToSocial = async (workout: ShareableWorkout): Promise<void> => {
   const imageBlob = await generateShareImage(workout);
   const file = new File([imageBlob], 'workout.png', { type: 'image/png' });
-  
+
   if (navigator.canShare?.({ files: [file] })) {
     await navigator.share({
       title: 'My Workout Results',
@@ -1419,7 +1419,7 @@ const shareToSocial = async (workout: ShareableWorkout): Promise<void> => {
 const ShareButtons: FC = () => {
   const appUrl = 'https://ibpd.app';
   const shareText = 'Check out this awesome 5/3/1 workout tracker!';
-  
+
   return (
     <div className="share-buttons">
       <a 
@@ -1472,7 +1472,7 @@ const generateAppQR = async (): Promise<string> => {
 };
 ```
 
----
+ ---
 
 ## Product Roadmap
 
@@ -1525,7 +1525,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 **Duration:** 6-8 weeks
 
 | Feature | Priority | Effort | Dependencies |
-|---------|----------|--------|--------------|
+| --------- | ---------- | -------- | -------------- |
 | Workout Logger Improvements | High | 14 days | None |
 | Rest Timer | High | 2 days | None |
 | Smart Workout Suggestions | High | 3 days | None |
@@ -1539,7 +1539,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 **Duration:** 8-10 weeks
 
 | Feature | Priority | Effort | Dependencies |
-|---------|----------|--------|--------------|
+| --------- | ---------- | -------- | -------------- |
 | Entra ID Authentication | High | 9 days | Azure subscription |
 | Remote Database Sync | High | 19 days | Auth complete |
 | Dashboard Home View | Medium | 5 days | Sync recommended |
@@ -1552,7 +1552,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 **Duration:** 8-10 weeks
 
 | Feature | Priority | Effort | Dependencies |
-|---------|----------|--------|--------------|
+| --------- | ---------- | -------- | -------------- |
 | Social Sharing | Medium | 5 days | Auth complete |
 | Google Fit Integration | Medium | 5 days | Auth complete |
 | Custom Workout Templates | Medium | 7 days | None |
@@ -1564,7 +1564,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 ### Success Metrics
 
 | Metric | Current | Q2 Target | Q4 Target |
-|--------|---------|-----------|-----------|
+| -------- | --------- | ----------- | ----------- |
 | Monthly Active Users | N/A | 500 | 2,000 |
 | Workouts Logged/Month | N/A | 2,000 | 10,000 |
 | PWA Installs | N/A | 100 | 500 |
@@ -1574,21 +1574,21 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 ### Risk Assessment
 
 | Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
+| ------ | ------------- | -------- | ------------ |
 | Azure costs exceed budget | Medium | Medium | Monitor usage, set alerts |
 | User adoption slower than expected | Medium | High | Increase marketing, improve onboarding |
 | Apple Health integration blocked | High | Low | Focus on Google Fit, export options |
 | Performance issues at scale | Low | High | Load testing, caching strategies |
 | Security vulnerabilities | Low | Very High | Regular audits, penetration testing |
 
----
+ ---
 
 ## Appendix
 
 ### A. Competitive Analysis
 
 | Feature | IBPD | Strong App | JEFIT | Hevy |
-|---------|------|------------|-------|------|
+| --------- | ------ | ------------ | ------- | ------ |
 | 5/3/1 Support | ✅ | ❌ | ❌ | ❌ |
 | Free | ✅ | Freemium | Freemium | Freemium |
 | Offline | ✅ | ✅ | ✅ | ✅ |
@@ -1639,7 +1639,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
 }
 ```
 
----
+ ---
 
 **Document Version:** 1.0  
 **Last Updated:** November 2025  

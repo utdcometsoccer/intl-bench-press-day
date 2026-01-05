@@ -109,7 +109,7 @@ Documentation should be updated when:
 ### Coverage Areas
 
 | Area | Documentation Status |
-|------|---------------------|
+| ------ | --------------------- |
 | Core Features | ✅ Well Documented |
 | Accessibility | ✅ Well Documented |
 | Planning | ✅ Well Documented |
@@ -186,7 +186,7 @@ If you can't find what you're looking for:
 3. Search existing documentation using your editor's search
 4. [Open an issue](https://github.com/utdcometsoccer/intl-bench-press-day/issues) if documentation is missing or unclear
 
----
+ ---
 
 **Last Updated**: January 2026  
 **Maintained By**: Project Contributors

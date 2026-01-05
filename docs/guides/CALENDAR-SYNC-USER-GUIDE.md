@@ -2,7 +2,7 @@
 
 A simple guide to exporting your workout schedule to your favorite calendar app.
 
----
+ ---
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ A simple guide to exporting your workout schedule to your favorite calendar app.
 
 That's it! Your workouts will be added to your calendar.
 
----
+ ---
 
 ## Choose Your Calendar
 
@@ -69,7 +69,7 @@ The ICS file works with:
 2. Open the file with your calendar app
 3. Confirm the import
 
----
+ ---
 
 ## What Gets Added to Your Calendar?
 
@@ -85,7 +85,7 @@ Each workout event includes:
   - AMRAP indicators
 - **Location**: Your training cycle name
 
----
+ ---
 
 ## Tips & Tricks
 
@@ -118,7 +118,7 @@ Want to share your workout schedule?
 2. Email the ICS file to your trainer
 3. They can import it into their calendar
 
----
+ ---
 
 ## Troubleshooting
 
@@ -142,7 +142,7 @@ Want to share your workout schedule?
 
 **Solution**: This is rare but can happen with older calendar apps. Try using a different calendar app or update your current one.
 
----
+ ---
 
 ## Need More Help?
 
@@ -153,18 +153,18 @@ Check out the full [Calendar Sync Documentation](../features/CALENDAR-SYNC.md) f
 - Advanced troubleshooting
 - Future features coming soon
 
----
+ ---
 
 ## Quick Reference
 
 | If you use... | Click this button... | Why? |
-|---------------|---------------------|------|
+| --------------- | --------------------- | ------ |
 | iPhone/iPad | Download ICS File | Adds all workouts at once |
 | Google Calendar | Google Calendar | Quick and easy |
 | Outlook | Outlook Calendar | Quick and easy |
 | Any other app | Download ICS File | Works everywhere |
 
----
+ ---
 
 **Last Updated**: January 4, 2026  
 **Questions?** [Open an issue](https://github.com/utdcometsoccer/intl-bench-press-day/issues)

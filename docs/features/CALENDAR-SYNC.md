@@ -4,7 +4,7 @@
 **Version:** 1.0  
 **Last Updated:** January 4, 2026
 
----
+ ---
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@
 9. [Troubleshooting](#troubleshooting)
 10. [Future Enhancements](#future-enhancements)
 
----
+ ---
 
 ## Overview
 
@@ -32,7 +32,7 @@ The Calendar Synchronization feature allows users to export their workout schedu
 
 The feature supports multiple export formats to ensure compatibility with all major calendar platforms including Google Calendar, Outlook Calendar, and Apple Calendar.
 
----
+ ---
 
 ## Features
 
@@ -76,12 +76,12 @@ Each calendar event includes:
 - Keyboard accessible
 - Screen reader compatible
 
----
+ ---
 
 ## Supported Calendar Platforms
 
 | Platform | Support Method | Details |
-|----------|----------------|---------|
+| ---------- | ---------------- | --------- |
 | **Google Calendar** | Direct URL | Opens add event page in Google Calendar |
 | **Outlook Calendar** | Direct URL | Opens add event page in Outlook Calendar |
 | **Apple Calendar** | ICS Download | Import downloaded ICS file |
@@ -89,7 +89,7 @@ Each calendar event includes:
 | **Thunderbird** | ICS Download | Import downloaded ICS file |
 | **Any iCalendar app** | ICS Download | Universal iCalendar format |
 
----
+ ---
 
 ## How to Use
 
@@ -130,7 +130,7 @@ Each calendar event includes:
 4. Click "Save" in Outlook Calendar
 5. Repeat for each workout (Outlook Calendar adds one event at a time)
 
----
+ ---
 
 ## Technical Implementation
 
@@ -184,7 +184,7 @@ Special characters are properly escaped for iCalendar format:
 - `\` → `\\`
 - newlines → `\n`
 
----
+ ---
 
 ## ICS File Format
 
@@ -225,7 +225,7 @@ END:VCALENDAR
 - **LOCATION**: Training location (cycle name)
 - **STATUS**: Always "CONFIRMED"
 
----
+ ---
 
 ## Testing
 
@@ -268,7 +268,7 @@ npm test calendarExportService.test.ts
 npm test CalendarExport.test.tsx
 ```
 
----
+ ---
 
 ## Accessibility
 
@@ -298,7 +298,7 @@ Tested with:
 - ✅ JAWS (Windows)
 - ✅ VoiceOver (macOS/iOS)
 
----
+ ---
 
 ## Troubleshooting
 
@@ -338,7 +338,7 @@ Tested with:
 
 **Solution**: This is normal for ICS format. Most calendar apps will display them correctly once imported. If not, this may be a limitation of your calendar app.
 
----
+ ---
 
 ## Future Enhancements
 
@@ -360,7 +360,7 @@ Tested with:
 - Calendar subscription (webcal://) for live updates
 - Training partner sharing via calendar invites
 
----
+ ---
 
 ## API Reference
 
@@ -408,7 +408,7 @@ const url = exportToCalendar({
 window.open(url, '_blank');
 ```
 
----
+ ---
 
 ## Developer Notes
 
@@ -444,7 +444,7 @@ format: 'ics' | 'google' | 'outlook' | 'newplatform';
 
 To change what information is included in calendar events, modify the `generateWorkoutDescription` function in `calendarExportService.ts`.
 
----
+ ---
 
 ## Version History
 
@@ -455,7 +455,7 @@ To change what information is included in calendar events, modify the `generateW
   - Full accessibility compliance
   - Comprehensive test coverage (45 tests)
 
----
+ ---
 
 ## Related Documentation
 
@@ -464,7 +464,7 @@ To change what information is included in calendar events, modify the `generateW
 - [Workout Schedule Manager Documentation](WORKOUT-SCHEDULE-MANAGER.md) (if available)
 - [5/3/1 Program Documentation](FIVE-THREE-ONE-PROGRAM.md) (if available)
 
----
+ ---
 
 ## Support
 
@@ -478,7 +478,7 @@ For issues, questions, or feature requests related to calendar synchronization:
    - Browser and OS information
    - Calendar app being used
 
----
+ ---
 
 **Last Updated:** January 4, 2026  
 **Maintained By:** Project Contributors
