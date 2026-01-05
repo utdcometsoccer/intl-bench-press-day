@@ -80,7 +80,8 @@ describe('ManageCyclesTab', () => {
   it('displays empty state when no cycles exist', () => {
     render(<ManageCyclesTab {...defaultProps} cycles={[]} />);
     
-    expect(screen.getByText('No cycles created yet. Create your first cycle in the "Create Cycle" tab.')).toBeInTheDocument();
+    expect(screen.getByText('📋 Create Your First Training Cycle')).toBeInTheDocument();
+    expect(screen.getByText(/You haven't created any 5\/3\/1 training cycles yet/i)).toBeInTheDocument();
   });
 
   it('does not render cycles grid when no cycles exist', () => {
@@ -123,8 +124,9 @@ describe('ManageCyclesTab', () => {
   it('shows InfoMessage component for empty state', () => {
     render(<ManageCyclesTab {...defaultProps} cycles={[]} />);
     
-    // The InfoMessage component should render the empty state message
-    expect(screen.getByText('No cycles created yet. Create your first cycle in the "Create Cycle" tab.')).toBeInTheDocument();
+    // The enhanced empty state should render with helpful content
+    expect(screen.getByText('📋 Create Your First Training Cycle')).toBeInTheDocument();
+    expect(screen.getByText(/training cycles yet/i)).toBeInTheDocument();
   });
 
   it('renders all cycles with unique keys', () => {

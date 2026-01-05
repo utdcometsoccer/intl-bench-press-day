@@ -410,7 +410,27 @@ const WorkoutLogger: FC = () => {
     return (
       <div className="no-cycle-message">
         <h2>Workout Logger</h2>
-        <p>No active workout plan found. Please create and activate a cycle first in the 5-3-1 Planner.</p>
+        <div className="info-message">
+          <h3>📝 Ready to Log Your Workouts?</h3>
+          <p>The Workout Logger helps you track every set, rep, and personal record during your training sessions.</p>
+          <p><strong>Before you begin, you need to:</strong></p>
+          <ul className="info-message-list">
+            <li>Create a <strong>5/3/1 training cycle</strong> in the Planner tab</li>
+            <li>Or set up a <strong>custom workout plan</strong> with your exercises</li>
+          </ul>
+          <p className="help-text">
+            💡 <strong>What you'll be able to track:</strong> Warmup sets, main lifts with AMRAP, 
+            assistance exercises, RPE (Rate of Perceived Exertion), workout notes, and estimated 1RM calculations.
+          </p>
+          <button 
+            className="btn-primary" 
+            onClick={() => window.location.hash = '#planner'}
+            title="Navigate to 5/3/1 Planner to create a training cycle"
+            style={{ marginTop: '1rem' }}
+          >
+            Go to 5/3/1 Planner
+          </button>
+        </div>
       </div>
     );
   }
