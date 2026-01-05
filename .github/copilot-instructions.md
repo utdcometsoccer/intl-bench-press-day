@@ -123,8 +123,6 @@ Before committing any changes:
 - **Lint Markdown documentation** - Ensure all documentation follows proper formatting standards
 
 Before submitting a pull request:
-- Ensure all tests pass (`npm run test:run`)
-- Ensure linting passes (`npm run lint`)
 - Ensure build succeeds (`npm run build`)
 - Include accessibility testing for UI changes
 - Add tests for new features
