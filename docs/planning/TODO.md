@@ -527,6 +527,35 @@
   - **Effort:** 3 days
   - **Tests:** 12+ tests
 
+- [ ] **Body Weight Workout Templates**
+  - [ ] Research common body weight exercises and progressions
+  - [ ] Design hotel room/apartment workout template
+    - [ ] Push-ups (standard, decline, diamond variations)
+    - [ ] Bodyweight squats and lunges
+    - [ ] Planks and core work
+    - [ ] Chair/bed dips
+    - [ ] Wall sits
+  - [ ] Design children's jungle gym workout template
+    - [ ] Pull-ups and chin-ups
+    - [ ] Hanging knee raises
+    - [ ] Parallel bar dips
+    - [ ] Step-ups and box jumps
+    - [ ] Swing-based exercises
+  - [ ] Design outdoor calisthenics equipment template
+    - [ ] Bar exercises (pull-ups, muscle-ups, front lever progressions)
+    - [ ] Parallel bar exercises (dips, L-sits, handstands)
+    - [ ] Rings exercises (if available)
+    - [ ] Ground exercises (push-ups, pistol squats)
+  - [ ] Create progressive difficulty levels (beginner, intermediate, advanced)
+  - [ ] Add exercise substitution system for missing equipment
+  - [ ] Integrate with template builder
+  - [ ] Create template preview cards
+  - [ ] Write template validation tests
+  - [ ] Add templates to template library
+  - [ ] Document body weight workout templates
+  - **Effort:** 5 days
+  - **Tests:** 15+ tests
+
 ### Week 7-8: Calendar Enhancements & PR Board
 
 - [ ] **Calendar View Enhancements**
