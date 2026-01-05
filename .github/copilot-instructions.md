@@ -113,7 +113,6 @@ Documentation in the `docs/` folder should be organized into logical subdirector
 - Keep documentation up-to-date with code changes
 - Follow the existing documentation format and style
 - Include code examples and usage instructions where appropriate
-- **Lint all Markdown files before committing** - ensure documentation follows proper formatting standards
 
 ## Pull Request Guidelines
 
