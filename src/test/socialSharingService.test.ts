@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach, type SpyInstance } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance } from 'vitest';
 import { socialSharingService } from '../services/socialSharingService';
 import type { ProgressPhoto } from '../services/progressPhotosStorage';
 
@@ -13,9 +13,9 @@ describe('socialSharingService', () => {
     updatedAt: new Date('2025-01-01'),
   };
 
-  let generateShareableImageSpy: SpyInstance<[ProgressPhoto], Promise<string>>;
-  let windowOpenSpy: SpyInstance<[url?: string | URL | undefined, target?: string | undefined, features?: string | undefined], Window | null>;
-  let createElementSpy: SpyInstance<[tagName: string, options?: ElementCreationOptions | undefined], HTMLElement>;
+  let generateShareableImageSpy: MockInstance;
+  let windowOpenSpy: MockInstance;
+  let createElementSpy: MockInstance;
 
   beforeEach(() => {
     // Spy on generateShareableImage method

@@ -18,7 +18,11 @@ import PlateCalculator from './PlateCalculator';
 import RestTimer from './RestTimer';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
-const WorkoutLogger: FC = () => {
+interface WorkoutLoggerProps {
+  onNavigateToPlanner?: () => void;
+}
+
+const WorkoutLogger: FC<WorkoutLoggerProps> = ({ onNavigateToPlanner }) => {
   // State for current workout plan
   const [activePlan, setActivePlan] = useState<WorkoutPlan | null>(null);
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
@@ -424,7 +428,7 @@ const WorkoutLogger: FC = () => {
           </p>
           <button 
             className="btn-primary" 
-            onClick={() => window.location.hash = '#planner'}
+            onClick={onNavigateToPlanner}
             title="Navigate to 5/3/1 Planner to create a training cycle"
             style={{ marginTop: '1rem' }}
           >
