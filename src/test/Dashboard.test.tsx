@@ -94,7 +94,7 @@ describe('Dashboard Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Create Training Cycle')).toBeInTheDocument();
+      expect(screen.getByText('Create Your First Training Cycle')).toBeInTheDocument();
     });
   });
 

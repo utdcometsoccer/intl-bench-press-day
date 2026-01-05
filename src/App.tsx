@@ -313,7 +313,11 @@ function App() {
             {activeTab === 'tracker' && <ExerciseOneRepMaxTracker />}
             {activeTab === 'progress' && <ProgressChart />}
             {activeTab === 'planner' && <FiveThreeOnePlanner />}
-            {activeTab === 'logger' && <WorkoutLogger />}
+            {activeTab === 'logger' && (
+              <WorkoutLogger 
+                onNavigateToPlanner={() => handleTabClick('planner')}
+              />
+            )}
             {activeTab === 'custom' && <CustomWorkoutBuilder />}
             {activeTab === 'photos' && <ProgressPhotos />}
             {activeTab === 'exercises' && <ExerciseManager />}

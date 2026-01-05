@@ -31,15 +31,14 @@ export function ProgressPhotos() {
 
   useEffect(() => {
     loadPhotos();
+    const timeoutsSnapshot = timeoutRefs.current;
 
     // Cleanup camera stream and timeouts on unmount
     return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
-      // Cleanup all timeouts
-      const timeouts = timeoutRefs.current;
-      timeouts.forEach(clearTimeout);
+      timeoutsSnapshot.forEach(clearTimeout);
     };
   }, []);
 

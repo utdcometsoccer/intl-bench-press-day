@@ -83,10 +83,20 @@ const Dashboard: FC<DashboardProps> = ({
         <div className="no-cycle-card">
           <div className="no-cycle-icon" aria-hidden="true">🏋️</div>
           <h3>No Active Training Cycle</h3>
-          <p>Create a new 5/3/1 cycle to start tracking your workouts</p>
-          <button className="create-cycle-button" onClick={onNavigateToPlanner}>
-            Create Training Cycle
+          <p>You don't have an active training cycle yet. Create a 5/3/1 cycle to unlock powerful features like:</p>
+          <ul className="info-message-list">
+            <li><strong>Smart workout suggestions</strong> based on your progress</li>
+            <li><strong>Automatic weight calculations</strong> for every session</li>
+            <li><strong>Progress tracking</strong> with visual charts and statistics</li>
+            <li><strong>Calendar view</strong> to plan and track your workouts</li>
+          </ul>
+          <button className="create-cycle-button" onClick={onNavigateToPlanner} title="Navigate to 5/3/1 Planner to create your first training cycle">
+            Create Your First Training Cycle
           </button>
+          <p className="help-text">
+            💡 <strong>Tip:</strong> You'll need your current one-rep maxes (1RM) for the main lifts. 
+            Use the <strong>Exercise Tracker</strong> tab if you need to calculate them first.
+          </p>
         </div>
       </div>
     );

@@ -39,7 +39,8 @@ describe('ExerciseManager', () => {
     render(<ExerciseManager />)
     
     await waitFor(() => {
-      expect(screen.getByText(/18 built-in exercises/i)).toBeInTheDocument()
+      const matches = screen.getAllByText(/18 built-in exercises/i)
+      expect(matches.length).toBeGreaterThan(0)
     })
   })
 

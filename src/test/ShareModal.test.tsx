@@ -134,7 +134,7 @@ describe('ShareModal', () => {
       expect(socialSharingService.shareToTwitter).toHaveBeenCalledWith(
         mockPhoto,
         expect.objectContaining({
-          text: expect.stringContaining('1/1/2025'),
+          text: expect.stringContaining(mockPhoto.dateTaken.toLocaleDateString()),
           hashtags: expect.arrayContaining(['fitness', 'progress', 'workout', 'BenchPressDay']),
         })
       );
@@ -196,7 +196,7 @@ describe('ShareModal', () => {
       expect(socialSharingService.shareToWhatsApp).toHaveBeenCalledWith(
         mockPhoto,
         expect.objectContaining({
-          text: expect.stringContaining('1/1/2025'),
+          text: expect.stringContaining(mockPhoto.dateTaken.toLocaleDateString()),
         })
       );
     });
@@ -218,7 +218,7 @@ describe('ShareModal', () => {
       expect(socialSharingService.shareToReddit).toHaveBeenCalledWith(
         mockPhoto,
         expect.objectContaining({
-          title: expect.stringContaining('1/1/2025'),
+          title: expect.stringContaining(mockPhoto.dateTaken.toLocaleDateString()),
         })
       );
     });

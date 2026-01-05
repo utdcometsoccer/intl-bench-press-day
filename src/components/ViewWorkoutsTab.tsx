@@ -1,6 +1,5 @@
 import { type FC } from 'react';
 import { type FiveThreeOneCycle } from '../types';
-import InfoMessage from './InfoMessage';
 import WorkoutWeek from './WorkoutWeek';
 import CycleSelector from './CycleSelector';
 
@@ -38,7 +37,20 @@ const ViewWorkoutsTab: FC<ViewWorkoutsTabProps> = ({
       )}
 
       {!activeCycle && !selectedCycle && (
-        <InfoMessage message="No active cycle found. Create a cycle first to view workouts." />
+        <div className="info-message">
+          <h4>👀 View Your Training Plan</h4>
+          <p>No active training cycle to display. Once you create and activate a cycle, you'll see:</p>
+          <ul className="info-message-list">
+            <li><strong>All 4 weeks</strong> of your training program</li>
+            <li><strong>Detailed workout breakdowns</strong> for each day</li>
+            <li><strong>Set-by-set prescriptions</strong> with weights and reps</li>
+            <li><strong>Percentage-based calculations</strong> from your training max</li>
+          </ul>
+          <p className="help-text">
+            💡 <strong>Next Step:</strong> Create a training cycle in the "Create Cycle" tab, 
+            then activate it in "Manage Cycles" to view your workouts here.
+          </p>
+        </div>
       )}
     </div>
   );
