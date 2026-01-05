@@ -47,7 +47,7 @@ User guides and how-to documentation:
 
 Technical architecture and design decisions:
 
-*Currently no architecture documentation - future home for system design docs*
+Currently no architecture documentation - future home for system design docs
 
 ## 📝 Documentation Guidelines
 

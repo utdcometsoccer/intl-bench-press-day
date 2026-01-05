@@ -8,7 +8,7 @@ This report examines the International Bench Press Day application for complianc
 
 ### Current Accessibility Status: ✅ GOOD COMPLIANCE
 
-**Overall Score: 90/100**
+Overall Score: 90/100
 
 ---
 

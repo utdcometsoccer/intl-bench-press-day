@@ -311,7 +311,7 @@ const imageData = canvas.toDataURL('image/jpeg', 0.9); // 0.0 to 1.0
 
 This feature is **Section 508 compliant** and meets **WCAG 2.1 AA** standards.
 
-### Features
+### Accessibility Features
 
 1. **Keyboard Navigation**
    - All buttons are keyboard accessible
@@ -523,4 +523,4 @@ This feature is part of the International Bench Press Day application and follow
 
  ---
 
-**End of Progress Photos Feature Documentation**
+End of Progress Photos Feature Documentation

@@ -19,7 +19,7 @@ That's it! Your workouts will be added to your calendar.
 
 ### 📱 For iPhone/iPad Users
 
-**Best Option: Download ICS File**
+#### Best Option: Download ICS File
 
 1. Click **"Download ICS File"**
 2. Tap the downloaded file
@@ -28,35 +28,35 @@ That's it! Your workouts will be added to your calendar.
 
 ### 💻 For Google Calendar Users
 
-**Best Option: Google Calendar Button**
+#### Best Option: Google Calendar Button
 
 1. Click **"Google Calendar"**
 2. A new window opens with your workout details
 3. Click **"Save"** in Google Calendar
 4. Repeat for each workout you want to add
 
-**Alternative: Download ICS File**
+#### Alternative for Google Calendar: Download ICS File
 
 - Great if you want to add all workouts at once
 - Import the file into Google Calendar settings
 
 ### 🏢 For Outlook Users
 
-**Best Option: Outlook Calendar Button**
+#### Best Option: Outlook Calendar Button
 
 1. Click **"Outlook Calendar"**
 2. A new window opens with your workout details
 3. Click **"Save"** in Outlook
 4. Repeat for each workout you want to add
 
-**Alternative: Download ICS File**
+#### Alternative for Outlook: Download ICS File
 
 - Great if you want to add all workouts at once
 - Import the file into Outlook
 
 ### 💻 For Other Calendar Apps
 
-**Use: Download ICS File**
+#### Use: Download ICS File
 
 The ICS file works with:
 

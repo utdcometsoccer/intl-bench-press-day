@@ -479,4 +479,5 @@ This project is open source and available under the **MIT License**.
 
 ---
 
-**Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready • 351 Tests Strong**
+Built with ❤️ for the fitness community • Section 508 Compliant • PWA Ready •
+351 Tests Strong

@@ -274,7 +274,7 @@ npm test CalendarExport.test.tsx
 
 The Calendar Export feature is fully accessible and compliant with Section 508 and WCAG 2.1 AA standards:
 
-### Features
+### Accessibility Features
 
 - **ARIA Labels**: All buttons and interactive elements have descriptive ARIA labels
 - **Role Attributes**: Proper semantic roles (dialog, status, alert)
