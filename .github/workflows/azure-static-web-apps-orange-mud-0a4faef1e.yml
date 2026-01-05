@@ -36,11 +36,6 @@ jobs:
       - name: Run tests
         run: npm run test:run
 
-      - name: Build application
-        run: npm run build
-        env:
-          VITE_APPINSIGHTS_CONNECTION_STRING: ${{ secrets.VITE_APPINSIGHTS_CONNECTION_STRING }}
-
   # Deploy job only runs on pushes to main branch
   deploy:
     needs: build_and_test
