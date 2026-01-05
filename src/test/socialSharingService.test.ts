@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance } from 'vitest';
 import { socialSharingService } from '../services/socialSharingService';
 import type { ProgressPhoto } from '../services/progressPhotosStorage';
 
@@ -13,12 +13,9 @@ describe('socialSharingService', () => {
     updatedAt: new Date('2025-01-01'),
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let generateShareableImageSpy: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let windowOpenSpy: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let createElementSpy: any;
+  let generateShareableImageSpy: MockInstance;
+  let windowOpenSpy: MockInstance;
+  let createElementSpy: MockInstance;
 
   beforeEach(() => {
     // Spy on generateShareableImage method
@@ -158,16 +155,17 @@ describe('socialSharingService', () => {
 
   describe('copyToClipboard', () => {
     it('calls generateShareableImage with the photo', async () => {
-      // Mock ClipboardItem - type it as any to avoid complex type issues
-      (global as any).ClipboardItem = vi.fn().mockImplementation((data) => data);
+      // Mock ClipboardItem
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (globalThis as any).ClipboardItem = vi.fn().mockImplementation((data: Record<string, Blob>) => data);
 
       // Mock fetch for base64ToBlob
       global.fetch = vi.fn().mockResolvedValue({
         blob: () => Promise.resolve(new Blob(['test'], { type: 'image/jpeg' })),
-      });
+      } as unknown as Response);
 
       // Mock clipboard API
-      const mockClipboard = {
+      const mockClipboard: Pick<Clipboard, 'write'> = {
         write: vi.fn().mockResolvedValue(undefined),
       };
       Object.defineProperty(navigator, 'clipboard', {

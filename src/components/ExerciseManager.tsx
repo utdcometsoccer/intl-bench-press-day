@@ -321,9 +321,21 @@ const ExerciseManager: React.FC = () => {
       <div>
         <h3>Your Custom Exercises ({customExercises.length})</h3>
         {customExercises.length === 0 ? (
-          <p style={{ fontStyle: 'italic', color: '#666' }}>
-            No custom exercises yet. Click "Add New Exercise" to create one.
-          </p>
+          <div className="info-message">
+            <h4>💪 Build Your Personal Exercise Library</h4>
+            <p>No custom exercises yet. The app includes {BARBELL_EXERCISES.length} built-in exercises, but you can add your own!</p>
+            <p><strong>Why create custom exercises?</strong></p>
+            <ul className="info-message-list">
+              <li>Track exercises specific to your training style</li>
+              <li>Add sport-specific movements</li>
+              <li>Include machine or bodyweight variations</li>
+              <li>Organize exercises by your preferred categories</li>
+            </ul>
+            <p className="help-text">
+              💡 <strong>Tip:</strong> Click "Add New Exercise" above to get started. You can add exercises for 
+              things like Bulgarian split squats, cable flies, or any movement you want to track!
+            </p>
+          </div>
         ) : (
           <div role="list" aria-label="Custom exercises list">
             {customExercises.map((exercise) => (

@@ -37,9 +37,7 @@ export function ProgressPhotos() {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
-      // Cleanup all timeouts
-      const timeouts = timeoutRefs.current;
-      timeouts.forEach(clearTimeout);
+      timeoutRefs.current.forEach(clearTimeout);
     };
   }, []);
 

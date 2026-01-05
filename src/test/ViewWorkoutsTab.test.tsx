@@ -83,7 +83,8 @@ describe('ViewWorkoutsTab', () => {
   it('displays empty state when there is no active cycle and no selected cycle', () => {
     render(<ViewWorkoutsTab {...defaultProps} activeCycle={null} selectedCycle={null} />);
     
-    expect(screen.getByText('No active cycle found. Create a cycle first to view workouts.')).toBeInTheDocument();
+    expect(screen.getByText('👀 View Your Training Plan')).toBeInTheDocument();
+    expect(screen.getByText(/No active training cycle to display/i)).toBeInTheDocument();
   });
 
   it('does not display active cycle workouts when there is a selected cycle', () => {
@@ -96,20 +97,20 @@ describe('ViewWorkoutsTab', () => {
   it('does not display empty state when there is an active cycle', () => {
     render(<ViewWorkoutsTab {...defaultProps} />);
     
-    expect(screen.queryByText('No active cycle found. Create a cycle first to view workouts.')).not.toBeInTheDocument();
+    expect(screen.queryByText('👀 View Your Training Plan')).not.toBeInTheDocument();
   });
 
   it('does not display empty state when there is a selected cycle', () => {
     render(<ViewWorkoutsTab {...defaultProps} activeCycle={null} selectedCycle={mockSelectedCycle} />);
     
-    expect(screen.queryByText('No active cycle found. Create a cycle first to view workouts.')).not.toBeInTheDocument();
+    expect(screen.queryByText('👀 View Your Training Plan')).not.toBeInTheDocument();
   });
 
   it('renders with null active cycle', () => {
     render(<ViewWorkoutsTab {...defaultProps} activeCycle={null} />);
     
     expect(screen.getByText('View Workouts')).toBeInTheDocument();
-    expect(screen.getByText('No active cycle found. Create a cycle first to view workouts.')).toBeInTheDocument();
+    expect(screen.getByText('👀 View Your Training Plan')).toBeInTheDocument();
   });
 
   it('applies correct structure and classes', () => {
@@ -136,7 +137,8 @@ describe('ViewWorkoutsTab', () => {
   it('renders InfoMessage component for empty state', () => {
     render(<ViewWorkoutsTab {...defaultProps} activeCycle={null} selectedCycle={null} />);
     
-    // The InfoMessage component should render the empty state message
-    expect(screen.getByText('No active cycle found. Create a cycle first to view workouts.')).toBeInTheDocument();
+    // The enhanced empty state should render with helpful content
+    expect(screen.getByText('👀 View Your Training Plan')).toBeInTheDocument();
+    expect(screen.getByText(/No active training cycle to display/i)).toBeInTheDocument();
   });
 });

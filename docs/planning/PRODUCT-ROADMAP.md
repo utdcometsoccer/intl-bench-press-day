@@ -22,9 +22,15 @@
 ## Executive Summary
 
 ### Application Overview
-International Bench Press Day is a Progressive Web Application (PWA) for comprehensive strength training tracking, implementing Jim Wendler's 5/3/1 methodology with advanced features including GPS-aware plate calculation, voice navigation, and health platform integration.
+
+International Bench Press Day is a Progressive Web Application
+(PWA) for comprehensive strength training tracking.
+It implements Jim Wendler's 5/3/1 methodology and includes
+GPS-aware plate calculation, voice navigation, and health
+platform integration.
 
 ### Current Status (Q4 2025 - Q1 2026)
+
 - **Version:** 1.0 (Production)
 - **Test Coverage:** 572 passing tests across 44 test suites
 - **Source Files:** 95+ TypeScript/React files
@@ -33,17 +39,30 @@ International Bench Press Day is a Progressive Web Application (PWA) for compreh
 - **Deployment:** Azure Static Web Apps with CI/CD
 
 ### Recent Updates (January 2026)
+
 🎉 **Smart Workout Suggestions** - Implemented intelligent workout recommendations
+
 - 32 new tests (18 service + 12 component + 11 integration)
 - Full integration with Dashboard and TodaysWorkout components
 - Comprehensive documentation updates
 
-🎉 **Calendar Synchronization** - Added workout calendar export to Google Calendar, Outlook, Apple Calendar, and ICS files
+🎉 **Calendar Synchronization** - Added workout calendar export to Google  
+Calendar, Outlook, Apple Calendar, and ICS files
+
 - 45 new tests (28 service + 17 component)
 - Full accessibility compliance
 - Comprehensive documentation
 
+🎉 **Enhanced Empty States** - Improved user guidance across all major components
+
+- Enhanced Dashboard, WorkoutLogger, ExerciseManager, and
+  FiveThreeOnePlanner empty states
+- Added emoji icons, contextual help, and clear call-to-action buttons
+- Updated 9 component tests
+- All 544 tests passing
+- Maintained Section 508 accessibility compliance
 🎉 **Rest Timer Feature** - Implemented configurable rest timer between sets
+
 - 28 new tests covering timer logic, UI, audio/vibration, accessibility
 - Integration with WorkoutLogger
 - User preference storage
@@ -51,13 +70,19 @@ International Bench Press Day is a Progressive Web Application (PWA) for compreh
 - Comprehensive documentation (docs/features/REST-TIMER.md)
 
 ### Key Strengths
-✅ **Robust Core Features** - Complete 5/3/1 implementation, workout logging, progress tracking  
-✅ **Excellent Accessibility** - Section 508 compliant with comprehensive ARIA support  
+
+✅ **Robust Core Features** - Complete 5/3/1 implementation, workout logging,  
+progress tracking  
+✅ **Excellent Accessibility** - Section 508 compliant with comprehensive ARIA  
+support  
 ✅ **Offline-First Architecture** - Full PWA with IndexedDB persistence  
-✅ **Innovation** - GPS plate calculator, voice navigation, health platform sync, calendar export, smart suggestions  
-✅ **Quality** - 544 comprehensive tests, TypeScript strict mode, ESLint compliance  
+✅ **Innovation** - GPS plate calculator, voice navigation, health platform  
+sync, calendar export, smart suggestions  
+✅ **Quality** - 544 comprehensive tests, TypeScript strict mode, ESLint  
+compliance  
 
 ### Strategic Priorities
+
 🎯 **Q1 2025** - User Experience & Onboarding  
 🎯 **Q2 2025** - Cloud Sync & Authentication  
 🎯 **Q3 2025** - Social Features & Growth  
@@ -95,11 +120,14 @@ International Bench Press Day is a Progressive Web Application (PWA) for compreh
 ### User Journey Analysis
 
 **Current Flow:**
-```
-App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts → View Progress
+
+```text
+App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle →
+Log Workouts → View Progress
 ```
 
 **Pain Points:**
+
 - No guided onboarding for first-time users
 - Workout navigation requires manual week/day selection
 - Feature discovery is not intuitive
@@ -112,9 +140,12 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ### Core Features (✅ Complete)
 
 #### 1. **5/3/1 Program Management**
+
 **Status:** ✅ Production Ready  
-**Components:** `FiveThreeOnePlanner`, `CreateCycleForm`, `CycleCard`, `ManageCyclesTab`  
+**Components:** `FiveThreeOnePlanner`, `CreateCycleForm`, `CycleCard`,  
+`ManageCyclesTab`  
 **Features:**
+
 - Complete Jim Wendler 5/3/1 methodology implementation
 - Wave periodization with 4-week cycles
 - Training max calculations (90% or custom)
@@ -129,9 +160,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 2. **Workout Logging System**
+
 **Status:** ✅ Production Ready  
 **Components:** `WorkoutLogger`, `GuidedWorkout`, `QuickLog`  
 **Features:**
+
 - Complete workout session recording
 - Warmup, main sets, and assistance work tracking
 - RPE (Rate of Perceived Exertion) logging
@@ -146,9 +179,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 3. **Exercise Database & Management**
+
 **Status:** ✅ Production Ready  
 **Components:** `ExerciseManager`, `ExerciseOneRepMaxTracker`  
 **Features:**
+
 - Comprehensive pre-loaded exercise library
 - Custom exercise creation
 - Exercise categorization (Main Lifts, Assistance, etc.)
@@ -157,7 +192,8 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 - Exercise records and history
 - Personal record tracking
 
-**Test Coverage:** 
+**Test Coverage:**
+
 - 5 tests in `ExerciseOneRepMaxTracker.test.tsx`
 - 12 tests in `oneRepMaxStorage.test.ts`
 - 9 tests in `exerciseRecordsStorage.test.ts`
@@ -166,9 +202,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 4. **Smart Plate Calculator**
+
 **Status:** ✅ Production Ready  
 **Components:** `PlateCalculator`, `PlateSetManager`  
 **Features:**
+
 - GPS-aware automatic gym detection (1km radius)
 - Optimal plate combination algorithm
 - Custom plate set configurations
@@ -183,9 +221,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 5. **Progress Visualization**
+
 **Status:** ✅ Production Ready  
 **Components:** `ProgressChart`, `Dashboard`, `ProgressSummary`  
 **Features:**
+
 - Interactive line charts with Recharts
 - Exercise filtering and date ranges
 - Multiple chart types (1RM trends, volume, frequency)
@@ -199,9 +239,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 6. **Progressive Web App**
+
 **Status:** ✅ Production Ready  
 **Components:** `PWAInstallPrompt`, Service Worker  
 **Features:**
+
 - Install to home screen (iOS, Android, Desktop)
 - Complete offline functionality
 - Background caching with Workbox
@@ -215,9 +257,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 7. **Accessibility Features**
+
 **Status:** ✅ Section 508 Compliant  
 **Implementation:** Throughout application  
 **Features:**
+
 - Complete ARIA implementation (roles, labels, live regions)
 - Semantic HTML structure
 - Keyboard navigation with skip links
@@ -232,23 +276,28 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 8. **Voice Navigation**
+
 **Status:** ✅ Production Ready  
 **Components:** `VoiceNavigationButton`, `useVoiceNavigation` hook  
 **Features:**
+
 - Browser-native Web Speech API
 - Hands-free navigation commands
 - Visual feedback for recognized commands
 - Help system with command list
 - Accessibility enhancement for motor impairments
 
-**Test Coverage:** 16 tests in `useVoiceNavigation.test.tsx`
+**Test Coverage:**  
+16 tests in `useVoiceNavigation.test.tsx`
 
 ---
 
 #### 9. **Health Platform Integration**
+
 **Status:** ✅ Production Ready  
 **Services:** `googleFitClient`, `googleFitService`, `appleHealthExport`  
 **Features:**
+
 - Google Fit OAuth integration
 - Automatic workout session sync to Google Fit
 - Apple Health export in HealthKit-compatible format
@@ -256,6 +305,7 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 - Session metadata (duration, activity type, exercises)
 
 **Test Coverage:**
+
 - 16 tests in `googleFitClient.test.ts`
 - 14 tests in `googleFitService.test.ts`
 - 10 tests in `appleHealthExport.test.ts`
@@ -263,9 +313,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 10. **Data Export & Import**
+
 **Status:** ✅ Production Ready  
 **Components:** `DataExport`  
 **Features:**
+
 - Complete data export (JSON format)
 - Backup all cycles, workouts, exercises, records
 - Import data from backup
@@ -277,9 +329,12 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 11. **User Experience Enhancements**
+
 **Status:** ✅ Production Ready  
-**Components:** `WelcomeScreen`, `FirstTimeUserWizard`, `QuickProfileSetup`, `TodaysWorkout`, `CalendarView`  
+**Components:** `WelcomeScreen`, `FirstTimeUserWizard`, `QuickProfileSetup`,  
+`TodaysWorkout`, `CalendarView`  
 **Features:**
+
 - First-time user onboarding wizard
 - Quick profile setup
 - Dashboard with today's workout
@@ -289,15 +344,18 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 - Notification settings
 
 **Test Coverage:**
+
 - 6 tests in `FirstTimeUserWizard.test.tsx`
 - 9 tests in `workoutSuggestionService.test.ts`
 
 ---
 
 #### 12. **Progress Photos** 📸
+
 **Status:** ✅ Production Ready (NEW - January 2026)  
 **Components:** `ProgressPhotos`, `ShareModal`  
 **Features:**
+
 - Photo upload from device storage
 - Direct camera capture with live preview
 - Photo gallery with thumbnail view
@@ -321,9 +379,11 @@ App Open → Exercise Tracker → (Optional) Create 5/3/1 Cycle → Log Workouts
 ---
 
 #### 13. **Rest Timer** ⏱️
+
 **Status:** ✅ Production Ready (NEW - January 2026)  
 **Components:** `RestTimer`  
 **Features:**
+
 - Configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
 - Visual countdown with animated circular progress ring
 - Audio notification using Web Audio API (800Hz sine wave beep)
@@ -360,16 +420,19 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ### High Priority Issues
 
 #### 🔴 Issue #1: Bundle Size Optimization
+
 **Category:** Performance  
 **Status:** Open  
 **Impact:** High
 
 **Problem:**
+
 - JavaScript bundle is 1,087 KB (302 KB gzipped)
 - CSS bundle is 103 KB
 - Initial load time could be improved
 
 **Proposed Solution:**
+
 - Implement code splitting with React.lazy()
 - Tree-shake unused Recharts components
 - Optimize CSS with critical CSS extraction
@@ -382,16 +445,19 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🔴 Issue #2: No Authentication System
+
 **Category:** Feature Gap  
 **Status:** Open  
 **Impact:** High
 
 **Problem:**
+
 - Users cannot sync data across devices
 - No user accounts or profiles
 - Data limited to single device/browser
 
 **Proposed Solution:**
+
 - Implement Microsoft Entra ID (Azure AD) authentication
 - Add user profile management
 - Enable cloud data sync
@@ -404,16 +470,19 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🔴 Issue #3: Color Contrast Verification Needed
+
 **Category:** Accessibility  
 **Status:** Open  
 **Impact:** Medium
 
 **Problem:**
+
 - Color contrast ratios not fully verified
 - May not meet WCAG 2.1 AAA standards in all cases
 - Needs comprehensive audit
 
 **Proposed Solution:**
+
 - Run automated contrast checking tools (Lighthouse, axe)
 - Manual verification of all color combinations
 - Create high contrast theme variant
@@ -428,23 +497,28 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ### Medium Priority Issues
 
 #### 🟢 Issue #4: Workout Navigation UX
+
 **Category:** User Experience  
 **Status:** ✅ RESOLVED (Partially - January 2026)  
 **Impact:** Medium
 
 **Problem:**
+
 - ~~Users must manually select week and day for workouts~~ ✅ FIXED
 - ~~No "next workout" suggestion~~ ✅ FIXED
 - ~~Completed vs. pending workouts not visually distinct~~ ✅ FIXED
 - No calendar integration (See Issue #8 - Calendar export implemented)
 
 **Solution Implemented:**
+
 - ✅ Implemented smart workout suggestions
 - ✅ Added "Today's Workout" dashboard card
 - ✅ Visual workout progress indicators (overdue, today, upcoming badges)
 - ✅ Calendar export (Google, Outlook, Apple Calendar, ICS)
 
-**Status:** Core functionality complete. Visual progress indicators and full calendar scheduling remain for future enhancement.
+**Status:** Core functionality complete.  
+Visual progress indicators and full calendar scheduling remain for future
+enhancement.
 
 **Effort:** Medium (7-10 days)  
 **Completed:** January 2026  
@@ -453,16 +527,19 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🟡 Issue #5: Limited Workout Templates
+
 **Category:** Feature Gap  
 **Status:** Open  
 **Impact:** Medium
 
 **Problem:**
+
 - Only 5/3/1 methodology supported
 - Users cannot create custom workout templates
 - No template sharing or library
 
 **Proposed Solution:**
+
 - Custom workout template builder
 - Template library with pre-made options
 - Import/export templates
@@ -475,29 +552,34 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🟢 Issue #6: No Rest Timer
+
 **Category:** Feature Gap  
 **Status:** ✅ RESOLVED (January 2026)  
 **Impact:** Medium
 
 **Problem:**
+
 - No built-in rest timer between sets
 - Users must use external timer apps
 - Reduces app stickiness
 
 **Solution Implemented:**
-- Full rest timer feature with:
-  - Configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
-  - Audio notification using Web Audio API (800Hz beep)
-  - Vibration notification for mobile devices
-  - Visual countdown with animated circular progress ring
-  - Extend/reduce buttons (+30s, -30s)
-  - Auto-start option in settings
-  - Integration with WorkoutLogger
-  - User preference storage
-  - Section 508 accessibility compliant
-  - Comprehensive test coverage (28 tests)
+
+Full rest timer feature with:
+
+- Configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
+- Audio notification using Web Audio API (800Hz beep)
+- Vibration notification for mobile devices
+- Visual countdown with animated circular progress ring
+- Extend/reduce buttons (+30s, -30s)
+- Auto-start option in settings
+- Integration with WorkoutLogger
+- User preference storage
+- Section 508 accessibility compliant
+- Comprehensive test coverage (28 tests)
 
 **Implementation:**
+
 - `RestTimer` component with circular progress visualization
 - `RestTimer.css` for styling
 - Settings integration in `NotificationSettings`
@@ -511,16 +593,19 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ### Low Priority Issues
 
 #### 🟢 Issue #7: Plate Visualization Could Be Enhanced
+
 **Category:** User Experience  
 **Status:** Open  
 **Impact:** Low
 
 **Problem:**
+
 - Plate display is text-based
 - No visual representation of plate shapes
 - Could be more intuitive
 
 **Proposed Solution:**
+
 - Add circular plate shapes with colors
 - Show relative sizing
 - 3D perspective view option
@@ -533,32 +618,37 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🟢 Issue #8: Progress Photos
+
 **Category:** Feature Gap  
 **Status:** ✅ COMPLETED (January 2026)  
 **Impact:** Medium
 
 **Problem:**
+
 - No progress photos tracking
 - Users couldn't visualize physical changes
 - No social sharing of progress
 
 **Solution Implemented:**
-- Full progress photos feature with:
-  - Photo upload from device
-  - Direct camera capture
-  - Photo gallery with thumbnails
-  - Side-by-side comparison
-  - Social sharing to major platforms (Twitter, Facebook, LinkedIn, WhatsApp, Reddit)
-  - Web Share API integration
-  - Copy to clipboard
-  - Download photos
-  - IndexedDB storage (local-only, privacy-first)
-  - Optional metadata (body weight, measurements, notes)
-  - Section 508 accessibility compliant
-  - Full keyboard navigation
-  - Screen reader support
+
+Full progress photos feature with:
+
+- Photo upload from device
+- Direct camera capture
+- Photo gallery with thumbnails
+- Side-by-side comparison
+- Social sharing to major platforms (Twitter, Facebook, LinkedIn, WhatsApp, Reddit)
+- Web Share API integration
+- Copy to clipboard
+- Download photos
+- IndexedDB storage (local-only, privacy-first)
+- Optional metadata (body weight, measurements, notes)
+- Section 508 accessibility compliant
+- Full keyboard navigation
+- Screen reader support
 
 **Implementation:**
+
 - `ProgressPhotos` component
 - `ShareModal` component  
 - `progressPhotosStorage` service with IndexedDB
@@ -571,22 +661,26 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🟢 Issue #9: Limited Body Measurement Tracking (Partially Addressed)
+
 **Category:** Feature Gap  
 **Status:** Open  
 **Impact:** Low
 
 **Problem:**
+
 - No body weight tracking
 - No body measurements (waist, arms, etc.)
 - No progress photos
 
 **Partial Solution (Progress Photos feature):**
+
 - Progress photos now implemented
 - Photos can include body weight metadata
 - Photos can include measurement metadata (chest, waist, arms, thighs, hips)
 - Visual progress tracking available
 
 **Remaining Work:**
+
 - Dedicated body measurement tracker UI
 - Weight trend visualization
 - BMI/body fat estimates
@@ -599,16 +693,19 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ---
 
 #### 🟢 Issue #9: No Nutrition Tracking
+
 **Category:** Feature Gap  
 **Status:** Open  
 **Impact:** Low
 
 **Problem:**
+
 - No calorie or macro tracking
 - No meal logging
 - No integration with nutrition apps
 
 **Proposed Solution:**
+
 - Basic calorie/macro tracking
 - Simple meal logging
 - Daily/weekly summaries
@@ -623,27 +720,33 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ### Technical Debt
 
 #### 🔧 Debt #1: Inconsistent Error Handling
+
 **Category:** Code Quality  
 **Impact:** Low  
-**Description:** Error handling patterns vary across components. Should standardize error boundaries and user-facing error messages.  
+**Description:** Error handling patterns vary across components.  
+Should standardize error boundaries and user-facing error messages.  
 **Effort:** Medium (3-5 days)  
 **Target:** Q2 2025
 
 ---
 
 #### 🔧 Debt #2: Some Components Too Large
+
 **Category:** Code Quality  
 **Impact:** Low  
-**Description:** Some components (WorkoutLogger, FiveThreeOnePlanner) are large and could be split into smaller, more maintainable pieces.  
+**Description:** Some components (WorkoutLogger, FiveThreeOnePlanner)  
+are large and could be split into smaller, more maintainable pieces.  
 **Effort:** Medium (5-7 days)  
 **Target:** Q2 2025
 
 ---
 
 #### 🔧 Debt #3: CSS Organization
+
 **Category:** Code Quality  
 **Impact:** Low  
-**Description:** Mix of CSS Modules and global CSS. Should migrate fully to CSS Modules or adopt CSS-in-JS solution.  
+**Description:** Mix of CSS Modules and global CSS.  
+Should migrate fully to CSS Modules or adopt CSS-in-JS solution.  
 **Effort:** High (10-14 days)  
 **Target:** Q3 2025
 
@@ -652,10 +755,11 @@ See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 ## Roadmap by Quarter
 
 ### Phase 1: User Experience Enhancements (Q1 2025)
+
 **Duration:** 6-8 weeks  
 **Theme:** Making the app more intuitive and engaging
 
-#### High Priority Features
+#### High Priority Features (Phase 1)
 
 **1.1 Smart Workout Suggestions** ✅ **COMPLETED**  
 **Effort:** 3 days  
@@ -671,7 +775,8 @@ Automatically suggest the next workout based on training history.
 - ✅ 32 comprehensive tests (18 service + 12 component + 11 integration)
 
 **Dependencies:** None  
-**Testing:** ✅ Complete - Unit tests for suggestion logic, integration tests for dashboard
+**Testing:** ✅ Complete - Unit tests for suggestion logic,  
+integration tests for dashboard
 
 ---
 
@@ -699,19 +804,26 @@ Built-in rest timer between sets.
 
 ---
 
-**1.3 Enhanced Empty States** 💬  
-**Effort:** 2 days  
+**1.3 Enhanced Empty States** ✅ **COMPLETED** 💬  
+**Effort:** 1 day (completed)  
 **Value:** Medium
 
-Improve all empty state messaging with actionable guidance.
+Improved all empty state messaging with actionable guidance.
 
-- Apply improvements from ProgressChart to all components
-- Add contextual help
-- Clear call-to-action buttons
-- Visual interest (emojis, illustrations)
+**Completed Features:**
 
-**Dependencies:** None  
-**Testing:** Update existing tests for new messaging
+- ✅ Applied ProgressChart improvements to Dashboard
+- ✅ Enhanced WorkoutLogger empty state
+- ✅ Enhanced ExerciseManager empty state  
+- ✅ Enhanced FiveThreeOnePlanner empty states (ManageCyclesTab, ViewWorkoutsTab)
+- ✅ Added contextual help with bulleted lists
+- ✅ Clear call-to-action buttons with tooltips
+- ✅ Visual interest (emoji icons)
+- ✅ Updated 9 component tests
+- ✅ All 544 tests passing
+
+**Status:** Production Ready  
+**Completion Date:** January 5, 2026
 
 ---
 
@@ -747,7 +859,7 @@ Ensure WCAG 2.1 AAA compliance.
 
 ---
 
-#### Medium Priority Features
+#### Medium Priority Features (Phase 1)
 
 **1.6 Onboarding Improvements** 👋  
 **Effort:** 3 days  
@@ -783,12 +895,14 @@ Reduce JavaScript bundle size for faster loading.
 ---
 
 **Phase 1 Timeline:**
+
 - Week 1-2: Smart suggestions, rest timer, empty states
 - Week 3-4: Progress indicators, contrast audit
 - Week 5-6: Onboarding, bundle optimization
 - Week 7-8: Testing, refinement, documentation
 
 **Phase 1 Success Metrics:**
+
 - User retention improved by 20%
 - Time to first workout reduced by 40%
 - Lighthouse performance score > 90
@@ -797,10 +911,11 @@ Reduce JavaScript bundle size for faster loading.
 ---
 
 ### Phase 2: Cloud & Authentication (Q2 2025)
+
 **Duration:** 8-10 weeks  
 **Theme:** Enable multi-device access and data sync
 
-#### High Priority Features
+#### High Priority Features (Phase 2)
 
 **2.1 Microsoft Entra ID Authentication** 🔐  
 **Effort:** 9 days  
@@ -827,6 +942,7 @@ Implement user authentication with Microsoft accounts.
 Enable cloud data synchronization across devices.
 
 **Architecture:**
+
 - Azure Cosmos DB or Firebase Firestore
 - Azure Functions REST API
 - Bidirectional sync (push/pull)
@@ -835,6 +951,7 @@ Enable cloud data synchronization across devices.
 - Background sync with service worker
 
 **Features:**
+
 - Automatic sync when online
 - Manual sync trigger
 - Sync status indicator
@@ -863,7 +980,7 @@ Store user preferences in cloud.
 
 ---
 
-#### Medium Priority Features
+#### Medium Priority Features (Phase 2)
 
 **2.4 Multi-Device Management** 📱  
 **Effort:** 3 days  
@@ -898,6 +1015,7 @@ Help users migrate from local-only to cloud.
 ---
 
 **Phase 2 Timeline:**
+
 - Week 1-2: Azure setup, MSAL integration
 - Week 3-4: Authentication UI, protected routes
 - Week 5-6: Database setup, sync service
@@ -905,6 +1023,7 @@ Help users migrate from local-only to cloud.
 - Week 9-10: Testing, refinement, migration tools
 
 **Phase 2 Success Metrics:**
+
 - 80% of users create accounts
 - 90% successful sync rate
 - < 2s average sync time
@@ -914,10 +1033,11 @@ Help users migrate from local-only to cloud.
 ---
 
 ### Phase 3: Social Features & Growth (Q3 2025)
+
 **Duration:** 8-10 weeks  
 **Theme:** Enable sharing and community features
 
-#### High Priority Features
+#### High Priority Features (Phase 3)
 
 **3.1 Workout Sharing** 📤  
 **Effort:** 5 days  
@@ -988,7 +1108,7 @@ Create and share custom workout templates.
 
 ---
 
-#### Medium Priority Features
+#### Medium Priority Features (Phase 3)
 
 **3.5 Calendar View Enhancements** 📅  
 **Effort:** 5 days (2 days completed)  
@@ -1030,6 +1150,7 @@ Dedicated view for personal records.
 ---
 
 **Phase 3 Timeline:**
+
 - Week 1-2: Workout sharing, landing page
 - Week 3-4: Blog setup, first posts
 - Week 5-6: Custom templates
@@ -1037,6 +1158,7 @@ Dedicated view for personal records.
 - Week 9-10: PR board, testing, refinement
 
 **Phase 3 Success Metrics:**
+
 - 500+ monthly active users
 - 20% share rate on completed workouts
 - 100+ blog visitors per week
@@ -1046,10 +1168,11 @@ Dedicated view for personal records.
 ---
 
 ### Phase 4: Advanced Features & AI (Q4 2025)
+
 **Duration:** 10-12 weeks  
 **Theme:** Intelligent insights and advanced analytics
 
-#### High Priority Features
+#### High Priority Features (Phase 4)
 
 **4.1 Workout AI Recommendations** 🤖  
 **Effort:** 14 days  
@@ -1105,7 +1228,7 @@ Track body metrics beyond strength.
 
 ---
 
-#### Medium Priority Features
+#### Medium Priority Features (Phase 4)
 
 **4.4 Nutrition Integration (Basic)** 🥗  
 **Effort:** 10 days  
@@ -1160,6 +1283,7 @@ Hands-free workout logging.
 ---
 
 **Phase 4 Timeline:**
+
 - Week 1-3: AI recommendations model development
 - Week 4-5: Advanced analytics dashboard
 - Week 6-7: Body measurement tracker
@@ -1168,6 +1292,7 @@ Hands-free workout logging.
 - Week 12: Testing, refinement, optimization
 
 **Phase 4 Success Metrics:**
+
 - 2,000+ monthly active users
 - 80% find AI recommendations helpful
 - 50% use body measurement tracker
@@ -1179,12 +1304,14 @@ Hands-free workout logging.
 ### Future Considerations (2026+)
 
 #### Native Mobile Apps
+
 - React Native or Capacitor wrapper
 - Full Apple Health integration
 - Enhanced push notifications
 - App Store/Play Store presence
 
 #### Community Features
+
 - User profiles
 - Follow other users
 - Community challenges
@@ -1192,6 +1319,7 @@ Hands-free workout logging.
 - Leaderboards (optional)
 
 #### Advanced Integrations
+
 - Strava sync
 - Garmin Connect integration
 - Fitbit ecosystem
@@ -1199,6 +1327,7 @@ Hands-free workout logging.
 - Smart watch apps
 
 #### Premium Features (Monetization)
+
 - Advanced analytics
 - AI coaching
 - Video form analysis
@@ -1228,6 +1357,7 @@ Hands-free workout logging.
 #### Detailed Test Inventory
 
 **Storage Tests:**
+
 - `fiveThreeOneStorage.test.ts` (16 tests)
 - `workoutResultsStorage.test.ts` (10 tests)
 - `exerciseRecordsStorage.test.ts` (9 tests)
@@ -1237,6 +1367,7 @@ Hands-free workout logging.
 - `userPreferencesStorage.test.ts` (14 tests)
 
 **Component Tests:**
+
 - `ProgressChart.test.tsx` (14 tests)
 - `DataExport.test.tsx` (9 tests)
 - `ExerciseOneRepMaxTracker.test.tsx` (5 tests)
@@ -1251,11 +1382,13 @@ Hands-free workout logging.
 - `TabNavigation.test.tsx` (6 tests)
 
 **Hook Tests:**
+
 - `useFiveThreeOnePlanner.test.tsx` (30 tests)
 - `useVoiceNavigation.test.tsx` (16 tests)
 - `useTheme.test.tsx` (13 tests)
 
 **Service Tests:**
+
 - `googleFitClient.test.ts` (16 tests)
 - `googleFitService.test.ts` (14 tests)
 - `appleHealthExport.test.ts` (10 tests)
@@ -1275,6 +1408,7 @@ Hands-free workout logging.
 Add end-to-end testing with Playwright or Cypress.
 
 **Test Scenarios:**
+
 - Complete user onboarding flow
 - Create and activate a 5/3/1 cycle
 - Log a complete workout
@@ -1294,6 +1428,7 @@ Add end-to-end testing with Playwright or Cypress.
 Add performance regression testing.
 
 **Test Areas:**
+
 - Bundle size monitoring
 - Component render performance
 - IndexedDB query performance
@@ -1325,11 +1460,13 @@ Catch unintended UI changes.
 Automated accessibility testing.
 
 **Tools:**
+
 - @axe-core/react for runtime testing
 - pa11y-ci for CI pipeline
 - NVDA/JAWS/VoiceOver manual testing
 
 **Coverage:**
+
 - All interactive components
 - Form validation
 - Dynamic content
@@ -1347,6 +1484,7 @@ Automated accessibility testing.
 Test component interactions.
 
 **Areas:**
+
 - Workout logger + 5/3/1 planner integration
 - Plate calculator + workout logger integration
 - Data export + all storage systems
@@ -1401,6 +1539,7 @@ Test with large datasets.
 ### Testing Best Practices
 
 **Current Practices (✅ Good):**
+
 - Test-driven development for new features
 - User-centric queries (React Testing Library)
 - Comprehensive mocking (IndexedDB, Web APIs)
@@ -1408,6 +1547,7 @@ Test with large datasets.
 - High test coverage
 
 **Improvements Needed:**
+
 - Add E2E testing
 - Implement visual regression testing
 - Automate accessibility testing
@@ -1454,6 +1594,7 @@ For each new feature, ensure:
 ### Key Performance Indicators
 
 #### User Engagement
+
 - Daily active users
 - Average workouts per user per week
 - Feature adoption rates
@@ -1461,6 +1602,7 @@ For each new feature, ensure:
 - Time to first workout (new users)
 
 #### Technical Performance
+
 - Lighthouse performance score
 - First contentful paint
 - Time to interactive
@@ -1468,12 +1610,14 @@ For each new feature, ensure:
 - Test coverage percentage
 
 #### Accessibility & Quality
+
 - Accessibility score
 - Zero critical accessibility violations
 - Zero high-severity bugs
 - Test pass rate 100%
 
 #### Growth Metrics
+
 - New user signups
 - Referral rate
 - Social shares
@@ -1487,12 +1631,14 @@ For each new feature, ensure:
 ### Technical Risks
 
 #### 🔴 High Risk: Azure Cloud Costs
+
 **Probability:** Medium  
 **Impact:** High
 
 **Risk:** Cloud sync costs (Cosmos DB, Functions) could exceed budget
 
 **Mitigation:**
+
 - Set spending limits and alerts
 - Use consumption-based pricing
 - Monitor usage closely
@@ -1502,12 +1648,14 @@ For each new feature, ensure:
 ---
 
 #### 🟡 Medium Risk: Authentication Complexity
+
 **Probability:** Medium  
 **Impact:** Medium
 
 **Risk:** Entra ID integration may be more complex than expected
 
 **Mitigation:**
+
 - Prototype early
 - Use MSAL library (Microsoft-supported)
 - Allow time for debugging
@@ -1517,12 +1665,14 @@ For each new feature, ensure:
 ---
 
 #### 🟡 Medium Risk: Data Sync Conflicts
+
 **Probability:** Medium  
 **Impact:** Medium
 
 **Risk:** User data conflicts during sync could cause data loss
 
 **Mitigation:**
+
 - Implement robust conflict resolution
 - Test thoroughly with multiple devices
 - Provide conflict resolution UI
@@ -1532,12 +1682,14 @@ For each new feature, ensure:
 ---
 
 #### 🟢 Low Risk: Performance Degradation
+
 **Probability:** Low  
 **Impact:** Medium
 
 **Risk:** App performance could degrade with large datasets
 
 **Mitigation:**
+
 - Implement pagination
 - Use virtual scrolling
 - Optimize database queries
@@ -1549,12 +1701,14 @@ For each new feature, ensure:
 ### Business Risks
 
 #### 🟡 Medium Risk: User Adoption
+
 **Probability:** Medium  
 **Impact:** High
 
 **Risk:** Users may not adopt the app or prefer competitors
 
 **Mitigation:**
+
 - Focus on unique features (5/3/1, plate calculator)
 - Improve onboarding experience
 - Gather user feedback early
@@ -1564,12 +1718,14 @@ For each new feature, ensure:
 ---
 
 #### 🟡 Medium Risk: Apple Health Integration Blocked
+
 **Probability:** High  
 **Impact:** Low
 
 **Risk:** Apple Health requires native app; web limitations
 
 **Mitigation:**
+
 - Focus on Google Fit (web-accessible)
 - Provide export to Apple Health format
 - Consider native app in future
@@ -1578,12 +1734,14 @@ For each new feature, ensure:
 ---
 
 #### 🟢 Low Risk: Competition
+
 **Probability:** Low  
 **Impact:** Medium
 
 **Risk:** Competitors may add similar features
 
 **Mitigation:**
+
 - Move fast on unique features
 - Build strong community
 - Maintain quality and accessibility
@@ -1611,17 +1769,20 @@ For each new feature, ensure:
 ### Appendix A: Technical Architecture
 
 **Frontend:**
+
 - React 19 with TypeScript
 - Vite build system
 - PWA with service worker
 - CSS Modules for styling
 
 **Data Layer:**
+
 - IndexedDB for local storage
 - Service Worker for caching
 - Future: Azure Cosmos DB for cloud sync
 
 **External Integrations:**
+
 - Google Fit API
 - Apple HealthKit export format
 - Browser Geolocation API
@@ -1649,21 +1810,24 @@ For each new feature, ensure:
 
 ### Appendix C: User Personas
 
-**Persona 1: The Dedicated Lifter**
+#### Persona 1: The Dedicated Lifter
+
 - Age: 25-35
 - Experience: Intermediate to Advanced
 - Goals: Strength gains, PR tracking
 - Needs: Reliable tracking, progress visualization, program adherence
 - Pain Points: Needs 5/3/1 specific tracking, plate calculation at gym
 
-**Persona 2: The Beginner**
+#### Persona 2: The Beginner
+
 - Age: 18-30
 - Experience: Beginner
 - Goals: Learn proper training, build consistency
 - Needs: Guidance, simple interface, education
 - Pain Points: Overwhelmed by complex apps, needs direction
 
-**Persona 3: The Coach**
+#### Persona 3: The Coach
+
 - Age: 30-50
 - Experience: Expert
 - Goals: Program multiple athletes, track progress
@@ -1675,6 +1839,7 @@ For each new feature, ensure:
 ### Appendix D: Technology Dependencies
 
 **Current Dependencies:**
+
 ```json
 {
   "react": "^19.1.1",
@@ -1689,6 +1854,7 @@ For each new feature, ensure:
 ```
 
 **Planned Dependencies:**
+
 ```json
 {
   "@azure/msal-browser": "^3.x",
@@ -1725,10 +1891,11 @@ For each new feature, ensure:
 **Next Review:** April 5, 2026 (Quarterly)
 
 **Change Log:**
+
 - v2.1 (Jan 5, 2026): Updated with Rest Timer completion, updated test counts
 - v2.0 (Dec 24, 2025): Comprehensive roadmap with Q1-Q4 2025 planning
 - v1.0 (Nov 2025): Initial roadmap (docs/UI-UX-ANALYSIS-AND-PRODUCT-ROADMAP.md)
 
 ---
 
-**End of Product Roadmap**
+### End of Product Roadmap
