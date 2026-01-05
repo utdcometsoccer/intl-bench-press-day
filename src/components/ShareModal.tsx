@@ -21,8 +21,9 @@ function ShareModal({ photo, onClose }: ShareModalProps) {
 
   // Cleanup timeouts on unmount
   useEffect(() => {
+    const timeoutsSnapshot = timeoutRefs.current;
     return () => {
-      timeoutRefs.current.forEach(clearTimeout);
+      timeoutsSnapshot.forEach(clearTimeout);
     };
   }, []);
 
