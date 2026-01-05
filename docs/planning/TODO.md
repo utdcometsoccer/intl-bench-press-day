@@ -1,6 +1,6 @@
 # TODO List - International Bench Press Day
 
-**Last Updated:** December 24, 2025  
+**Last Updated:** January 5, 2026  
 **Status:** Active Development
 
 ---
@@ -54,6 +54,25 @@
   - **Status:** Production Ready
   - **Tests:** 20+ passing tests
 
+- [x] **Rest Timer Feature - COMPLETED** ⏱️
+  - [x] Created RestTimer component with circular progress visualization
+  - [x] Implemented configurable rest periods (30s, 1min, 90s, 2min, 3min, 5min, custom)
+  - [x] Added audio notification using Web Audio API (800Hz beep)
+  - [x] Added vibration notification for mobile devices
+  - [x] Added visual countdown display with animated progress ring
+  - [x] Added extend/reduce buttons (+30s, -30s)
+  - [x] Implemented auto-start option in settings
+  - [x] Integrated into WorkoutLogger between sets
+  - [x] Added user preference storage (preferred rest time, auto-start)
+  - [x] Section 508 accessibility compliance (keyboard nav, screen reader support)
+  - [x] Comprehensive test coverage (28 tests)
+  - [x] Created docs/features/REST-TIMER.md documentation
+  - [x] Updated PRODUCT-ROADMAP.md
+  - [x] Updated TODO.md
+  - **Status:** Production Ready
+  - **Tests:** 28 passing tests
+  - **Date Completed:** January 5, 2026
+
 ---
 
 ## 🚨 Immediate Fixes (Do Now)
@@ -87,20 +106,24 @@
   - **Effort:** 3 days
   - **Tests:** 32 new tests (18 service + 12 component + 11 integration)
 
-- [ ] **Rest Timer Feature**
-  - [ ] Create `RestTimer.tsx` component
-  - [ ] Implement configurable rest periods (30s, 60s, 90s, 2min, 3min, 5min, custom)
-  - [ ] Add audio notification (optional)
-  - [ ] Add vibration notification (optional)
-  - [ ] Add visual countdown display
-  - [ ] Add skip/extend buttons (+30s, -30s)
-  - [ ] Add auto-start option in settings
-  - [ ] Integrate into WorkoutLogger between sets
-  - [ ] Write component tests
-  - [ ] Write audio/vibration tests
-  - [ ] Add user preference storage
+- [x] **Rest Timer Feature** ✅ COMPLETED (January 2026)
+  - [x] Create `RestTimer.tsx` component
+  - [x] Implement configurable rest periods (30s, 60s, 90s, 2min, 3min, 5min, custom)
+  - [x] Add audio notification (optional)
+  - [x] Add vibration notification (optional)
+  - [x] Add visual countdown display
+  - [x] Add skip/extend buttons (+30s, -30s)
+  - [x] Add auto-start option in settings
+  - [x] Integrate into WorkoutLogger between sets
+  - [x] Write component tests
+  - [x] Write audio/vibration tests
+  - [x] Add user preference storage
+  - [x] Created comprehensive feature documentation (docs/features/REST-TIMER.md)
+  - [x] Section 508 accessibility compliance
   - **Effort:** 2-3 days
-  - **Tests:** 10+ new tests
+  - **Tests:** 28 new tests
+  - **Status:** Production Ready
+  - **Date Completed:** January 5, 2026
 
 - [ ] **Enhanced Empty States**
   - [ ] Apply ProgressChart improvements to Dashboard
@@ -911,9 +934,9 @@
 
 ## 📊 Progress Tracking
 
-### Q1 2025 Progress: 11%
+### Q1 2025 Progress: 22%
 - [x] Smart Workout Suggestions ✅
-- [ ] Rest Timer
+- [x] Rest Timer ✅
 - [ ] Enhanced Empty States
 - [ ] Visual Progress Indicators
 - [ ] Color Contrast Audit
