@@ -99,7 +99,7 @@ A comprehensive Progressive Web Application (PWA) for fitness tracking built wit
 
 ## 📋 Project Structure
 
-```
+```text
 src/
 ├── components/
 │   ├── ExerciseOneRepMaxTracker.tsx    # Main exercise tracking component

@@ -93,7 +93,7 @@ The Progress Photos feature allows users to track their fitness journey visually
 
 ### Component Structure
 
-```
+```text
 ProgressPhotos (Main Component)
 ├── ShareModal (Social sharing dialog)
 ├── ErrorMessage (Error display)

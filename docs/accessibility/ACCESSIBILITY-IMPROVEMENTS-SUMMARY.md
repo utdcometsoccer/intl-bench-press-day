@@ -148,14 +148,14 @@ This document summarizes the accessibility improvements made to the Internationa
 
 ### Build Status: ✅ PASS
 
-```
+```text
 npm run build
 ✓ Built successfully
 ```
 
 ### Test Suite: ✅ PASS
 
-```
+```text
 npm test
 ✓ 17 test files passed
 ✓ 169 tests passed

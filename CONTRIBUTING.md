@@ -272,7 +272,7 @@ Follow conventional commit format:
 
 Examples:
 
-```
+```text
 feat: add voice navigation support
 fix: resolve plate calculator rounding issue
 docs: update PWA implementation guide

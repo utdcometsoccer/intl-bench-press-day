@@ -190,7 +190,7 @@ Special characters are properly escaped for iCalendar format:
 
 ### File Structure
 
-```
+```ics
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//International Bench Press Day//Workout Calendar//EN

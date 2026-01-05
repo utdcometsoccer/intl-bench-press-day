@@ -121,7 +121,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
     transition-duration: 0.01ms !important;
   }
 }
-```
+```text
 
  ---
 
@@ -129,7 +129,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 
 #### Current User Flow
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                         User Journey                             │
 ├─────────────────────────────────────────────────────────────────┤
@@ -166,7 +166,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 │                                         └─────────────────┘     │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 #### Pain Points Identified
 
@@ -189,15 +189,15 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 
 1. **First-Time User Experience**
 
-   ```
+```text
    Welcome Screen → Quick Profile Setup → Create First Cycle → Guided Workout
-   ```
+```text
 
 2. **Returning User Experience**
 
-   ```
+```text
    Dashboard → Today's Workout (highlighted) → Quick Log → Progress Summary
-   ```
+```text
 
 3. **Smart Workout Suggestions**
    - Auto-detect next workout based on previous sessions
@@ -251,7 +251,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
      --progress-mid: #feca57;      /* Yellow - Mid-progress */
      --progress-end: #26de81;      /* Green - Goal achieved */
    }
-   ```
+```text
 
 2. **Improved Contrast Ratios**
    - Increase secondary text contrast in dark mode
@@ -281,7 +281,7 @@ The International Bench Press Day fitness tracker is a Progressive Web Applicati
 
 ```css
 font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-```
+```text
 
 #### Typography Recommendations
 
@@ -292,7 +292,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
    --font-display: 'Montserrat', 'Inter', system-ui, sans-serif;
    --font-body: 'Open Sans', system-ui, sans-serif;
    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-   ```
+```text
 
 2. **Number Formatting**
    - Use tabular (monospace) numbers for workout data
@@ -303,7 +303,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
      font-feature-settings: "tnum";
      font-variant-numeric: tabular-nums;
    }
-   ```
+```text
 
 3. **Responsive Typography Scale**
 
@@ -313,7 +313,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
    --font-size-lg: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
    --font-size-xl: clamp(1.25rem, 1rem + 1vw, 1.5rem);
    --font-size-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
-   ```
+```text
 
 4. **Reading Optimization**
    - Maximum line width of 65-75 characters for readability
@@ -363,7 +363,7 @@ font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
        z-index: 1000;
      }
    }
-   ```
+```text
 
 2. **Tablet Optimization**
    - Two-column layout for workout logging
@@ -392,7 +392,7 @@ Microsoft Entra ID (formerly Azure AD) provides enterprise-grade identity manage
 
 #### Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Authentication Flow                           │
 ├─────────────────────────────────────────────────────────────────┤
@@ -427,7 +427,7 @@ Microsoft Entra ID (formerly Azure AD) provides enterprise-grade identity manage
 │                          └──────────────────┘                   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 #### Implementation Steps
 
@@ -462,7 +462,7 @@ export const loginRequest = {
 };
 
 export const msalInstance = new PublicClientApplication(msalConfig);
-```
+```text
 
 **Phase 3: React Context Provider**
 
@@ -487,7 +487,7 @@ export const useAuth = () => {
     logout: () => instance.logoutPopup()
   };
 };
-```
+```text
 
 **Phase 4: Protected Routes**
 
@@ -502,7 +502,7 @@ export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
 
   return <>{children}</>;
 };
-```
+```text
 
 #### Dependencies
 
@@ -511,7 +511,7 @@ export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
   "@azure/msal-browser": "^3.x",
   "@azure/msal-react": "^2.x"
 }
-```
+```text
 
 #### Security Considerations
 
@@ -542,7 +542,7 @@ Enable users to sync their workout data to a cloud database and restore it acros
 
 **Option A: Azure Cosmos DB (Recommended)**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Sync Architecture                           │
 ├─────────────────────────────────────────────────────────────────┤
@@ -560,7 +560,7 @@ Enable users to sync their workout data to a cloud database and restore it acros
 │  └─────────────┘                      └──────────────────┘      │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **Option B: Firebase Firestore**
 
@@ -638,7 +638,7 @@ class AzureSyncService implements SyncService {
     return remote.lastModified > local.lastModified ? remote : local;
   }
 }
-```
+```text
 
 #### Data Model for Sync
 
@@ -663,7 +663,7 @@ interface SyncStatus {
   syncInProgress: boolean;
   error?: string;
 }
-```
+```text
 
 #### UI Components
 
@@ -856,11 +856,11 @@ const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
   // or suggest next week if all complete
   // ...implementation
 };
-```
+```text
 
 **2. Visual Workout Cards**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  Week 1 - Day 2: Bench Press                                    │
 ├─────────────────────────────────────────────────────────────────┤
@@ -876,11 +876,11 @@ const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
 │  └─────────────────────────────────────────────────────────────┘│
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **3. Simplified Set Entry**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  Set 3 (AMRAP)                                    🏋️ 185 lbs   │
 ├─────────────────────────────────────────────────────────────────┤
@@ -899,7 +899,7 @@ const getNextWorkout = async (cycleId: string): Promise<WorkoutSuggestion> => {
 │  └──────────┘  └──────────┘  └──────────────────────────────┘  │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **4. Progress Indicators**
 
@@ -958,7 +958,7 @@ const RestTimer: FC<RestTimerProps> = ({ duration, onComplete, autoStart }) => {
     </div>
   );
 };
-```
+```text
 
 #### Timeline Estimate
 
@@ -1048,7 +1048,7 @@ const exportToHealthKitFormat = (workout: WorkoutResult): HealthKitWorkout => {
     }
   };
 };
-```
+```text
 
 **Phase 2: Capacitor Native Bridge** (Future consideration)
 
@@ -1069,7 +1069,7 @@ const syncToHealthKit = async (workout: WorkoutResult) => {
     energyBurned: estimateCaloriesBurned(workout)
   });
 };
-```
+```text
 
 #### Alternative: Google Fit Integration (More Feasible)
 
@@ -1094,7 +1094,7 @@ class GoogleFitService {
     await this.client.sessions.create(session);
   }
 }
-```
+```text
 
 #### Timeline & Effort Estimates
 
@@ -1117,7 +1117,7 @@ Convert visitors into app users by showcasing key features, benefits, and social
 
 #### Structure
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        LANDING PAGE                              │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1175,7 +1175,7 @@ Convert visitors into app users by showcasing key features, benefits, and social
 │  └─────────────────────────────────────────────────────────────┘│
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 #### Key Elements
 
@@ -1219,7 +1219,7 @@ const LandingPage: FC = () => {
     </div>
   );
 };
-```
+```text
 
 #### SEO Considerations
 
@@ -1280,14 +1280,14 @@ const LandingPage: FC = () => {
 
 **Option A: Static Blog with Markdown**
 
-```
+```text
 docs/blog/
 ├── 2025-01-01-getting-started.md
 ├── 2025-01-08-squat-technique.md
 ├── 2025-01-15-rest-timer.md
 └── images/
     └── ...
-```
+```text
 
 **Option B: Headless CMS**
 
@@ -1312,7 +1312,7 @@ const Blog: FC = () => {
     </div>
   );
 };
-```
+```text
 
  ---
 
@@ -1323,7 +1323,7 @@ const Blog: FC = () => {
 **1. Share Cards**
 Generate shareable images of workout achievements:
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        WORKOUT COMPLETE                          │
 │                    🏋️ International Bench Press Day              │
@@ -1346,7 +1346,7 @@ Generate shareable images of workout achievements:
 │  Try IBPD: https://ibpd.app                                     │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
-```
+```text
 
 **2. Implementation**
 
@@ -1402,7 +1402,7 @@ const shareToSocial = async (workout: ShareableWorkout): Promise<void> => {
     alert('Image copied to clipboard!');
   }
 };
-```
+```text
 
 #### Sharing the App
 
@@ -1452,7 +1452,7 @@ const ShareButtons: FC = () => {
     </div>
   );
 };
-```
+```text
 
 **3. QR Code Generation**
 
@@ -1470,7 +1470,7 @@ const generateAppQR = async (): Promise<string> => {
     }
   });
 };
-```
+```text
 
  ---
 
@@ -1478,7 +1478,7 @@ const generateAppQR = async (): Promise<string> => {
 
 ### Version Timeline
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      PRODUCT ROADMAP 2025-2026                   │
 ├─────────────────────────────────────────────────────────────────┤
@@ -1516,7 +1516,7 @@ const generateAppQR = async (): Promise<string> => {
 └─────────────────────────────────────────────────────────────────┘
 
 Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
-```
+```text
 
 ### Detailed Phase Breakdown
 
@@ -1637,7 +1637,7 @@ Legend: ✅ Complete | 🔄 In Progress | 📋 Planned
     "qrcode": "^1.5.x"
   }
 }
-```
+```text
 
  ---
 
