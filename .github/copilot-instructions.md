@@ -93,6 +93,7 @@ This project requires **Section 508 compliance** and **WCAG 2.1 AA** standards:
 ### Documentation Structure
 
 All project documentation must be organized in the `docs/` folder, except for:
+
 - `README.md` - Main project overview and getting started guide
 - `CONTRIBUTING.md` - Contribution guidelines (if it exists)
 - `LICENSE.md` or `LICENSE` - Project license (if it exists)
@@ -100,6 +101,7 @@ All project documentation must be organized in the `docs/` folder, except for:
 ### Documentation Organization
 
 Documentation in the `docs/` folder should be organized into logical subdirectories:
+
 - `docs/features/` - Feature-specific documentation and implementation guides
 - `docs/architecture/` - Technical architecture and design decisions
 - `docs/accessibility/` - Accessibility compliance reports and improvements
@@ -117,11 +119,13 @@ Documentation in the `docs/` folder should be organized into logical subdirector
 ## Pull Request Guidelines
 
 Before committing any changes:
+
 - **Lint all code** - Run `npm run lint` and fix all errors before committing
 - **Run all unit tests** - Run `npm run test:run` and ensure all tests pass before committing
 - **Lint Markdown documentation** - Ensure all documentation follows proper formatting standards
 
 Before submitting a pull request:
+
 - Ensure build succeeds (`npm run build`)
 - Include accessibility testing for UI changes
 - Add tests for new features

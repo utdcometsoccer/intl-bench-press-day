@@ -38,12 +38,14 @@ The Progress Photos feature allows users to track their fitness journey visually
 ### Core Features
 
 #### 1. Photo Capture
+
 - **Camera Access**: Take photos directly using device camera
 - **Upload**: Upload existing photos from device storage
 - **Preview**: Real-time camera preview before capture
 - **Image Quality**: Optimized JPEG compression (90% quality)
 
 #### 2. Photo Management
+
 - **Gallery View**: Grid layout with thumbnail previews
 - **Photo Details**: View full-size photos with metadata
 - **Date Tracking**: Automatic timestamp for each photo
@@ -58,12 +60,14 @@ The Progress Photos feature allows users to track their fitness journey visually
 - **Delete**: Remove unwanted photos with confirmation
 
 #### 3. Photo Comparison
+
 - **Side-by-Side**: Compare two photos simultaneously
 - **Before/After**: Visual progress comparison
 - **Date Display**: Shows dates for context
 - **Easy Selection**: Click any photo to add to comparison
 
 #### 4. Social Sharing
+
 - **Web Share API**: Native device sharing (mobile-first)
 - **Platform Support**:
   - Twitter
@@ -76,6 +80,7 @@ The Progress Photos feature allows users to track their fitness journey visually
 - **Shareable Cards**: Generate images with metadata overlay
 
 #### 5. Data Storage
+
 - **IndexedDB**: Efficient local storage
 - **Base64 Encoding**: Images stored as data URLs
 - **Metadata**: Comprehensive photo information
@@ -99,14 +104,16 @@ ProgressPhotos (Main Component)
 ### Services
 
 #### 1. progressPhotosStorage.ts
+
 - **Purpose**: IndexedDB operations for photo persistence
 - **Database**: `ProgressPhotosDB`
 - **Store**: `progressPhotos`
-- **Indices**: 
+- **Indices**:
   - `dateTaken` (for date-based queries)
   - `createdAt` (for chronological sorting)
 
 #### 2. socialSharingService.ts
+
 - **Purpose**: Handle sharing to various platforms
 - **Methods**:
   - `shareWithWebShare()` - Native sharing
@@ -345,6 +352,7 @@ This feature is **Section 508 compliant** and meets **WCAG 2.1 AA** standards.
 The feature includes comprehensive test coverage:
 
 **Storage Tests** (`progressPhotosStorage.test.ts`)
+
 - 20+ test cases
 - CRUD operations
 - Date range queries
@@ -453,6 +461,7 @@ npm run test:coverage
 ### Permissions
 
 The feature requires:
+
 - **Camera**: Optional, for taking photos
 - **Storage**: Browser storage (IndexedDB)
 - **Clipboard**: Optional, for copy feature
@@ -460,6 +469,7 @@ The feature requires:
 ### Data Deletion
 
 Users can:
+
 - Delete individual photos
 - Clear all photos
 - Export data for backup
@@ -499,6 +509,7 @@ None currently.
 ### Reporting Issues
 
 Please report issues via GitHub Issues with:
+
 - Device and browser information
 - Steps to reproduce
 - Screenshots (if applicable)

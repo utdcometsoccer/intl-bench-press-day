@@ -54,6 +54,7 @@ Technical architecture and design decisions:
 ### For Contributors
 
 All project documentation must be organized in the `docs/` folder, except for:
+
 - `README.md` - Main project overview
 - `CONTRIBUTING.md` - Contribution guidelines
 - `LICENSE` or `LICENSE.md` - Project license

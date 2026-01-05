@@ -1,30 +1,37 @@
 # AMRAP 1RM Recording Feature
 
 ## Overview
+
 This feature automatically offers to save a 1 Rep Max (1RM) record after completing an AMRAP (As Many Reps As Possible) set in the Workout Logger.
 
 ## How It Works
 
 ### Automatic Detection
+
 When you save a workout that includes an AMRAP set with valid data:
+
 - The system detects the AMRAP set
 - Calculates the estimated 1RM using the Epley formula: `Weight × (1 + 0.0333 × reps)`
 - Shows a modal dialog offering to save the record
 
 ### Dialog Contents
+
 The 1RM save dialog displays:
+
 - **Weight**: The weight used in the AMRAP set (lbs)
 - **Reps**: The number of repetitions completed
 - **Estimated 1RM**: The calculated one-rep max
 - Note about the formula used (Epley)
 
 ### User Actions
+
 - **Save 1RM Record**: Saves the record to exerciseRecordsStorage with a note indicating it came from an AMRAP set
 - **Skip**: Closes the dialog without saving
 
 ## Manual Testing Steps
 
 1. **Start the application**
+
    ```bash
    npm run dev
    ```
@@ -63,6 +70,7 @@ The 1RM save dialog displays:
 ## Accessibility Features
 
 ### Keyboard Navigation
+
 - Dialog can be closed with Skip button or X button
 - Tab navigation works through all interactive elements
 - Focus is trapped within the modal (cannot tab outside)
@@ -70,12 +78,14 @@ The 1RM save dialog displays:
 - Focus returns to previously focused element when dialog closes
 
 ### Screen Reader Support
+
 - `role="dialog"` on modal container
 - `aria-modal="true"` to indicate modal state
 - `aria-labelledby` links to dialog title
 - All buttons have descriptive `aria-label` attributes
 
 ### Visual Indicators
+
 - Green border on details section highlights positive action
 - Blue focus outlines on all interactive elements for keyboard navigation
 - Disabled state for buttons during save operation
@@ -84,10 +94,12 @@ The 1RM save dialog displays:
 ## Technical Details
 
 ### Files Modified
+
 - `src/components/WorkoutLogger.tsx`: Main implementation
 - `src/App.css`: Styling for dialog
 
 ### Dependencies Used
+
 - `exerciseRecordsStorage`: Saves the 1RM record
 - `oneRepMaxStorage`: Initializes storage system
 - `findExerciseById`: Retrieves exercise details
@@ -95,6 +107,7 @@ The 1RM save dialog displays:
 - `useFocusTrap`: Traps focus within modal for accessibility
 
 ### State Management
+
 - `show1RMDialog`: Controls dialog visibility
 - `pendingAmrapSet`: Stores AMRAP set data (weight, reps, estimated1RM)
 - `isSaving1RM`: Tracks save operation progress
@@ -102,22 +115,26 @@ The 1RM save dialog displays:
 - `workoutSuccessTimeoutRef` & `oneRMSuccessTimeoutRef`: Timeout cleanup refs
 
 ### Multiple AMRAP Sets
+
 If a workout has multiple AMRAP sets, the system automatically selects the one with the highest estimated 1RM to offer for recording. This ensures users don't miss their best performance.
 
 ## Code Quality
 
 ### Testing
+
 - All 351 existing tests pass
 - No regressions introduced
 - Lint and build verification successful
 - Note: New tests for this feature should be added in a future PR
 
 ### Security
+
 - CodeQL scan: 0 vulnerabilities found
 - No secrets or sensitive data exposed
 - Input validation on AMRAP set data (must have reps > 0 and weight > 0)
 
 ### Code Review
+
 - Minimal changes approach followed
 - Integrated with existing patterns (modal, storage services)
 - Consistent with existing code style
@@ -126,6 +143,7 @@ If a workout has multiple AMRAP sets, the system automatically selects the one w
 ## Future Enhancements
 
 Potential improvements for future PRs:
+
 - Allow user to select different 1RM formulas (Brzycki, Lander, etc.)
 - Show comparison with previous 1RM records
 - Option to adjust the calculated 1RM before saving

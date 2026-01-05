@@ -13,22 +13,26 @@ Thank you for your interest in contributing to the International Bench Press Day
 ### Development Setup
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/intl-bench-press-day.git
    cd intl-bench-press-day
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start Development Server**
+
    ```bash
    npm run dev
    ```
 
 4. **Run Tests**
+
    ```bash
    npm test
    ```
@@ -38,6 +42,7 @@ Thank you for your interest in contributing to the International Bench Press Day
 ### Making Changes
 
 1. **Create a Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -48,6 +53,7 @@ Thank you for your interest in contributing to the International Bench Press Day
    - Ensure accessibility compliance
 
 3. **Test Your Changes**
+
    ```bash
    npm run test:run    # Run all tests
    npm run lint        # Check code style
@@ -55,12 +61,14 @@ Thank you for your interest in contributing to the International Bench Press Day
    ```
 
 4. **Commit Your Changes**
+
    ```bash
    git add .
    git commit -m "feat: add your feature description"
    ```
 
 5. **Push and Create Pull Request**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -110,6 +118,7 @@ This project is committed to **Section 508 compliance** and **WCAG 2.1 AA** stan
 ### Accessibility Testing
 
 Before submitting a pull request:
+
 1. Test keyboard navigation (Tab, Shift+Tab, Enter, Space, Arrow keys)
 2. Verify proper focus indicators
 3. Check color contrast with browser dev tools
@@ -155,6 +164,7 @@ npm run test:ui       # Run tests with interactive UI
 ### Documentation Structure
 
 All project documentation must be organized in the `docs/` folder, except for:
+
 - `README.md` - Main project overview and getting started guide
 - `CONTRIBUTING.md` - This file (contribution guidelines)
 - `LICENSE.md` or `LICENSE` - Project license (if it exists)
@@ -261,6 +271,7 @@ Follow conventional commit format:
 - `chore:` - Maintenance tasks
 
 Examples:
+
 ```
 feat: add voice navigation support
 fix: resolve plate calculator rounding issue

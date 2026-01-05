@@ -56,6 +56,7 @@ The feature supports multiple export formats to ensure compatibility with all ma
 ### ✅ Comprehensive Workout Details
 
 Each calendar event includes:
+
 - **Exercise name** (e.g., "Squat - Week 1 Day 1")
 - **Workout details** including:
   - Main sets with reps, percentages, and weights
@@ -177,6 +178,7 @@ exportToCalendar(options: CalendarExportOptions): string | void
 #### Text Escaping
 
 Special characters are properly escaped for iCalendar format:
+
 - `;` → `\;`
 - `,` → `\,`
 - `\` → `\\`
@@ -291,6 +293,7 @@ The Calendar Export feature is fully accessible and compliant with Section 508 a
 ### Screen Reader Support
 
 Tested with:
+
 - ✅ NVDA (Windows)
 - ✅ JAWS (Windows)
 - ✅ VoiceOver (macOS/iOS)
@@ -303,7 +306,8 @@ Tested with:
 
 **Symptom**: Error message "No scheduled workouts to export"
 
-**Solution**: 
+**Solution**:
+
 1. Ensure you have an active 5/3/1 cycle
 2. Schedule workouts using the Workout Schedule Manager
 3. Verify scheduled workouts appear in the calendar view
@@ -313,6 +317,7 @@ Tested with:
 **Symptom**: Downloaded ICS file doesn't open in calendar app
 
 **Solution**:
+
 1. Ensure you have a calendar app installed (Apple Calendar, Outlook, etc.)
 2. Try right-clicking the file and selecting "Open With" → [Your Calendar App]
 3. Check file extension is `.ics`
@@ -322,6 +327,7 @@ Tested with:
 **Symptom**: Clicking Google or Outlook buttons doesn't open calendar
 
 **Solution**:
+
 1. Ensure pop-ups are not blocked in your browser
 2. Check if you're logged into Google/Outlook account
 3. Try using ICS download instead
@@ -365,6 +371,7 @@ Tested with:
 Main export function that handles all formats.
 
 **Parameters:**
+
 ```typescript
 interface CalendarExportOptions {
   format: 'ics' | 'google' | 'outlook';
@@ -375,10 +382,12 @@ interface CalendarExportOptions {
 ```
 
 **Returns:**
+
 - `void` for ICS downloads (triggers file download)
 - `string` (URL) for Google/Outlook calendar links
 
 **Example:**
+
 ```typescript
 import { exportToCalendar } from '../services/calendarExportService';
 
@@ -408,6 +417,7 @@ window.open(url, '_blank');
 To add support for a new calendar platform:
 
 1. Create a new URL generator function in `calendarExportService.ts`:
+
 ```typescript
 export function generateNewPlatformURL(
   schedule: WorkoutSchedule,
@@ -418,16 +428,17 @@ export function generateNewPlatformURL(
 }
 ```
 
-2. Add the new format to `CalendarExportOptions`:
+1. Add the new format to `CalendarExportOptions`:
+
 ```typescript
 format: 'ics' | 'google' | 'outlook' | 'newplatform';
 ```
 
-3. Update the `exportToCalendar` function to handle the new format
+1. Update the `exportToCalendar` function to handle the new format
 
-4. Add a new button to `CalendarExport.tsx`
+2. Add a new button to `CalendarExport.tsx`
 
-5. Write tests for the new functionality
+3. Write tests for the new functionality
 
 ### Modifying Event Properties
 

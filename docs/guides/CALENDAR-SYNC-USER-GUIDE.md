@@ -36,6 +36,7 @@ That's it! Your workouts will be added to your calendar.
 4. Repeat for each workout you want to add
 
 **Alternative: Download ICS File**
+
 - Great if you want to add all workouts at once
 - Import the file into Google Calendar settings
 
@@ -49,6 +50,7 @@ That's it! Your workouts will be added to your calendar.
 4. Repeat for each workout you want to add
 
 **Alternative: Download ICS File**
+
 - Great if you want to add all workouts at once
 - Import the file into Outlook
 
@@ -57,6 +59,7 @@ That's it! Your workouts will be added to your calendar.
 **Use: Download ICS File**
 
 The ICS file works with:
+
 - Thunderbird
 - Any calendar app on Windows, Mac, or Linux
 - Corporate calendar systems
@@ -75,7 +78,7 @@ Each workout event includes:
 - **Title**: Exercise name and workout day (e.g., "Squat - Week 1 Day 1")
 - **Time**: Your scheduled workout time
 - **Duration**: 1 hour (you can adjust this in your calendar app)
-- **Details**: 
+- **Details**:
   - Main sets with weights and reps
   - Warmup sets
   - Assistance exercises
@@ -94,6 +97,7 @@ Each workout event includes:
 ### 💡 Setting Reminders
 
 After adding workouts to your calendar:
+
 1. Open the event in your calendar app
 2. Add a reminder (e.g., 30 minutes before)
 3. Your calendar app will notify you before your workout
@@ -101,6 +105,7 @@ After adding workouts to your calendar:
 ### 💡 Updating Workouts
 
 If you change your workout schedule:
+
 1. Delete the old events from your calendar
 2. Export the updated schedule again
 3. Import the new events
@@ -108,6 +113,7 @@ If you change your workout schedule:
 ### 💡 Sharing with Your Trainer
 
 Want to share your workout schedule?
+
 1. Export to ICS file
 2. Email the ICS file to your trainer
 3. They can import it into their calendar
@@ -127,6 +133,7 @@ Want to share your workout schedule?
 ### ❓ No Workouts to Export
 
 **Solution**: Make sure you have:
+
 1. Created a 5/3/1 cycle
 2. Scheduled workouts using the Schedule Manager
 3. Workouts showing in your Calendar view
@@ -140,6 +147,7 @@ Want to share your workout schedule?
 ## Need More Help?
 
 Check out the full [Calendar Sync Documentation](../features/CALENDAR-SYNC.md) for:
+
 - Detailed technical information
 - API reference for developers
 - Advanced troubleshooting
