@@ -142,10 +142,15 @@ class WorkoutTemplateStorage {
     return new Promise((resolve, reject) => {
       const transaction = this.db!.transaction([this.storeName], 'readonly');
       const objectStore = transaction.objectStore(this.storeName);
-      const index = objectStore.index('isBuiltIn');
-      const request = index.getAll(true);
+      
+      // Get all templates and filter in code since boolean indexing has TypeScript issues
+      const request = objectStore.getAll();
 
-      request.onsuccess = () => resolve(request.result);
+      request.onsuccess = () => {
+        const allTemplates = request.result as WorkoutTemplate[];
+        const builtInTemplates = allTemplates.filter(t => t.isBuiltIn === true);
+        resolve(builtInTemplates);
+      };
       request.onerror = () => reject(request.error);
     });
   }
