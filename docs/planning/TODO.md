@@ -521,11 +521,39 @@
   - [ ] Add template categories/tags
   - [ ] Implement template search/filter
   - [ ] Add template import/export
-  - [ ] Create pre-made template library
+  - [ ] Create pre-made template library:
+    - [ ] **Hotel/Travel Workout Template**
+      - [ ] Day 1 (Push Focus):
+        - Dumbbell Bench Press (4x8-12)
+        - Dumbbell Overhead Press (3x10-12)
+        - Dumbbell Lateral Raises (3x12-15)
+        - Dumbbell Tricep Extensions (3x12-15)
+        - Dumbbell Chest Flyes (3x12-15)
+      - [ ] Day 2 (Pull Focus):
+        - Dumbbell Bent-Over Rows (4x8-12)
+        - Dumbbell Romanian Deadlifts (3x10-12)
+        - Dumbbell Bicep Curls (3x12-15)
+        - Dumbbell Rear Delt Flyes (3x12-15)
+        - Dumbbell Shrugs (3x12-15)
+      - [ ] Day 3 (Legs Focus):
+        - Dumbbell Goblet Squats (4x10-15)
+        - Dumbbell Bulgarian Split Squats (3x10-12 each leg)
+        - Dumbbell Walking Lunges (3x12-15 each leg)
+        - Dumbbell Calf Raises (3x15-20)
+        - Dumbbell Step-Ups (3x12-15 each leg)
+      - [ ] Day 4 (Full Body - Optional):
+        - Dumbbell Thrusters (3x10-12)
+        - Dumbbell Renegade Rows (3x8-10 each)
+        - Dumbbell Single-Leg RDLs (3x10 each leg)
+        - Dumbbell Goblet Carry Squats (3x12-15)
+        - Dumbbell Chest Supported Rows (3x12-15)
+    - [ ] Bodyweight template
+    - [ ] Minimal equipment template
   - [ ] Add cloud sync for templates (if auth available)
   - [ ] Write storage tests
-  - **Effort:** 3 days
-  - **Tests:** 12+ tests
+  - [ ] Write pre-made template tests
+  - **Effort:** 4 days (1 day for hotel template)
+  - **Tests:** 15+ tests (including hotel template validation)
 
 - [ ] **Body Weight Workout Templates**
   - [ ] Research common body weight exercises and progressions
