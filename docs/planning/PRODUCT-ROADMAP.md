@@ -2027,10 +2027,12 @@ The fitness tracking app market in 2025-2026 is highly competitive, with establi
 
 #### Market Trends (2025-2026)
 
+**Note:** Market statistics and trends below are based on industry research from fitness app comparison sites, user surveys, and competitive analysis conducted in late 2025 and early 2026.
+
 **Key Industry Trends:**
-1. **AI-Powered Personalization** - 64% of users prefer apps with AI-driven routines
+1. **AI-Powered Personalization** - Increasing user preference for apps with AI-driven routines and adaptive programming
 2. **Wearable Integration** - Smartwatch support now expected by most users
-3. **Progressive Overload Automation** - Apps actively suggesting next weights/reps
+3. **Progressive Overload Automation** - Apps actively suggesting next weights/reps based on training history
 4. **Community Engagement** - Social features driving higher retention rates
 5. **Holistic Health Tracking** - Integration with sleep, nutrition, and recovery metrics
 6. **Free Premium Features** - Competitive pressure driving more free functionality
