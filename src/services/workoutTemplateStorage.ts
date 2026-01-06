@@ -147,7 +147,11 @@ class WorkoutTemplateStorage {
       const request = objectStore.getAll();
 
       request.onsuccess = () => {
-        const allTemplates = request.result as WorkoutTemplate[];
+        const allTemplates = request.result as WorkoutTemplate[] | undefined;
+        if (!allTemplates) {
+          resolve([]);
+          return;
+        }
         const builtInTemplates = allTemplates.filter(t => t.isBuiltIn === true);
         resolve(builtInTemplates);
       };
@@ -663,16 +667,16 @@ class WorkoutTemplateStorage {
   private createJuggernautTemplate(): WorkoutTemplate {
     return {
       id: 'builtin-juggernaut',
-      name: 'Juggernaut Method 2.0',
+      name: 'Juggernaut Method 2.0 (Simplified)',
       programType: 'juggernaut',
-      description: 'Chad Wesley Smith\'s block periodization program. Four phases (10s, 8s, 5s, 3s) with AMRAP sets and accumulation/intensification waves. Excellent for intermediate to advanced lifters.',
+      description: 'Simplified version of Chad Wesley Smith\'s block periodization program showing the 10s accumulation wave. The full program consists of four 4-week phases (10s, 8s, 5s, 3s waves), each with accumulation, intensification, and realization weeks. This template shows the foundational pattern - users should manually progress through phases.',
       split: 'upper-lower',
       frequency: 4,
-      weekCount: 16,
+      weekCount: 1,
       weeks: [
         {
           weekNumber: 1,
-          weekName: '10s Wave - Accumulation',
+          weekName: '10s Wave - Accumulation Week',
           workouts: [
             {
               dayNumber: 1,
@@ -685,6 +689,7 @@ class WorkoutTemplateStorage {
                   setScheme: { sets: 5, reps: 10, percentage: 60 },
                 },
               ],
+              notes: 'After main lift: Add 3-5 sets of assistance work (leg press, lunges, etc.)',
             },
             {
               dayNumber: 2,
@@ -697,6 +702,7 @@ class WorkoutTemplateStorage {
                   setScheme: { sets: 5, reps: 10, percentage: 60 },
                 },
               ],
+              notes: 'After main lift: Add 3-5 sets of assistance work (rows, dips, etc.)',
             },
             {
               dayNumber: 3,
@@ -709,6 +715,7 @@ class WorkoutTemplateStorage {
                   setScheme: { sets: 5, reps: 10, percentage: 60 },
                 },
               ],
+              notes: 'After main lift: Add 3-5 sets of assistance work (RDLs, back extensions, etc.)',
             },
             {
               dayNumber: 4,
@@ -721,8 +728,10 @@ class WorkoutTemplateStorage {
                   setScheme: { sets: 5, reps: 10, percentage: 60 },
                 },
               ],
+              notes: 'After main lift: Add 3-5 sets of assistance work (lat raises, face pulls, etc.)',
             },
           ],
+          notes: 'This is Week 1 (Accumulation) of the 10s phase. Full program progression: 10s phase (Weeks 1-4), 8s phase (Weeks 5-8), 5s phase (Weeks 9-12), 3s phase (Weeks 13-16). Each phase has accumulation, intensification, and realization weeks with increasing intensity.',
         },
       ],
       requiresOneRepMax: true,
@@ -730,7 +739,7 @@ class WorkoutTemplateStorage {
       createdDate: new Date(),
       createdBy: 'system',
       tags: ['intermediate', 'advanced', 'powerlifting', 'block-periodization'],
-      notes: 'Complex program with four mesocycles. Each phase builds on the previous. Best for experienced lifters.',
+      notes: 'This is a simplified template showing the foundational 10s accumulation week pattern. The full Juggernaut Method 2.0 is a 16-week program with four mesocycles (10s, 8s, 5s, 3s). Users should manually progress through the phases by adjusting reps and percentages each month. Best for experienced lifters who understand periodization.',
     };
   }
 
@@ -945,21 +954,21 @@ class WorkoutTemplateStorage {
   }
 
   /**
-   * Create Westside Barbell template (simplified version)
+   * Create Westside Barbell template (simplified single-week pattern)
    */
   private createWestsideBarbellTemplate(): WorkoutTemplate {
     return {
       id: 'builtin-westside-barbell',
       name: 'Westside Barbell (Conjugate)',
       programType: 'westside-barbell',
-      description: 'Louie Simmons\' conjugate method. Four days per week: Max Effort Upper, Dynamic Effort Lower, Max Effort Lower, Dynamic Effort Upper. For advanced lifters.',
+      description: 'Louie Simmons\' conjugate method with four training days per week. This template shows the weekly structure with sample max effort exercises. Users should rotate max effort exercises every 1-3 weeks to avoid accommodation and continue making progress.',
       split: 'upper-lower',
       frequency: 4,
-      weekCount: 3,
+      weekCount: 1,
       weeks: [
         {
           weekNumber: 1,
-          weekName: 'Week 1',
+          weekName: 'Weekly Rotation',
           workouts: [
             {
               dayNumber: 1,
@@ -970,9 +979,10 @@ class WorkoutTemplateStorage {
                   exerciseName: 'Box Squat (Wide Stance)',
                   order: 1,
                   setScheme: { sets: 1, reps: 1, percentage: 100 },
-                  notes: 'Work up to 1RM for the day',
+                  notes: 'Work up to 1RM for the day. Rotate exercises: Box Squat, Good Mornings, Deficit Deadlifts, Safety Squat Bar Squats, etc.',
                 },
               ],
+              notes: 'After max effort: 3-4 supplemental exercises for posterior chain and abs (3-4 sets each)',
             },
             {
               dayNumber: 2,
@@ -983,9 +993,10 @@ class WorkoutTemplateStorage {
                   exerciseName: 'Floor Press',
                   order: 1,
                   setScheme: { sets: 1, reps: 1, percentage: 100 },
-                  notes: 'Work up to 1RM for the day',
+                  notes: 'Work up to 1RM for the day. Rotate exercises: Floor Press, Board Press, Incline Press, Close-Grip Bench, etc.',
                 },
               ],
+              notes: 'After max effort: 3-4 supplemental exercises for triceps, lats, and shoulders (3-4 sets each)',
             },
             {
               dayNumber: 3,
@@ -996,9 +1007,10 @@ class WorkoutTemplateStorage {
                   exerciseName: 'Speed Squats',
                   order: 1,
                   setScheme: { sets: 10, reps: 2, percentage: 50 },
-                  notes: 'Explosive reps with 60 seconds rest',
+                  notes: 'Explosive reps with 60 seconds rest. Use bands or chains for accommodating resistance if available.',
                 },
               ],
+              notes: 'After speed work: 3-4 supplemental exercises for hamstrings, glutes, and core (3-4 sets each)',
             },
             {
               dayNumber: 4,
@@ -1009,12 +1021,13 @@ class WorkoutTemplateStorage {
                   exerciseName: 'Speed Bench',
                   order: 1,
                   setScheme: { sets: 9, reps: 3, percentage: 50 },
-                  notes: 'Explosive reps with 60 seconds rest',
+                  notes: 'Explosive reps with 60 seconds rest. Vary grip width every 3 weeks. Use bands or chains if available.',
                 },
               ],
+              notes: 'After speed work: 3-4 supplemental exercises for upper back, rear delts, and arms (3-4 sets each)',
             },
           ],
-          notes: 'Rotate max effort exercises every 1-3 weeks. Add supplemental work after main lifts.',
+          notes: 'The conjugate method uses concurrent training of max effort (heavy singles), dynamic effort (speed work), and repetition method (accessory work). Rotate max effort exercises every 1-3 weeks to prevent accommodation. This is a repeating weekly pattern.',
         },
       ],
       requiresOneRepMax: true,
@@ -1022,7 +1035,7 @@ class WorkoutTemplateStorage {
       createdDate: new Date(),
       createdBy: 'system',
       tags: ['advanced', 'powerlifting', 'conjugate', 'max-effort', 'dynamic-effort'],
-      notes: 'Advanced program requiring experience. Rotate max effort variations frequently to avoid accommodation.',
+      notes: 'Advanced program requiring extensive experience with the main lifts. The key to success is frequent rotation of max effort exercises (every 1-3 weeks) and proper selection of supplemental work targeting individual weaknesses. Not recommended for beginners.',
     };
   }
 
