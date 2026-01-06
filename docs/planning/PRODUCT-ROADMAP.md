@@ -1,7 +1,7 @@
 # Product Roadmap - International Bench Press Day
 
-**Version:** 2.1  
-**Last Updated:** January 5, 2026  
+**Version:** 2.2  
+**Last Updated:** January 6, 2026  
 **Status:** Active Development
 
  ---
@@ -1936,19 +1936,130 @@ For each new feature, ensure:
 
 ### Appendix B: Competitive Analysis
 
-| Feature | IBPD | Strong | JEFIT | Hevy |
-| --------- | ------ | -------- | ------- | ------ |
-| 5/3/1 Support | ✅ | ❌ | ❌ | ❌ |
-| Plate Calculator | ✅ | ❌ | ❌ | ❌ |
-| GPS Gym Detection | ✅ | ❌ | ❌ | ❌ |
-| Voice Navigation | ✅ | ❌ | ❌ | ❌ |
-| Free | ✅ | Freemium | Freemium | Freemium |
-| Offline | ✅ | ✅ | ✅ | ✅ |
-| PWA | ✅ | ❌ | ❌ | ❌ |
-| Open Source | ✅ | ❌ | ❌ | ❌ |
-| Accessibility | ✅ | ⚠️ | ⚠️ | ⚠️ |
-| Cloud Sync | 📋 | ✅ | ✅ | ✅ |
-| Social Features | 📋 | ✅ | ✅ | ✅ |
+**Last Updated:** January 6, 2026
+
+#### Overview
+
+The fitness tracking app market in 2025-2026 is highly competitive, with established players and innovative newcomers focusing on AI-driven personalization, progressive overload tracking, and wearable integration. This analysis compares International Bench Press Day (IBPD) against leading competitors.
+
+#### Feature Comparison Matrix
+
+| Feature | IBPD | Strong | JEFIT | Hevy | Fitbod | Boostcamp |
+| --------- | ------ | -------- | ------- | ------ | -------- | ----------- |
+| **5/3/1 Support** | ✅ Native | ❌ | ❌ | ❌ | ❌ | ✅ Via Programs |
+| **Plate Calculator** | ✅ GPS-Aware | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **GPS Gym Detection** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Voice Navigation** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Rest Timer** | ✅ Advanced | ✅ Basic | ✅ Basic | ✅ Basic | ✅ Basic | ✅ Basic |
+| **Progress Photos** | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ |
+| **Calendar Export** | ✅ Multi-Platform | ❌ | ✅ Limited | ❌ | ❌ | ❌ |
+| **AI Recommendations** | 📋 Planned | ❌ | ⚠️ Limited | ❌ | ✅ Advanced | ⚠️ Basic |
+| **Custom Templates** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **Free Tier** | ✅ Full Access | ✅ Limited | ✅ Limited | ✅ Limited | ✅ 3 Workouts | ✅ Full Access |
+| **Offline Mode** | ✅ Complete | ✅ | ✅ | ✅ | ⚠️ Limited | ✅ |
+| **PWA** | ✅ | ❌ Native Only | ❌ Native Only | ❌ Native Only | ❌ Native Only | ❌ Web Only |
+| **Open Source** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Accessibility** | ✅ Section 508 | ⚠️ Partial | ⚠️ Partial | ⚠️ Partial | ⚠️ Partial | ⚠️ Partial |
+| **Cloud Sync** | 📋 Q2 2025 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Social Features** | 📋 Q3 2025 | ⚠️ Limited | ✅ Extensive | ✅ Strong | ⚠️ Limited | ✅ Community |
+| **Smartwatch Support** | 📋 Future | ✅ | ✅ | ✅ | ✅ | ⚠️ Limited |
+
+#### Pricing Comparison (Annual Subscription)
+
+| App | Free Tier | Premium Cost | Best Value |
+| ----- | ----------- | -------------- | ------------ |
+| **IBPD** | ✅ Full features | Free (Open Source) | ⭐⭐⭐⭐⭐ |
+| **Strong** | Limited features | ~$30/year | ⭐⭐⭐⭐ |
+| **JEFIT** | Ads, limited | ~$39/year | ⭐⭐⭐ |
+| **Hevy** | Limited features | ~$25/year | ⭐⭐⭐⭐ |
+| **Fitbod** | 3 workouts only | ~$80-96/year | ⭐⭐ |
+| **Boostcamp** | Full access | Free | ⭐⭐⭐⭐⭐ |
+
+#### Detailed Competitor Analysis
+
+**Strong**
+- **Strengths:** Clean, minimalist interface; fast workout logging; excellent Apple Watch integration
+- **Weaknesses:** No program generation; no 5/3/1 support; limited social features
+- **Target Users:** Experienced lifters who already have their own programming
+- **Market Position:** Premium simple logging tool
+
+**JEFIT**
+- **Strengths:** Massive exercise database (1000+); robust community features; extensive customization
+- **Weaknesses:** Steeper learning curve; premium cost relatively high
+- **Target Users:** Serious lifters wanting deep customization and community
+- **Market Position:** Established all-rounder with strong community
+
+**Hevy**
+- **Strengths:** Social sharing focus; affordable pricing; clean UI; workout sharing
+- **Weaknesses:** No AI-driven recommendations; limited program generation
+- **Target Users:** Social-motivated lifters; beginners to intermediate
+- **Market Position:** Budget-friendly social tracking
+
+**Fitbod**
+- **Strengths:** Advanced AI-driven workout generation; recovery tracking; adaptive programming
+- **Weaknesses:** Most expensive option; AI can feel random; limited community features
+- **Target Users:** Users wanting hands-off personalization and recovery optimization
+- **Market Position:** Premium AI-powered coaching
+
+**Boostcamp**
+- **Strengths:** Completely free; expert-designed programs (5/3/1, Greyskull LP, etc.); easy to use
+- **Weaknesses:** Limited customization; no advanced analytics
+- **Target Users:** Beginners following established programs; budget-conscious users
+- **Market Position:** Free program-focused alternative
+
+#### IBPD Competitive Advantages
+
+**Unique Differentiators:**
+1. ✅ **Only app with native 5/3/1 implementation** - Core feature for Wendler methodology followers
+2. ✅ **GPS-aware plate calculator** - Unique innovation for gym-specific equipment
+3. ✅ **Complete accessibility compliance** - Only Section 508 compliant strength app
+4. ✅ **Open source** - Transparency and community contributions
+5. ✅ **True offline-first PWA** - Works completely offline, no native app required
+6. ✅ **Voice navigation** - Hands-free operation for motor accessibility
+7. ✅ **Completely free** - No freemium model or feature locks
+
+**Where IBPD Needs to Catch Up:**
+1. 📋 **Cloud sync** (Planned Q2 2025) - All major competitors have this
+2. 📋 **Social features** (Planned Q3 2025) - Hevy and JEFIT lead here
+3. 📋 **AI recommendations** (Planned Q4 2025) - Fitbod dominates this space
+4. 📋 **Native mobile apps** (Future) - Better push notifications and app store presence
+5. 📋 **Smartwatch integration** (Future) - Becoming table stakes in 2026
+
+#### Market Trends (2025-2026)
+
+**Note:** Market statistics and trends below are based on industry research from fitness app comparison sites, user surveys, and competitive analysis conducted in late 2025 and early 2026.
+
+**Key Industry Trends:**
+1. **AI-Powered Personalization** - Increasing user preference for apps with AI-driven routines and adaptive programming
+2. **Wearable Integration** - Smartwatch support now expected by most users
+3. **Progressive Overload Automation** - Apps actively suggesting next weights/reps based on training history
+4. **Community Engagement** - Social features driving higher retention rates
+5. **Holistic Health Tracking** - Integration with sleep, nutrition, and recovery metrics
+6. **Free Premium Features** - Competitive pressure driving more free functionality
+
+**Emerging Competitors:**
+- **PRPath (Atlas AI)** - New 2026 entrant with advanced AI coaching and recovery recommendations
+- **Dr. Muscle** - AI-based hypertrophy optimization
+- **Evolve AI** - Elite athlete periodization focus
+- **Smart Rabbit** - Free AI fitness with advanced features
+
+#### Strategic Positioning
+
+**IBPD's Market Position:**
+- **Niche:** Powerlifting/strength training with focus on 5/3/1 methodology
+- **Pricing Strategy:** Completely free (open source) - competitive advantage
+- **Quality Focus:** Accessibility, offline capability, and specialized features
+- **Growth Strategy:** Build unique features first, add parity features (sync, social) second
+
+**Recommended Focus Areas:**
+1. **Maintain unique advantages** - Keep innovating on 5/3/1, plate calculator, accessibility
+2. **Close critical gaps** - Prioritize cloud sync and social features
+3. **Strategic AI adoption** - Add AI where it enhances 5/3/1 methodology, not generic workouts
+4. **Community building** - Leverage open source community for growth
+
+#### Conclusion
+
+IBPD occupies a unique position as the only open-source, fully accessible, 5/3/1-focused strength training app. While competitors lead in cloud sync, social features, and AI recommendations, IBPD's specialized features and commitment to accessibility create a defensible niche. The roadmap's focus on adding cloud sync (Q2) and social features (Q3) will close critical gaps while maintaining unique advantages.
 
  ---
 
@@ -2027,15 +2138,16 @@ For each new feature, ensure:
 
 ## Document Control
 
-**Version:** 2.1  
+**Version:** 2.2  
 **Status:** Active  
 **Owner:** Product Team  
 **Contributors:** Development Team, UX Team  
-**Last Updated:** January 5, 2026  
-**Next Review:** April 5, 2026 (Quarterly)
+**Last Updated:** January 6, 2026  
+**Next Review:** April 6, 2026 (Quarterly)
 
 **Change Log:**
 
+- v2.2 (Jan 6, 2026): Updated competitive analysis with 2025-2026 market data, added Fitbod and Boostcamp comparisons, included pricing and AI trends
 - v2.1 (Jan 5, 2026): Updated with Rest Timer completion, updated test counts
 - v2.0 (Dec 24, 2025): Comprehensive roadmap with Q1-Q4 2025 planning
 - v1.0 (Nov 2025): Initial roadmap (docs/UI-UX-ANALYSIS-AND-PRODUCT-ROADMAP.md)
