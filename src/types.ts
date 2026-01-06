@@ -356,6 +356,102 @@ export interface WorkoutPlan {
 }
 
 // ============================================================================
+// WORKOUT TEMPLATE SYSTEM TYPES
+// ============================================================================
+
+/**
+ * Supported workout program types
+ */
+export type ProgramType = 
+  | '531' // Jim Wendler's 5/3/1
+  | 'stronglifts5x5' // StrongLifts 5x5
+  | 'starting-strength' // Starting Strength
+  | 'juggernaut' // Juggernaut Method 2.0
+  | 'texas-method' // Texas Method
+  | 'madcow5x5' // Madcow 5x5
+  | 'westside-barbell' // Westside Barbell System
+  | 'custom'; // User-created custom template
+
+/**
+ * Workout split types
+ */
+export type WorkoutSplit = 
+  | 'full-body' // Full body every session
+  | 'push-pull-legs' // Push/Pull/Legs split
+  | 'upper-lower' // Upper body/Lower body split
+  | 'body-part' // Body part split (chest, back, legs, etc.)
+  | 'agonist-antagonist' // Agonist and opposing synergist
+  | 'agonist-synergist' // Agonist and same synergist
+  | 'power-building'; // Hybrid power and hypertrophy
+
+/**
+ * Training frequency (days per week)
+ */
+export type TrainingFrequency = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+/**
+ * Represents a set scheme within a workout template
+ */
+export interface TemplateSetScheme {
+  sets: number;
+  reps: number | string; // Can be a number or string like "5-8" or "AMRAP"
+  percentage?: number; // Percentage of training max (if applicable)
+  rpe?: number; // Rate of perceived exertion target
+  restSeconds?: number; // Rest period between sets
+}
+
+/**
+ * Represents an exercise within a workout template
+ */
+export interface TemplateExercise {
+  exerciseId: string;
+  exerciseName: string;
+  order: number; // Order in the workout
+  setScheme: TemplateSetScheme;
+  notes?: string;
+}
+
+/**
+ * Represents a single day's workout within a template
+ */
+export interface TemplateDayWorkout {
+  dayNumber: number; // Day number within the week (1-7)
+  dayName: string; // e.g., "Day 1: Squat Focus", "Push Day"
+  exercises: TemplateExercise[];
+  notes?: string;
+}
+
+/**
+ * Represents a week within a multi-week program template
+ */
+export interface TemplateWeek {
+  weekNumber: number;
+  weekName?: string; // e.g., "Week 1: 5 Reps", "Deload Week"
+  workouts: TemplateDayWorkout[];
+  notes?: string;
+}
+
+/**
+ * Complete workout program template
+ */
+export interface WorkoutTemplate {
+  id: string;
+  name: string;
+  programType: ProgramType;
+  description: string;
+  split: WorkoutSplit;
+  frequency: TrainingFrequency;
+  weekCount: number; // Number of weeks in the program (1 for repeating programs)
+  weeks: TemplateWeek[];
+  requiresOneRepMax: boolean; // Whether program needs 1RM input
+  isBuiltIn: boolean; // True for pre-defined templates
+  createdDate: Date;
+  createdBy: 'system' | 'user' | 'coach';
+  tags?: string[]; // e.g., "beginner", "intermediate", "powerlifting", "bodybuilding"
+  notes?: string;
+}
+
+// ============================================================================
 // UI NAVIGATION TYPES
 // ============================================================================
 
