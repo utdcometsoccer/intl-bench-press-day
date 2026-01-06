@@ -413,6 +413,73 @@ None currently - all planned features are in the roadmap below.
 
 See [Roadmap by Quarter](#roadmap-by-quarter) section for detailed planning.
 
+#### Upcoming: Hotel/Travel Workout Template
+
+**Target:** Q3 2025  
+**Status:** Planned  
+**Type:** Pre-made Workout Template
+
+A simplified, full-body workout program designed for travelers and users with limited gym equipment. Perfect for hotel gyms, apartment fitness centers, or home workouts with just a set of dumbbells.
+
+**Key Features:**
+
+- **Equipment:** Dumbbells only (no barbells, machines, or specialized equipment)
+- **Duration:** 3-4 days per week
+- **Focus:** Full-body training with push/pull/legs split
+- **Space:** Minimal space requirements
+- **Progressive Overload:** Built-in progression guidelines
+
+**Workout Structure:**
+
+##### Day 1 - Push Focus (Chest, Shoulders, Triceps)
+
+- Dumbbell Bench Press: 4 sets × 8-12 reps
+- Dumbbell Overhead Press: 3 sets × 10-12 reps
+- Dumbbell Lateral Raises: 3 sets × 12-15 reps
+- Dumbbell Tricep Extensions: 3 sets × 12-15 reps
+- Dumbbell Chest Flyes: 3 sets × 12-15 reps
+
+##### Day 2 - Pull Focus (Back, Biceps, Rear Delts)
+
+- Dumbbell Bent-Over Rows: 4 sets × 8-12 reps
+- Dumbbell Romanian Deadlifts: 3 sets × 10-12 reps
+- Dumbbell Bicep Curls: 3 sets × 12-15 reps
+- Dumbbell Rear Delt Flyes: 3 sets × 12-15 reps
+- Dumbbell Shrugs: 3 sets × 12-15 reps
+
+##### Day 3 - Legs Focus (Quads, Glutes, Hamstrings, Calves)
+
+- Dumbbell Goblet Squats: 4 sets × 10-15 reps
+- Dumbbell Bulgarian Split Squats: 3 sets × 10-12 reps each leg
+- Dumbbell Walking Lunges: 3 sets × 12-15 reps each leg
+- Dumbbell Calf Raises: 3 sets × 15-20 reps
+- Dumbbell Step-Ups: 3 sets × 12-15 reps each leg
+
+##### Day 4 - Full Body (Optional for 4x/week)
+
+- Dumbbell Thrusters: 3 sets × 10-12 reps
+- Dumbbell Renegade Rows: 3 sets × 8-10 reps each side
+- Dumbbell Single-Leg RDLs: 3 sets × 10 reps each leg
+- Dumbbell Goblet Carry Squats: 3 sets × 12-15 reps
+- Dumbbell Chest Supported Rows: 3 sets × 12-15 reps
+
+**Progression Guidelines:**
+
+- Week 1-2: Focus on form, use moderate weight
+- Week 3-4: Increase weight by 5-10% when all sets are completed successfully
+- Week 5-6: Continue progressive overload, consider adding 1-2 reps per set
+- Week 7-8: Evaluate progress, adjust weights and reps as needed
+- Deload: Every 4-6 weeks, reduce volume by 40-50% for recovery
+
+**Benefits:**
+
+- Full-body training 3-4x per week
+- Suitable for all fitness levels
+- No gym membership required
+- Portable workout plan
+- Efficient 45-60 minute sessions
+- Balanced muscle development
+
  ---
 
 ## Known Issues & Technical Debt
@@ -529,7 +596,7 @@ enhancement.
 #### 🟢 Issue #5: Limited Workout Templates
 
 **Category:** Feature Gap  
-**Status:** ✅ RESOLVED (January 2026)  
+**Status:** In Progress  
 **Impact:** Medium
 
 **Problem:**
@@ -537,6 +604,8 @@ enhancement.
 - Only 5/3/1 methodology supported
 - Users cannot create custom workout templates
 - No template sharing or library
+- No simplified workout options for limited gym equipment (hotels, apartments)
+- No body weight workout options for travel or outdoor training
 
 **Solution Implemented:**
 
@@ -570,6 +639,30 @@ Full workout template system with:
 
 **Effort:** Medium (5 days completed)  
 **Completed:** January 5, 2026
+- Custom workout template builder
+- Template library with pre-made options
+  - **Hotel/Travel Workout Template** - Full-body dumbbell-only program
+  - Bodyweight-focused template
+  - Minimal equipment template
+- Import/export templates
+- Community template sharing (future)
+
+**Hotel Workout Template Features:**
+
+- 3-4 day per week full-body split
+- Dumbbell-only exercises (no barbells required)
+- Minimal space requirements
+- Progressive overload structure
+- Suitable for hotel/apartment gyms
+
+**Effort:** High (10-14 days)  
+- Body weight workout templates (hotel room, jungle gym, outdoor calisthenics)
+- Import/export templates
+- Community template sharing (future)
+
+**Effort:** High (15-19 days)  
+**Priority:** Medium  
+**Target:** Q3 2025
 
  ---
 
@@ -1114,25 +1207,54 @@ Content platform for training guides and updates.
  ---
 
 **3.4 Custom Workout Templates** 📋  
-**Effort:** 7 days  
-**Value:** Medium
+**Effort:** 10 days  
+**Value:** High
 
 Create and share custom workout templates.
 
 - Template builder UI
 - Save custom templates
-- Template library
+- Template library with pre-made options:
+  - **Hotel/Travel Workout Template** - Full-body dumbbell program (3-4 days/week)
+  - Bodyweight template
+  - Minimal equipment template
 - Import/export templates
 - Share templates (future: community library)
 
+**Hotel Workout Template Details:**
+
+- **Day 1 (Push Focus):** Dumbbell bench press, overhead press, lateral raises, tricep extensions
+- **Day 2 (Pull Focus):** Dumbbell rows, Romanian deadlifts, bicep curls, rear delt flyes
+- **Day 3 (Legs Focus):** Goblet squats, Bulgarian split squats, dumbbell lunges, calf raises
+- **Day 4 (Full Body):** Combination of compound movements for time efficiency
+
 **Dependencies:** None (enhanced with auth)  
-**Testing:** Template CRUD tests, import/export tests
+**Testing:** Template CRUD tests, import/export tests, pre-made template validation
+
+ ---
+
+**3.5 Body Weight Workout Templates** 💪  
+**Effort:** 5 days  
+**Value:** Medium
+
+Pre-built body weight workout templates for training anywhere.
+
+- Hotel room or small apartment workout templates
+- Children's jungle gym at park workout templates
+- Outdoor calisthenics equipment workout templates
+- Progressive difficulty levels (beginner, intermediate, advanced)
+- Exercise substitution suggestions
+- Minimal or no equipment required
+- Integration with custom template builder
+
+**Dependencies:** Custom Workout Templates (3.4)  
+**Testing:** Template validation tests, exercise substitution tests
 
  ---
 
 #### Medium Priority Features (Phase 3)
 
-**3.5 Calendar View Enhancements** 📅  
+**3.6 Calendar View Enhancements** 📅  
 **Effort:** 5 days (2 days completed)  
 **Value:** Medium  
 **Status:** 🟡 Partially Complete
@@ -1154,7 +1276,7 @@ Improve calendar with scheduling features.
 
  ---
 
-**3.6 Personal Records Board** 🏆  
+**3.7 Personal Records Board** 🏆  
 **Effort:** 3 days  
 **Value:** Medium
 
