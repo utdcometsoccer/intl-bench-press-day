@@ -605,6 +605,7 @@ enhancement.
 - Users cannot create custom workout templates
 - No template sharing or library
 - No simplified workout options for limited gym equipment (hotels, apartments)
+- No body weight workout options for travel or outdoor training
 
 **Proposed Solution:**
 
@@ -625,6 +626,11 @@ enhancement.
 - Suitable for hotel/apartment gyms
 
 **Effort:** High (10-14 days)  
+- Body weight workout templates (hotel room, jungle gym, outdoor calisthenics)
+- Import/export templates
+- Community template sharing (future)
+
+**Effort:** High (15-19 days)  
 **Priority:** Medium  
 **Target:** Q3 2025
 
@@ -1197,9 +1203,28 @@ Create and share custom workout templates.
 
  ---
 
+**3.5 Body Weight Workout Templates** 💪  
+**Effort:** 5 days  
+**Value:** Medium
+
+Pre-built body weight workout templates for training anywhere.
+
+- Hotel room or small apartment workout templates
+- Children's jungle gym at park workout templates
+- Outdoor calisthenics equipment workout templates
+- Progressive difficulty levels (beginner, intermediate, advanced)
+- Exercise substitution suggestions
+- Minimal or no equipment required
+- Integration with custom template builder
+
+**Dependencies:** Custom Workout Templates (3.4)  
+**Testing:** Template validation tests, exercise substitution tests
+
+ ---
+
 #### Medium Priority Features (Phase 3)
 
-**3.5 Calendar View Enhancements** 📅  
+**3.6 Calendar View Enhancements** 📅  
 **Effort:** 5 days (2 days completed)  
 **Value:** Medium  
 **Status:** 🟡 Partially Complete
@@ -1221,7 +1246,7 @@ Improve calendar with scheduling features.
 
  ---
 
-**3.6 Personal Records Board** 🏆  
+**3.7 Personal Records Board** 🏆  
 **Effort:** 3 days  
 **Value:** Medium
 
