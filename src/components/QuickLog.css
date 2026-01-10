@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1100;
   padding: var(--spacing-md);
 }
 
@@ -262,5 +262,16 @@
     border-radius: 0;
     max-height: 100vh;
     height: 100vh;
+  }
+}
+
+/* Mobile-specific: Add bottom padding to prevent overlap with mobile bottom navigation */
+@media (max-width: 767px) {
+  .quick-log-modal {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  }
+  
+  .quick-log-actions {
+    margin-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
   }
 }
