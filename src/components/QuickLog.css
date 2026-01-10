@@ -252,8 +252,8 @@
   cursor: not-allowed;
 }
 
-/* Responsive adjustments */
-@media (max-width: 576px) {
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
   .quick-log-overlay {
     padding: 0;
   }
@@ -263,16 +263,9 @@
     max-height: 100vh;
     height: 100vh;
   }
-}
 
-/* Mobile-specific: Add bottom padding to prevent overlap with mobile bottom navigation */
-@media (max-width: 767px) {
-  .quick-log-overlay {
-    --mobile-nav-height: 70px;
-    --mobile-nav-safe-spacing: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
-  }
-
+  /* Add bottom padding to prevent overlap with mobile bottom navigation */
   .quick-log-actions {
-    padding-bottom: var(--mobile-nav-safe-spacing);
+    padding-bottom: var(--main-content-bottom-padding);
   }
 }
