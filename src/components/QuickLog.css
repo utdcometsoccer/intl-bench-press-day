@@ -267,11 +267,15 @@
 
 /* Mobile-specific: Add bottom padding to prevent overlap with mobile bottom navigation */
 @media (max-width: 767px) {
+  .quick-log-overlay {
+    --mobile-nav-height: 70px;
+  }
+
   .quick-log-modal {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
   
   .quick-log-actions {
-    margin-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+    margin-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 }
