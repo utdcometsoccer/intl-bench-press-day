@@ -4136,6 +4136,17 @@ a:focus {
    PLATE CALCULATOR INTEGRATION STYLES
    ============================================================================ */
 
+/* Z-INDEX STACKING ORDER:
+ * - Mobile menu overlay: 999
+ * - Mobile menu (when open): 1000
+ * - Mobile bottom navigation: 1000
+ * - Hamburger menu button: 1001
+ * - Plate calculator modal: 1100 (must be above hamburger menu)
+ * - PlateCalculator component modal: 1100
+ * - Keyboard shortcuts modal: 1100
+ * - Voice navigation elements: 9998-10001
+ */
+
 /* Weight input with plate calculator button */
 .weight-input-container {
   display: flex;
@@ -4210,7 +4221,7 @@ a:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1100;
   padding: 20px;
 }
 
