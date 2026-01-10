@@ -272,11 +272,7 @@
     --mobile-nav-safe-spacing: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 
-  .quick-log-modal {
-    padding-bottom: var(--mobile-nav-safe-spacing);
-  }
-  
   .quick-log-actions {
-    margin-bottom: var(--mobile-nav-safe-spacing);
+    padding-bottom: var(--mobile-nav-safe-spacing);
   }
 }
