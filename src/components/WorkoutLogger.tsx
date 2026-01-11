@@ -20,13 +20,15 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface WorkoutLoggerProps {
   onNavigateToPlanner?: () => void;
+  initialWeek?: number;
+  initialDay?: number;
 }
 
-const WorkoutLogger: FC<WorkoutLoggerProps> = ({ onNavigateToPlanner }) => {
+const WorkoutLogger: FC<WorkoutLoggerProps> = ({ onNavigateToPlanner, initialWeek, initialDay }) => {
   // State for current workout plan
   const [activePlan, setActivePlan] = useState<WorkoutPlan | null>(null);
-  const [selectedWeek, setSelectedWeek] = useState<number>(1);
-  const [selectedDay, setSelectedDay] = useState<number>(1);
+  const [selectedWeek, setSelectedWeek] = useState<number>(initialWeek || 1);
+  const [selectedDay, setSelectedDay] = useState<number>(initialDay || 1);
   const [currentWorkout, setCurrentWorkout] = useState<UnifiedWorkout | null>(null);
   const [workoutDate, setWorkoutDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
