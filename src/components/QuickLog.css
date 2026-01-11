@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1100;
   padding: var(--spacing-md);
 }
 
@@ -252,8 +252,8 @@
   cursor: not-allowed;
 }
 
-/* Responsive adjustments */
-@media (max-width: 576px) {
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
   .quick-log-overlay {
     padding: 0;
   }
@@ -262,5 +262,10 @@
     border-radius: 0;
     max-height: 100vh;
     height: 100vh;
+  }
+
+  /* Add bottom padding to prevent overlap with mobile bottom navigation */
+  .quick-log-actions {
+    padding-bottom: var(--main-content-bottom-padding);
   }
 }
