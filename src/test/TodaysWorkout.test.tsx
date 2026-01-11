@@ -181,6 +181,7 @@ describe('TodaysWorkout Component', () => {
     fireEvent.click(fullLoggerButton);
 
     expect(onViewFullLogger).toHaveBeenCalledTimes(1);
+    expect(onViewFullLogger).toHaveBeenCalledWith(1, 2); // week 1, day 2 from the mock workout
   });
 
   it('should have accessible button labels', () => {
@@ -223,5 +224,36 @@ describe('TodaysWorkout Component', () => {
     expect(screen.getByText('Custom Exercise')).toBeInTheDocument();
     // Week and day labels should not be present
     expect(screen.queryByText('Week')).not.toBeInTheDocument();
+  });
+
+  it('should call onViewFullLogger with undefined week/day for custom workouts', () => {
+    const onViewFullLogger = vi.fn();
+    const customSuggestion: WorkoutSuggestion = {
+      exerciseName: 'Custom Exercise',
+      exerciseId: 'custom-1',
+      workout: {
+        ...mockWorkout,
+        week: undefined,
+        day: undefined,
+      },
+      lastCompleted: null,
+      recommendation: 'today',
+      daysUntilDue: 0,
+      isNextWorkout: true,
+    };
+
+    render(
+      <TodaysWorkout
+        suggestion={customSuggestion}
+        onStartWorkout={vi.fn()}
+        onViewFullLogger={onViewFullLogger}
+      />
+    );
+
+    const fullLoggerButton = screen.getByText('Full Logger');
+    fireEvent.click(fullLoggerButton);
+
+    expect(onViewFullLogger).toHaveBeenCalledTimes(1);
+    expect(onViewFullLogger).toHaveBeenCalledWith(undefined, undefined);
   });
 });

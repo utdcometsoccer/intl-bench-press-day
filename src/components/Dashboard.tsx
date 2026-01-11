@@ -14,7 +14,7 @@ import './Dashboard.css';
 
 interface DashboardProps {
   onNavigateToPlanner: () => void;
-  onNavigateToLogger: () => void;
+  onNavigateToLogger: (week?: number, day?: number) => void;
   onNavigateToProgress: () => void;
 }
 
@@ -159,7 +159,7 @@ const Dashboard: FC<DashboardProps> = ({
       <div className="quick-actions">
         <h3>Quick Actions</h3>
         <div className="actions-grid">
-          <button className="action-button" onClick={onNavigateToLogger}>
+          <button className="action-button" onClick={() => onNavigateToLogger()}>
             <span className="action-icon" aria-hidden="true">📝</span>
             <span className="action-label">Log Workout</span>
           </button>

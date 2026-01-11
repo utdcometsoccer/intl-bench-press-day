@@ -76,6 +76,7 @@ function App() {
   const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false)
   const { theme, toggleTheme, colorBlindMode, toggleColorBlindMode } = useTheme()
+  const [workoutSelection, setWorkoutSelection] = useState<{ week: number; day: number } | null>(null)
 
   // Voice navigation handler - must be defined before any conditional returns
   const handleVoiceNavigate = useCallback((tab: string) => {
@@ -142,7 +143,21 @@ function App() {
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab)
     setIsMobileMenuOpen(false) // Close mobile menu when tab is selected
+    // Clear workout selection when changing tabs
+    if (tab !== 'logger') {
+      setWorkoutSelection(null)
+    }
   }
+
+  const handleNavigateToLoggerWithWorkout = useCallback((week?: number, day?: number) => {
+    if (week !== undefined && day !== undefined) {
+      setWorkoutSelection({ week, day })
+    } else {
+      setWorkoutSelection(null)
+    }
+    setActiveTab('logger')
+    setIsMobileMenuOpen(false)
+  }, [])
 
   const handleFirstTimeWizardComplete = () => {
     setShowFirstTimeWizard(false);
@@ -306,7 +321,7 @@ function App() {
             {activeTab === 'dashboard' && (
               <Dashboard
                 onNavigateToPlanner={() => handleTabClick('planner')}
-                onNavigateToLogger={() => handleTabClick('logger')}
+                onNavigateToLogger={handleNavigateToLoggerWithWorkout}
                 onNavigateToProgress={() => handleTabClick('progress')}
               />
             )}
@@ -316,6 +331,8 @@ function App() {
             {activeTab === 'logger' && (
               <WorkoutLogger 
                 onNavigateToPlanner={() => handleTabClick('planner')}
+                initialWeek={workoutSelection?.week}
+                initialDay={workoutSelection?.day}
               />
             )}
             {activeTab === 'custom' && <CustomWorkoutBuilder />}

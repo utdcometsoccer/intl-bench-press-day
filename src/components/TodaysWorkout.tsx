@@ -5,7 +5,7 @@ import './TodaysWorkout.css';
 interface TodaysWorkoutProps {
   suggestion: WorkoutSuggestion;
   onStartWorkout: () => void;
-  onViewFullLogger: () => void;
+  onViewFullLogger: (week?: number, day?: number) => void;
 }
 
 const TodaysWorkout: FC<TodaysWorkoutProps> = ({
@@ -116,7 +116,7 @@ const TodaysWorkout: FC<TodaysWorkoutProps> = ({
         </button>
         <button
           className="full-logger-button"
-          onClick={onViewFullLogger}
+          onClick={() => onViewFullLogger(week, day)}
           aria-label="Open full workout logger"
         >
           Full Logger
