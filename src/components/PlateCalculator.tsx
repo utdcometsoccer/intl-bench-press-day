@@ -66,12 +66,6 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
   }, []);
 
   useEffect(() => {
-    if (targetWeight !== initialWeight) {
-      setTargetWeight(initialWeight);
-    }
-  }, [initialWeight, targetWeight]);
-
-  useEffect(() => {
     calculatePlates();
   }, [calculatePlates]);
 
