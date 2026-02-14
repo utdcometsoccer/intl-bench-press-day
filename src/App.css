@@ -161,7 +161,7 @@
 #root {
   max-width: var(--container-xxl);
   margin: 0 auto;
-  padding: var(--spacing-sm);
+  padding: var(--spacing-xs);
   text-align: center;
   width: 100%;
 }
@@ -448,7 +448,7 @@ header {
 .app-logo {
   max-width: 200px;
   display: block;
-  margin: 20px auto;
+  margin: 10px auto;
 }
 
 .theme-toggle-button {
