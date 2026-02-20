@@ -47,7 +47,7 @@ User guides and how-to documentation:
 
 Technical architecture and design decisions:
 
-Currently no architecture documentation - future home for system design docs
+- **[REST API Design](architecture/REST-API-DESIGN.md)** - Comprehensive REST API specification for externalizing application logic with 16 major feature areas, authentication, third-party integrations, and migration strategy
 
 ## 📝 Documentation Guidelines
 
@@ -99,12 +99,12 @@ Documentation should be updated when:
 
 ### Current Statistics
 
-- **Total Documentation Files**: 13
+- **Total Documentation Files**: 14
 - **Feature Guides**: 5
 - **Accessibility Reports**: 2
 - **Planning Documents**: 4
 - **User Guides**: 2
-- **Architecture Docs**: 0
+- **Architecture Docs**: 1
 
 ### Coverage Areas
 
@@ -114,31 +114,25 @@ Documentation should be updated when:
 | Accessibility | ✅ Well Documented |
 | Planning | ✅ Well Documented |
 | User Guides | 🟡 Basic Coverage |
-| Architecture | 🔴 Needs Documentation |
-| API Reference | 🔴 Needs Documentation |
+| Architecture | ✅ Well Documented |
+| API Reference | ✅ Well Documented |
 | Testing Guide | 🔴 Needs Documentation |
 
 ## 🎯 Documentation Priorities
 
 ### Immediate Needs
 
-1. **Architecture Documentation**
-   - System architecture overview
-   - Component relationships
-   - Data flow diagrams
-   - Storage layer architecture
-
-2. **Testing Documentation**
+1. **Testing Documentation**
    - Testing strategy and philosophy
    - Writing tests guide
    - Test organization standards
    - Mocking strategies
 
-3. **API Documentation**
-   - Service layer API reference
-   - Storage API reference
-   - Component API documentation
-   - Hook usage documentation
+2. **Additional Architecture Documentation**
+   - System architecture diagrams
+   - Component relationships
+   - Data flow diagrams
+   - Storage layer architecture details
 
 ### Future Enhancements
 
