@@ -14,6 +14,7 @@ Welcome to the International Bench Press Day documentation. This index provides 
 
 Feature-specific documentation and implementation guides:
 
+- **[Feature Inventory](features/FEATURES.md)** - Single unified list of every feature in the application — implemented and planned
 - **[Plate Calculator](features/PLATE-CALCULATOR.md)** - Comprehensive guide to the smart plate calculation system with GPS location awareness
 - **[PWA Implementation](features/PWA-IMPLEMENTATION.md)** - Progressive Web Application setup, service workers, and offline functionality
 - **[AMRAP 1RM Recording](features/AMRAP-1RM-FEATURE.md)** - Automatic one-rep-max recording from AMRAP sets in workout logger
@@ -99,8 +100,8 @@ Documentation should be updated when:
 
 ### Current Statistics
 
-- **Total Documentation Files**: 14
-- **Feature Guides**: 5
+- **Total Documentation Files**: 15
+- **Feature Guides**: 6
 - **Accessibility Reports**: 2
 - **Planning Documents**: 4
 - **User Guides**: 2
